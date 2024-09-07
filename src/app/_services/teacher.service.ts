@@ -28,6 +28,12 @@ export class TeacherService {
     return this.http.get<Teachers[]>(`${baseUrl}/all-teachers`);
   }
 
+  getCCSteachers() {
+    return this.http.get<Teachers[]>(
+      `${baseUrl}/college-of-computer-studies/all-teachers`
+    );
+  }
+
   getById(id: string) {
     return this.http.get<Teachers>(`${baseUrl}/${id}`);
   }

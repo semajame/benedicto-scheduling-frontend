@@ -11,6 +11,11 @@ import { secondSchedComponent } from './IT/2nd-year/secondSched.component';
 import { thirdSchedComponent } from './IT/3rd-year/thirdSched.component';
 import { fourthSchedComponent } from './IT/4th-year/fourthSched.component';
 import { allSchedComponent } from './IT/all/allSched.component';
+import { itLayoutComponent } from './IT/it.layout.component';
+
+//
+
+import { educLayoutComponent } from './CTE/educ.layout.component';
 
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
 import { secondEnlistmentComponent } from './IT/2nd-year/secondEnlistment.component';
@@ -25,20 +30,52 @@ const routes: Routes = [
     path: '',
     component: ScheduleComponent,
     children: [
-      { path: '1st-year', component: firstSchedComponent },
-      { path: '1st-year/enlistment', component: firstEnlistmentComponent },
+      { path: 'college-of-computer-studies', component: itLayoutComponent },
+      {
+        path: 'college-of-computer-studies/1st-year',
+        component: firstSchedComponent,
+      },
+      {
+        path: 'college-of-computer-studies/1st-year/enlistment',
+        component: firstEnlistmentComponent,
+      },
 
-      { path: '2nd-year', component: secondSchedComponent },
-      { path: '2nd-year/enlistment', component: secondEnlistmentComponent },
+      {
+        path: 'college-of-computer-studies/2nd-year',
+        component: secondSchedComponent,
+      },
+      {
+        path: 'college-of-computer-studies/2nd-year/enlistment',
+        component: secondEnlistmentComponent,
+      },
 
-      { path: '3rd-year', component: thirdSchedComponent },
-      { path: '3rd-year/enlistment', component: thirdEnlistmentComponent },
+      {
+        path: 'college-of-computer-studies/3rd-year',
+        component: thirdSchedComponent,
+      },
+      {
+        path: 'college-of-computer-studies/3rd-year/enlistment',
+        component: thirdEnlistmentComponent,
+      },
 
-      { path: '4th-year', component: fourthSchedComponent },
-      { path: '4th-year/enlistment', component: fourthEnlistmentComponent },
+      {
+        path: 'college-of-computer-studies/4th-year',
+        component: fourthSchedComponent,
+      },
+      {
+        path: 'college-of-computer-studies/4th-year/enlistment',
+        component: fourthEnlistmentComponent,
+      },
 
-      { path: 'all-year', component: allSchedComponent },
+      {
+        path: 'college-of-computer-studies/all-year',
+        component: allSchedComponent,
+      },
       { path: '', component: LayoutComponent },
+
+      //^ EDUC
+
+      { path: 'college-of-teacher-education', component: educLayoutComponent },
     ],
   },
 ];

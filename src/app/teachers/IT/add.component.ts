@@ -7,8 +7,8 @@ import {
 } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService } from '../_services';
-import { TeacherService } from '../_services/teacher.service';
+import { AlertService } from '../../_services';
+import { TeacherService } from '../../_services/teacher.service';
 // import { MustMatch } from '../_helpers';
 
 @Component({ templateUrl: 'add.component.html' })

@@ -4,9 +4,11 @@ import { CommonModule } from '@angular/common';
 
 import { TeacherRoutingModule } from './teacher-routing.module';
 import { LayoutComponent } from './layout.component';
-import { AddComponent } from './add.component';
-import { ViewComponent } from './view.component';
+import { AddComponent } from './IT/add.component';
+import { ViewComponent } from './IT/view.component';
 import { TeacherRoutingComponent } from './teacher.component';
+
+import { itTeachersLayout } from '@app/teachers/IT/it.layout.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, TeacherRoutingModule],
@@ -15,6 +17,7 @@ import { TeacherRoutingComponent } from './teacher.component';
     AddComponent,
     LayoutComponent,
     ViewComponent,
+    itTeachersLayout,
   ],
 })
 export class TeacherModule {}

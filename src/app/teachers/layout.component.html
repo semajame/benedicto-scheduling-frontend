@@ -1,43 +1,101 @@
-<h1>Teachers</h1>
-<p>This section can only be accessed by administrators.</p>
-<p>
-  <a routerLink="add" class="btn btn-success">Add Teacher</a>
-</p>
-<div class="container mt-5 p-0">
-  <div class="main-body p-0">
-    <!-- your-component.component.html -->
-    <table class="table">
-      <thead>
-        <tr>
-          <!-- <th scope="col">#</th> -->
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Email</th>
-          <th scope="col">Address</th>
-          <th scope="col">Phone Number</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let teacher of teachers">
-          <!-- <th scope="row">{{ teacher.id }}</th> -->
-          <td>{{ teacher.firstName }}</td>
-          <td>{{ teacher.lastName }}</td>
-          <td>{{ teacher.email }}</td>
-          <td>{{ teacher.address }}</td>
-          <td>{{ teacher.phoneNumber }}</td>
-          <td>
-            <div class="d-flex gap-2">
-              <a class="btn btn-success" routerLink="view/{{ teacher.id }}"
-                >View</a
-              >
-              <a class="btn btn-primary" routerLink="edit/{{ teacher.id }}"
-                >Edit</a
-              >
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="container">
+  <h1>Teachers</h1>
+  <p>You're logged in with Benedicto College Scheduling.</p>
+
+  <!-- <div>
+    <a routerLink="all-year" class="btn btn-success text-light"> IT View</a>
+  </div> -->
+</div>
+
+<div class="container text-center mt-5 mx-10">
+  <div class="row d-flex justify-content-center gap-4">
+    <div class="col card p-0" style="width: 18rem">
+      <img src="/assets/img/it.png" class="department-logo" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title">College of Computer Studies</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+
+        <div class="d-flex gap-3 align-items-center justify-content-center">
+          <a
+            routerLink="college-of-computer-studies"
+            class="btn btn-primary text-light"
+          >
+            View
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col card p-0" style="width: 18rem">
+      <img src="/assets/img/cte.png" class="department-logo" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title">College of Teacher Education</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <div class="d-flex gap-3 align-items-center justify-content-center">
+          <a routerLink="educ" class="btn btn-primary text-light"> View </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col card p-0" style="width: 18rem">
+      <img
+        src="https://mis.benedictocollege.edu.ph/assets/bene-school-815be6299a10bcc76c09c819b5a1f49beb216565f77ba611270de3b63f1b33f6.jpg"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h5 class="card-title">Third Year</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <div class="d-flex gap-3 align-items-center justify-content-center">
+          <a routerLink="3rd-year" class="btn btn-primary text-light"> View</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col card p-0" style="width: 18rem">
+      <img
+        src="https://mis.benedictocollege.edu.ph/assets/bene-school-815be6299a10bcc76c09c819b5a1f49beb216565f77ba611270de3b63f1b33f6.jpg"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h5 class="card-title">Fourth Year</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <div class="d-flex gap-3 align-items-center justify-content-center">
+          <a routerLink="4th-year" class="btn btn-primary text-light"> View</a>
+        </div>
+      </div>
+    </div>
   </div>
+  <!-- <div class="row d-flex justify-content-center mt-5 gap-4">
+    <div class="col-md-4 card p-0" style="width: 18rem">
+      <img
+        src="https://mis.benedictocollege.edu.ph/assets/bene-school-815be6299a10bcc76c09c819b5a1f49beb216565f77ba611270de3b63f1b33f6.jpg"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h5 class="card-title">IT</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <div class="d-flex gap-3 align-items-center justify-content-center">
+          <a routerLink="all-year" class="btn btn-primary text-light">
+            View</a
+          >
+        </div>
+      </div>
+    </div> -->
 </div>
