@@ -32,9 +32,7 @@ export class AppComponent {
   // Define the type of scheduler if possible
 
   closeDialogOnNavClick = () => {
-    if (this.scheduler) {
-      this.scheduler.closeDialog();
-    }
+    this.scheduler?.closeDialog(); // Optional chaining to avoid errors
   };
 
   logout() {

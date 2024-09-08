@@ -13,6 +13,11 @@ import { secondSchedComponent } from './IT/2nd-year/secondSched.component';
 import { thirdSchedComponent } from './IT/3rd-year/thirdSched.component';
 import { fourthSchedComponent } from './IT/4th-year/fourthSched.component';
 import { allSchedComponent } from './IT/all/allSched.component';
+import { itLayoutComponent } from './IT/it.layout.component';
+
+// EDUC
+
+import { educLayoutComponent } from './CTE/educ.layout.component';
 
 // ENLISTMENT
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
@@ -29,17 +34,27 @@ import { fourthEnlistmentComponent } from './IT/4th-year/fourthEnlistment.compon
   ],
   declarations: [
     // SCHED
+
+    //IT
     firstSchedComponent,
     secondSchedComponent,
     thirdSchedComponent,
     fourthSchedComponent,
     allSchedComponent,
+    itLayoutComponent,
+
+    // EDUC
+    educLayoutComponent,
 
     // ENLISTMENT
+
+    // IT
     firstEnlistmentComponent,
     secondEnlistmentComponent,
     thirdEnlistmentComponent,
     fourthEnlistmentComponent,
+
+    // EDUC
 
     LayoutComponent,
     ScheduleComponent,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TeacherService } from '../_services/teacher.service';
-import { Teachers } from '../_models/teachers';
+import { TeacherService } from '../../_services/teacher.service';
+import { Teachers } from '../../_models/teachers';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';

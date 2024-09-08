@@ -7,6 +7,7 @@ import { ProspectusSecondComponent } from './IT/2nd-year/prospectus-2nd.componen
 import { ProspectusThirdComponent } from './IT/3rd-year/prospectus-3rd.component';
 import { ProspectusFourthComponent } from './IT/4th-year/prospectus-4th.component';
 
+import { itLayoutComponent } from './IT/it.layout.component';
 import { LayoutComponent } from './layout.component';
 import { ProspectusRoutingModule } from './prospectus.routing.module';
 import { ProspectusComponent } from './prospectus.component';
@@ -20,6 +21,7 @@ import { ProspectusComponent } from './prospectus.component';
     ProspectusFourthComponent,
     LayoutComponent,
     ProspectusComponent,
+    itLayoutComponent,
   ],
 })
 export class prospectusModule {}
