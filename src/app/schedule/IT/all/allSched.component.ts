@@ -104,6 +104,7 @@ export class allSchedComponent implements AfterViewInit {
           day: event.dayName,
           draggable: false,
           resizable: false,
+          readOnly: true,
           recurrencePattern: event.recurrencePattern,
           background: event.background,
         }));
