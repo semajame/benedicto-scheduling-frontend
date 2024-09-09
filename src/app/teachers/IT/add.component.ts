@@ -58,7 +58,9 @@ export class AddComponent implements OnInit {
   checkIfEditPage() {
     // Check if the current URL matches the edit page pattern
     const url = this.router.url;
-    this.isEditPage = url.startsWith(`/teachers/edit`);
+    this.isEditPage = url.startsWith(
+      `/teachers/college-of-computer-studies/edit`
+    );
   }
 
   onSubmit() {
@@ -131,7 +133,7 @@ export class AddComponent implements OnInit {
             keepAfterRouteChange: true,
           });
           this.loading = false;
-          this.router.navigate(['/teachers']);
+          this.router.navigate(['/teachers/college-of-computer-studies']);
         },
         error: (err) => {
           console.error('Error deleting teacher:', err);

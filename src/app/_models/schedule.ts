@@ -7,4 +7,5 @@ export interface schedule {
   day: string;
   start: Date;
   end: Date;
+  note: string;
 }

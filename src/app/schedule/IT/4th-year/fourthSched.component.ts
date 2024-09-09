@@ -442,7 +442,7 @@ export class fourthSchedComponent implements AfterViewInit {
   views: any[] = [
     {
       type: 'weekView',
-      timeRuler: { hidden: false, scaleStartHour: 6 },
+      timeRuler: { hidden: false, scaleStartHour: 7 },
       allDay: false,
     },
   ];
