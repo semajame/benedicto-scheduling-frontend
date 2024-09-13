@@ -7,6 +7,25 @@ import { ProspectusThirdComponent } from './IT/3rd-year/prospectus-3rd.component
 import { ProspectusFourthComponent } from './IT/4th-year/prospectus-4th.component';
 import { itLayoutComponent } from './IT/it.layout.component';
 
+//^ EDUC
+
+import { educLayoutComponent } from './CTE/educ.layout.component';
+import { bsedLayout } from './CTE/BSED/bsedLayout.component';
+import { beedLayout } from './CTE/BEED/beedLayout.component';
+
+//^ BSED
+import { ProspectusBsedFirst } from './CTE/BSED/1st-year/prospectus-1st.component';
+import { ProspectusBsedSecond } from './CTE/BSED/2nd-year/prospectus-2nd.component';
+import { ProspectusBsedThird } from './CTE/BSED/3rd-year/prospectus-3rd.component';
+import { ProspectusBsedFourth } from './CTE/BSED/4th-year/prospectus-4th.component';
+
+//^ BEED
+
+import { ProspectusBeedFirst } from './CTE/BEED/1st-year/prospectus-1st.component';
+import { ProspectusBeedSecond } from './CTE/BEED/2nd-year/prospectus-2nd.component';
+import { ProspectusBeedThird } from './CTE/BEED/3rd-year/prospectus-3rd.component';
+import { ProspectusBeedFourth } from './CTE/BEED/4th-year/prospectus-4th.component';
+
 import { LayoutComponent } from './layout.component';
 import { ProspectusComponent } from './prospectus.component';
 
@@ -33,6 +52,54 @@ const routes: Routes = [
       },
       { path: 'college-of-computer-studies', component: itLayoutComponent },
       { path: '', component: LayoutComponent },
+
+      //^ EDUC
+      { path: 'college-of-teacher-education', component: educLayoutComponent },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education',
+        component: bsedLayout,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-elementary-education',
+        component: beedLayout,
+      },
+
+      //^ BSED
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/1st-year',
+        component: ProspectusBsedFirst,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/2nd-year',
+        component: ProspectusBsedSecond,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/3rd-year',
+        component: ProspectusBsedThird,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/4th-year',
+        component: ProspectusBsedFourth,
+      },
+
+      //^ BEED
+
+      {
+        path: 'college-of-teacher-education/bachelor-of-elementary-education/1st-year',
+        component: ProspectusBeedFirst,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-elementary-education/2nd-year',
+        component: ProspectusBeedSecond,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-elementary-education/3rd-year',
+        component: ProspectusBeedThird,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-elementary-education/4th-year',
+        component: ProspectusBeedFourth,
+      },
     ],
   },
 ];

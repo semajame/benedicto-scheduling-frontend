@@ -3,10 +3,41 @@
     <h1>2nd Year Schedule</h1>
     <p>This section can only be accessed by administrators.</p>
   </div>
-  <div>
-    <!-- <button (click)="makePDF()" class="btn btn-primary">
-      Download Schedule
-    </button> -->
+  <div
+    class="mt-5 border rounded note bg-warning-subtle"
+    *ngIf="conflicts.length > 0"
+  >
+    <div class="m-3">
+      <h3>Conflicts Schedules</h3>
+
+      <table class="w-100 mt-4">
+        <thead>
+          <tr>
+            <th>Subject</th>
+
+            <!-- <th>Day</th> -->
+            <th>Start</th>
+            <th>End</th>
+            <th>Room</th>
+
+            <!-- Column for conflict notes -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let schedule of conflicts">
+            <td>{{ schedule.subject }}</td>
+            <!-- <td>{{ schedule.day }}</td> -->
+            <td>{{ schedule.start | date : "shortTime" }}</td>
+            <td>
+              {{ schedule.end | date : "shortTime" }}
+            </td>
+            <td>{{ schedule.room }}</td>
+            <!-- <td>{{ schedule.notes }}</td> -->
+            <!-- Display conflict notes -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <div #pdfContent class="mt-5">

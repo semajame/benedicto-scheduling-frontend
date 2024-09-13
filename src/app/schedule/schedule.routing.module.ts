@@ -16,6 +16,8 @@ import { itLayoutComponent } from './IT/it.layout.component';
 //
 
 import { educLayoutComponent } from './CTE/educ.layout.component';
+import { bsedLayout } from './CTE/BSED/bsedLayout.component';
+import { beedLayout } from './CTE/BEED/beedLayout.component';
 
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
 import { secondEnlistmentComponent } from './IT/2nd-year/secondEnlistment.component';
@@ -76,6 +78,14 @@ const routes: Routes = [
       //^ EDUC
 
       { path: 'college-of-teacher-education', component: educLayoutComponent },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education',
+        component: bsedLayout,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-elementary-education',
+        component: bsedLayout,
+      },
     ],
   },
 ];

@@ -16,6 +16,7 @@ export class allSchedComponent implements AfterViewInit {
   @ViewChild('schedulerReference5')
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
+  conflicts: any[] = [];
 
   constructor(
     private sharedService: SharedService,
@@ -109,6 +110,59 @@ export class allSchedComponent implements AfterViewInit {
           background: event.background,
         }));
 
+        appointments.forEach((appointment1, index1) => {
+          appointments.slice(index1 + 1).forEach((appointment2) => {
+            const isConflict =
+              appointment1.room === appointment2.room &&
+              appointment1.start < appointment2.end &&
+              appointment1.end > appointment2.start;
+
+            if (isConflict) {
+              const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
+              const conflictMessage2 = `Conflict with appointment ${appointment1.id}`;
+
+              // Append conflict messages to notes
+
+              // Add to conflicts array
+              if (
+                !this.conflicts.some(
+                  (conflict) => conflict.id === appointment1.id
+                )
+              ) {
+                this.conflicts.push({
+                  id: appointment1.id,
+                  subject_code: appointment1.subject_code,
+                  subject: appointment1.subject,
+                  units: appointment1.units,
+                  teacher: appointment1.teacher,
+                  room: appointment1.room,
+                  start: appointment1.start,
+                  end: appointment1.end,
+                  day: appointment1.day,
+                });
+              }
+
+              if (
+                !this.conflicts.some(
+                  (conflict) => conflict.id === appointment2.id
+                )
+              ) {
+                this.conflicts.push({
+                  id: appointment2.id,
+                  subject_code: appointment2.subject_code,
+                  subject: appointment2.subject,
+                  units: appointment2.units,
+                  teacher: appointment2.teacher,
+                  room: appointment2.room,
+                  start: appointment2.start,
+                  end: appointment2.end,
+                  day: appointment2.day,
+                });
+              }
+            }
+          });
+        });
+
         // Assign the merged appointments to localdata
         this.source.localdata = appointments;
 
@@ -116,6 +170,12 @@ export class allSchedComponent implements AfterViewInit {
         this.dataAdapter = new jqx.dataAdapter(this.source);
         if (this.scheduler5) {
           this.scheduler5.source(this.dataAdapter); // Refresh the scheduler
+        }
+
+        if (this.conflicts.length > 0) {
+          this.alertService.error('Schedule conflicts found', {
+            keepAfterRouteChange: true,
+          });
         }
       },
       error: (error) => {
@@ -479,7 +539,7 @@ export class allSchedComponent implements AfterViewInit {
   views: any[] = [
     {
       type: 'weekView',
-      timeRuler: { hidden: false, scaleStartHour: 6 },
+      timeRuler: { hidden: false, scaleStartHour: 7 },
       allDay: false,
     },
   ];

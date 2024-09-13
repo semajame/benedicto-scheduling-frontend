@@ -27,6 +27,7 @@ export class secondSchedComponent implements AfterViewInit {
   scheduler2!: jqxSchedulerComponent;
 
   teachers: Teachers[] = [];
+  conflicts: any[] = [];
 
   constructor(
     private sharedService: SharedService,
@@ -76,33 +77,131 @@ export class secondSchedComponent implements AfterViewInit {
     }
   }
 
+  // generateAppointments(): any {
+  //   this.sharedService.getSecondSchedules().subscribe(
+  //     (data) => {
+  //       const appointments = data.map((event) => ({
+  //         id: event.id.toString(),
+  //         subject_code: event.subject_code,
+  //         subject: event.subject,
+  //         units: event.units,
+  //         room: event.room,
+  //         teacher: event.teacher,
+  //         start: new Date(event.start),
+  //         end: new Date(event.end),
+  //         draggable: false,
+  //         resizable: false,
+  //         recurrencePattern: event.recurrencePattern,
+  //         background: event.background,
+  //       }));
+
+  //       this.source.localdata = appointments;
+  //       this.dataAdapter = new jqx.dataAdapter(this.source);
+  //       this.scheduler2.source(this.dataAdapter);
+  //       console.log(this.source.localdata);
+  //     },
+  //     (error) => {
+  //       console.error('Error loading schedules:', error);
+  //     }
+  //   );
+  // }
+
   generateAppointments(): any {
-    this.sharedService.getSecondSchedules().subscribe(
-      (data) => {
+    this.sharedService.getSecondSchedules().subscribe({
+      next: (data) => {
+        // Clear previous conflicts
+        this.conflicts = [];
+
+        // Map data to appointment objects
         const appointments = data.map((event) => ({
           id: event.id.toString(),
           subject_code: event.subject_code,
           subject: event.subject,
           units: event.units,
-          room: event.room,
           teacher: event.teacher,
+          room: event.room,
           start: new Date(event.start),
           end: new Date(event.end),
+          day: event.dayName,
           draggable: false,
           resizable: false,
           recurrencePattern: event.recurrencePattern,
           background: event.background,
         }));
 
+        // Detect conflicts and add conflict messages to notes
+        appointments.forEach((appointment1, index1) => {
+          appointments.slice(index1 + 1).forEach((appointment2) => {
+            const isConflict =
+              appointment1.room === appointment2.room &&
+              appointment1.start < appointment2.end &&
+              appointment1.end > appointment2.start;
+
+            if (isConflict) {
+              const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
+              const conflictMessage2 = `Conflict with appointment ${appointment1.id}`;
+
+              // Append conflict messages to notes
+
+              // Add to conflicts array
+              if (
+                !this.conflicts.some(
+                  (conflict) => conflict.id === appointment1.id
+                )
+              ) {
+                this.conflicts.push({
+                  id: appointment1.id,
+                  subject_code: appointment1.subject_code,
+                  subject: appointment1.subject,
+                  units: appointment1.units,
+                  teacher: appointment1.teacher,
+                  room: appointment1.room,
+                  start: appointment1.start,
+                  end: appointment1.end,
+                  day: appointment1.day,
+                });
+              }
+
+              if (
+                !this.conflicts.some(
+                  (conflict) => conflict.id === appointment2.id
+                )
+              ) {
+                this.conflicts.push({
+                  id: appointment2.id,
+                  subject_code: appointment2.subject_code,
+                  subject: appointment2.subject,
+                  units: appointment2.units,
+                  teacher: appointment2.teacher,
+                  room: appointment2.room,
+                  start: appointment2.start,
+                  end: appointment2.end,
+                  day: appointment2.day,
+                });
+              }
+            }
+          });
+        });
+
+        // Load the appointments into the scheduler (if needed)
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.scheduler2.source(this.dataAdapter);
-        console.log(this.source.localdata);
+
+        // Log conflicts if any
+        if (this.conflicts.length > 0) {
+          this.alertService.error('Schedule conflicts found', {
+            keepAfterRouteChange: true,
+          });
+        }
       },
-      (error) => {
+      error: (error) => {
+        this.alertService.error('Error loading schedules', {
+          keepAfterRouteChange: true,
+        });
         console.error('Error loading schedules:', error);
-      }
-    );
+      },
+    });
   }
 
   //^ ADD APPOINTMENT
