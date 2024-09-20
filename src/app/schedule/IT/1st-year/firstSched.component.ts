@@ -4,6 +4,8 @@ import { SharedService } from 'src/app/shared.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
+import { SubjectService, Subject } from '@app/_services/subjects.service';
+
 import { first } from 'rxjs';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
@@ -16,16 +18,18 @@ export class firstSchedComponent implements AfterViewInit {
   scheduler!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
+  subjects: Subject[] = [];
 
   constructor(
     private sharedService: SharedService,
     private alertService: AlertService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private subjectService: SubjectService
   ) {}
 
   ngAfterViewInit(): void {
     this.scheduler.ensureAppointmentVisible('1');
-
+    this.loadSubjects();
     this.teacherService
       .getAll()
       .pipe(first())
@@ -63,6 +67,12 @@ export class firstSchedComponent implements AfterViewInit {
       // Remove the flag from localStorage to prevent repeated alerts
       localStorage.removeItem('scheduleDeleted');
     }
+  }
+
+  loadSubjects(): void {
+    this.subjectService.getSubjects().subscribe((data) => {
+      this.subjects = data;
+    });
   }
 
   //^ GET APPOINTMENT
@@ -392,42 +402,42 @@ export class firstSchedComponent implements AfterViewInit {
     let subjectCodeContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
         <div class="jqx-scheduler-edit-dialog-field">
-          <select id="subjectCode" name="subjectCode">
-            <option value="IT110">IT110</option>
-            <option value="IT111">IT111</option>
-            <option value="ITVG">ITVG</option>
-            <option value="UTS">UTS</option>
-            <option value="MathWorld">MathWorld</option>
-            <option value="Fil 1">Fil 1</option>
-            <option value="PE 1">PE 1</option>
-            <option value="NSTP 1">NSTP 1</option>
-            <option value="MathPrep">MathPrep</option>
-          </select>
+          <select id="subjectCode" name="subjectCode"></select>
         </div>
       </div>`;
+
     fields.subjectContainer.append(subjectCodeContainer);
+
+    const subjectCode = document.getElementById('subjectCode');
+
+    if (subjectCode) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject_code}`;
+        option.text = `${subjects.subject_code} `;
+        subjectCode.appendChild(option);
+      });
+    }
 
     let subjectInput = `
     <div class="jqx-scheduler-edit-dialog-label">Subject</div>
       <div class="jqx-scheduler-edit-dialog-field">
-        <select id="subject" name="subject">
-          <option value="Introduction to Computing - LEC">Introduction to Computing - LEC</option>
-          <option value="Introduction to Computing - LAB">Introduction to Computing - LAB</option>
-          <option value="Computer Programming - LEC">Computer Programming - LEC</option>
-          <option value="Computer Programming - LAB">Computer Programming - LAB</option>
-          <option value="Visual Graphics - LEC">Visual Graphics - LEC</option>
-          <option value="Visual Graphics - LAB">Visual Graphics - LAB</option>
-          <option value="Understanding the Self">Understanding the Self</option>
-          <option value="Math in the Modern World">Math in the Modern World</option>
-          <option value="Retorika">Retorika</option>
-          <option value="Wellness & Fitness">	Wellness & Fitness</option>
-          <option value="National Service Training Prog. 1">	National Service Training Prog. 1</option>
-          <option value="Pre Calculus for Non-STEM">Pre Calculus for Non-STEM</option>
-        </select>
+        <select id="subject" name="subject"></select>
       </div>
  `;
 
     fields.subjectContainer.append(subjectInput);
+
+    const subject = document.getElementById('subject');
+
+    if (subject) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject}`;
+        option.text = `${subjects.subject} `;
+        subject.appendChild(option);
+      });
+    }
 
     let unitsContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label">Units</div>
@@ -447,7 +457,11 @@ export class firstSchedComponent implements AfterViewInit {
       <select id="room" name="room">
         <option value="Computer Lab 1">Computer Lab 1</option>
         <option value="Computer Lab 2">Computer Lab 2</option>
+        <option value="Room 309">Room 309</option>
+        <option value="Room 311">Room 311</option>
+        <option value="Room 312">Room 312</option>
       </select>
+      
     </div>
   </div>`;
     fields.subjectContainer.append(roomContainer);

@@ -7,4 +7,8 @@ import { User } from '@app/_models/user';
 export class LayoutComponent {
   Role = Role;
   user?: User | null;
+
+  windowReload = () => {
+    window.location.reload(); // Optional chaining to avoid errors
+  };
 }

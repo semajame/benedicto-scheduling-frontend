@@ -347,32 +347,32 @@ export class allSchedComponent implements AfterViewInit {
   }
 
   //^ DELETE APPOINTMENT
-  AppointmentDelete(event: any): void {
-    const appointment = event.args.appointment.originalData;
+  // AppointmentDelete(event: any): void {
+  //   const appointment = event.args.appointment.originalData;
 
-    if (confirm('Are you sure you want to delete this appointment?')) {
-      this.sharedService.deleteAllSchedule(appointment.id).subscribe({
-        next: () => {
-          console.log('Appointment deleted successfully');
-          // Remove the appointment from the local data source
-          this.source.localdata = this.source.localdata.filter(
-            (item: { id: any }) => item.id !== appointment.id
-          );
-          this.scheduler5.source(this.dataAdapter);
-          localStorage.setItem('scheduleDeleted', 'true');
+  //   if (confirm('Are you sure you want to delete this appointment?')) {
+  //     this.sharedService.deleteAllSchedule(appointment.id).subscribe({
+  //       next: () => {
+  //         console.log('Appointment deleted successfully');
+  //         // Remove the appointment from the local data source
+  //         this.source.localdata = this.source.localdata.filter(
+  //           (item: { id: any }) => item.id !== appointment.id
+  //         );
+  //         this.scheduler5.source(this.dataAdapter);
+  //         localStorage.setItem('scheduleDeleted', 'true');
 
-          window.location.reload();
-        },
-        error: (error) => {
-          window.location.reload();
-          this.alertService.error('Error deleting schedule', {
-            keepAfterRouteChange: true,
-            error,
-          });
-        },
-      });
-    }
-  }
+  //         window.location.reload();
+  //       },
+  //       error: (error) => {
+  //         window.location.reload();
+  //         this.alertService.error('Error deleting schedule', {
+  //           keepAfterRouteChange: true,
+  //           error,
+  //         });
+  //       },
+  //     });
+  //   }
+  // }
 
   source: any = {
     dataType: 'array',
@@ -388,6 +388,7 @@ export class allSchedComponent implements AfterViewInit {
       { name: 'start', type: 'date' },
       { name: 'end', type: 'date' },
       { name: 'draggable', type: 'boolean' },
+      { name: 'readOnly', type: 'boolean' },
       { name: 'resizable', type: 'boolean' },
       { name: 'recurrencePattern', type: 'string' },
       { name: 'background', type: 'string' },
@@ -407,6 +408,7 @@ export class allSchedComponent implements AfterViewInit {
     day: 'day',
     draggable: 'draggable',
     resizable: 'resizable',
+    readOnly: 'readOnly',
     recurrencePattern: 'recurrencePattern',
     background: 'background',
   };
@@ -415,16 +417,8 @@ export class allSchedComponent implements AfterViewInit {
     let subjectCodeContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
         <div class="jqx-scheduler-edit-dialog-field">
-          <select id="subjectCode" name="subjectCode">
-            <option value="IT110">IT110</option>
-            <option value="IT111">IT111</option>
-            <option value="ITVG">ITVG</option>
-            <option value="UTS">UTS</option>
-            <option value="MathWorld">MathWorld</option>
-            <option value="Fil 1">Fil 1</option>
-            <option value="PE 1">PE 1</option>
-            <option value="NSTP 1">NSTP 1</option>
-            <option value="MathPrep">MathPrep</option>
+          <select id="subjectCode" name="subjectCode" >
+          
           </select>
         </div>
       </div>`;
@@ -433,19 +427,8 @@ export class allSchedComponent implements AfterViewInit {
     let subjectInput = `
     <div class="jqx-scheduler-edit-dialog-label">Subject</div>
       <div class="jqx-scheduler-edit-dialog-field">
-        <select id="subject" name="subject">
-          <option value="Introduction to Computing - LEC">Introduction to Computing - LEC</option>
-          <option value="Introduction to Computing - LAB">Introduction to Computing - LAB</option>
-          <option value="Computer Programming - LEC">Computer Programming - LEC</option>
-          <option value="Computer Programming - LAB">Computer Programming - LAB</option>
-          <option value="Visual Graphics - LEC">Visual Graphics - LEC</option>
-          <option value="Visual Graphics - LAB">Visual Graphics - LAB</option>
-          <option value="Understanding the Self">Understanding the Self</option>
-          <option value="Math in the Modern World">Math in the Modern World</option>
-          <option value="Retorika">Retorika</option>
-          <option value="Wellness & Fitness">	Wellness & Fitness</option>
-          <option value="National Service Training Prog. 1">	National Service Training Prog. 1</option>
-          <option value="Pre Calculus for Non-STEM">Pre Calculus for Non-STEM</option>
+        <select id="subject" name="subject" >
+         
         </select>
       </div>
  `;
@@ -455,7 +438,7 @@ export class allSchedComponent implements AfterViewInit {
     let unitsContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label">Units</div>
         <div class="jqx-scheduler-edit-dialog-field">
-          <select id="units" name="units">
+          <select id="units" name="units" >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -467,7 +450,7 @@ export class allSchedComponent implements AfterViewInit {
     let roomContainer = ` <div>
     <div class="jqx-scheduler-edit-dialog-label">Room</div>
     <div class="jqx-scheduler-edit-dialog-field">
-      <select id="room" name="room">
+      <select id="room" name="room" >
         <option value="Computer Lab 1">Computer Lab 1</option>
         <option value="Computer Lab 2">Computer Lab 2</option>
       </select>
@@ -479,7 +462,7 @@ export class allSchedComponent implements AfterViewInit {
     <div>
       <div class="jqx-scheduler-edit-dialog-label">Teacher</div>
       <div class="jqx-scheduler-edit-dialog-field">
-        <select id="teacher" name="teacher"></select>
+        <select id="teacher" name="teacher" ></select>
       </div>
     </div>
   `;
@@ -513,6 +496,11 @@ export class allSchedComponent implements AfterViewInit {
       $(dialog)
         .find('.jqx-scheduler-recurrence-yearly-panel')
         .addClass('recurrence-hide');
+
+      // $(dialog).find('.jqx-window-content').addClass('disabled');
+
+      $(dialog).find('.jqx-scheduler-edit-dialog-field').addClass('disabled');
+
       $(dialog).closest('.jqx-window').addClass('center-fixed-dialog');
     }, 10);
 

@@ -17,6 +17,8 @@ import { Teachers } from '@app/_models/teachers';
 import { first } from 'rxjs';
 import * as $ from 'jquery';
 
+import { SubjectService, Subject } from '@app/_services/subjects.service';
+
 @Component({
   templateUrl: 'thirdSched.component.html',
 })
@@ -26,16 +28,18 @@ export class thirdSchedComponent implements AfterViewInit {
 
   teachers: Teachers[] = [];
   conflicts: any[] = [];
+  subjects: Subject[] = [];
 
   constructor(
     private sharedService: SharedService,
     private alertService: AlertService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private subjectService: SubjectService
   ) {}
 
   ngAfterViewInit(): void {
     this.scheduler3.ensureAppointmentVisible('1');
-
+    this.loadSubjects();
     this.teacherService
       .getAll()
       .pipe(first())
@@ -73,6 +77,12 @@ export class thirdSchedComponent implements AfterViewInit {
       // Remove the flag from localStorage to prevent repeated alerts
       localStorage.removeItem('scheduleDeleted');
     }
+  }
+
+  loadSubjects(): void {
+    this.subjectService.getThirdSubjects().subscribe((data) => {
+      this.subjects = data;
+    });
   }
 
   generateAppointments(): any {
@@ -398,35 +408,45 @@ export class thirdSchedComponent implements AfterViewInit {
         <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
         <div class="jqx-scheduler-edit-dialog-field">
           <select id="subjectCode" name="subjectCode">
-            <option value="IT310">IT310</option>
-            <option value="IT311">IT311</option>
-            <option value="IT312">IT312</option>
-            <option value="IT ELEC 1">IT ELEC 1</option>
-             <option value="ITTEL2">ITTEL2</option>
-            <option value="TECHNO">TECHNO</option>
-            <option value="STAT">STAT</option>
+           
           </select>
         </div>
       </div>`;
     fields.subjectContainer.append(subjectCodeContainer);
 
+    const subjectCode = document.getElementById('subjectCode');
+
+    if (subjectCode) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject_code}`;
+        option.text = `${subjects.subject_code} `;
+        subjectCode.appendChild(option);
+      });
+    }
+
     let subjectInput = `
     <div class="jqx-scheduler-edit-dialog-label">Subject</div>
       <div class="jqx-scheduler-edit-dialog-field">
         <select id="subject" name="subject">
-          <option value="Applications Development and Emerging Technologies">Applications Development and Emerging Technologies</option>
-          <option value="	Operating Systems">	Operating Systems</option>
-          <option value="Human Computer Interaction">Human Computer Interaction</option>
-          <option value="IT ELECTIVE 1">IT ELECTIVE 1</option>
-           <option value="	IT Track Elective II">IT Track Elective II</option>
-          <option value="	Technopreneurship">Technopreneurship</option>
-          <option value="	Statistics & Probability">Statistics & Probability</option>
+          
 
         </select>
       </div>
  `;
 
     fields.subjectContainer.append(subjectInput);
+
+    const subject = document.getElementById('subject');
+
+    if (subject) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject}`;
+        option.text = `${subjects.subject} `;
+        subject.appendChild(option);
+      });
+    }
 
     let unitsContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label">Units</div>
@@ -446,6 +466,9 @@ export class thirdSchedComponent implements AfterViewInit {
       <select id="room" name="room">
         <option value="Computer Lab 1">Computer Lab 1</option>
         <option value="Computer Lab 2">Computer Lab 2</option>
+        <option value="Room 309">Room 309</option>
+        <option value="Room 311">Room 311</option>
+        <option value="Room 312">Room 312</option>
       </select>
     </div>
   </div>`;

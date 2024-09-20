@@ -16,8 +16,7 @@ import { TeacherService } from '@app/_services/teacher.service';
 
 import { first } from 'rxjs';
 import * as $ from 'jquery';
-
-import { schedule } from '@app/_models/schedule';
+import { SubjectService, Subject } from '@app/_services/subjects.service';
 
 @Component({
   templateUrl: 'secondSched.component.html',
@@ -28,16 +27,18 @@ export class secondSchedComponent implements AfterViewInit {
 
   teachers: Teachers[] = [];
   conflicts: any[] = [];
+  subjects: Subject[] = [];
 
   constructor(
     private sharedService: SharedService,
     private alertService: AlertService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private subjectService: SubjectService
   ) {}
 
   ngAfterViewInit(): void {
     this.scheduler2.ensureAppointmentVisible('1');
-
+    this.loadSubjects();
     this.teacherService
       .getAll()
       .pipe(first())
@@ -77,34 +78,11 @@ export class secondSchedComponent implements AfterViewInit {
     }
   }
 
-  // generateAppointments(): any {
-  //   this.sharedService.getSecondSchedules().subscribe(
-  //     (data) => {
-  //       const appointments = data.map((event) => ({
-  //         id: event.id.toString(),
-  //         subject_code: event.subject_code,
-  //         subject: event.subject,
-  //         units: event.units,
-  //         room: event.room,
-  //         teacher: event.teacher,
-  //         start: new Date(event.start),
-  //         end: new Date(event.end),
-  //         draggable: false,
-  //         resizable: false,
-  //         recurrencePattern: event.recurrencePattern,
-  //         background: event.background,
-  //       }));
-
-  //       this.source.localdata = appointments;
-  //       this.dataAdapter = new jqx.dataAdapter(this.source);
-  //       this.scheduler2.source(this.dataAdapter);
-  //       console.log(this.source.localdata);
-  //     },
-  //     (error) => {
-  //       console.error('Error loading schedules:', error);
-  //     }
-  //   );
-  // }
+  loadSubjects(): void {
+    this.subjectService.getSecondSubjects().subscribe((data) => {
+      this.subjects = data;
+    });
+  }
 
   generateAppointments(): any {
     this.sharedService.getSecondSchedules().subscribe({
@@ -428,34 +406,41 @@ export class secondSchedComponent implements AfterViewInit {
     let subjectCodeContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
         <div class="jqx-scheduler-edit-dialog-field">
-          <select id="subjectCode" name="subjectCode">
-            <option value="IT210">IT210</option>
-            <option value="IT211">IT211</option>
-            <option value="IT221">IT221</option>
-            <option value="CW">CW</option>
-            <option value="ArtApp">ArtApp</option>
-            <option value="PATHFIT">PATHFIT</option>
-          </select>
+          <select id="subjectCode" name="subjectCode"></select>
         </div>
       </div>`;
     fields.subjectContainer.append(subjectCodeContainer);
 
+    const subjectCode = document.getElementById('subjectCode');
+
+    if (subjectCode) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject_code}`;
+        option.text = `${subjects.subject_code} `;
+        subjectCode.appendChild(option);
+      });
+    }
+
     let subjectInput = `
     <div class="jqx-scheduler-edit-dialog-label">Subject</div>
       <div class="jqx-scheduler-edit-dialog-field">
-        <select id="subject" name="subject">
-          <option value="Data Structures & Algorithms">Data Structures & Algorithms</option>
-          <option value="Web Design & Development">Web Design & Development</option>
-          <option value="Digital Logic Design">Digital Logic Design</option>
-          <option value="Networking">Networking</option>
-           <option value="The Contemporary World">The Contemporary World</option>
-          <option value="	Art Appreciation">Art Appreciation</option>
-          <option value="	Individual/Dual Sports">National Service Training Prog. 1</option>
-        </select>
+        <select id="subject" name="subject"></select>
       </div>
  `;
 
     fields.subjectContainer.append(subjectInput);
+
+    const subject = document.getElementById('subject');
+
+    if (subject) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject}`;
+        option.text = `${subjects.subject} `;
+        subject.appendChild(option);
+      });
+    }
 
     let unitsContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label">Units</div>
@@ -475,6 +460,9 @@ export class secondSchedComponent implements AfterViewInit {
       <select id="room" name="room">
         <option value="Computer Lab 1">Computer Lab 1</option>
         <option value="Computer Lab 2">Computer Lab 2</option>
+        <option value="Room 309">Room 309</option>
+        <option value="Room 311">Room 311</option>
+        <option value="Room 312">Room 312</option>
       </select>
     </div>
   </div>`;
