@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class SharedService {
   readonly APIUrl = 'http://localhost:4000/schedule';
+  readonly APICalendar = 'http://localhost:4000/calendar';
 
   constructor(private http: HttpClient) {}
 
@@ -101,4 +102,14 @@ export class SharedService {
   // deleteSchedule(id: number): Observable<any> {
   //   return this.http.delete(`${this.APIUrl}/${id}`);
   // }
+
+  //^ CALENDAR
+
+  getCalendar(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APICalendar}/event`);
+  }
+
+  addCalendar(calendar: any): Observable<any> {
+    return this.http.post<any>(`${this.APICalendar}/event`, calendar);
+  }
 }

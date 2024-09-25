@@ -4,3 +4,28 @@
     <p>You're logged in with Benedicto College Scheduling.</p>
   </div>
 </div>
+
+<div class="my-5">
+  <jqxScheduler
+    #schedulerReference
+    [date]="date"
+    [width]="1300"
+    [height]="800"
+    [source]="dataAdapter"
+    [showLegend]="true"
+    [view]="'weekView'"
+    [appointmentDataFields]="appointmentDataFields"
+    [resources]="resources"
+    [views]="views"
+    [view]="'monthView'"
+    [editDialogOpen]="editDialogOpen"
+    (onAppointmentAdd)="AppointmentAdd($event)"
+    [editDialogOpen]="editDialogOpen"
+    style="margin: 0 auto"
+  >
+  </jqxScheduler>
+</div>
+
+<!-- (onAppointmentChange)="AppointmentUpdate($event)"
+(onAppointmentDelete)="AppointmentDelete($event)"
+[editDialogCreate]="editDialogCreate" -->

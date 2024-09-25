@@ -110,3 +110,7 @@ button > img {
 /* .note {
   height: 150px;
 } */
+
+.account-button::after {
+  margin-left: -6px;
+}

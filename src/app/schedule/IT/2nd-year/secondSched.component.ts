@@ -8,7 +8,7 @@ import {
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 
 //^ SERVICE
-import { SharedService } from '@app/shared.service';
+import { SharedService } from 'src/app/_services/shared.service';
 import { AlertService } from '@app/_services';
 
 import { Teachers } from '@app/_models/teachers';

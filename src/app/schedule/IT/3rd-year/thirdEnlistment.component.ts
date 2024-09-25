@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { SharedService } from '@app/shared.service';
+import { SharedService } from 'src/app/_services/shared.service';
 import { schedule } from '@app/_models/schedule';
 import { DatePipe } from '@angular/common';
 

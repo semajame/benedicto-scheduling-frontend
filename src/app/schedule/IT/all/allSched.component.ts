@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
-import { SharedService } from 'src/app/shared.service';
+import { SharedService } from 'src/app/_services/shared.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 

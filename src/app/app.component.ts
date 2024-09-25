@@ -31,9 +31,9 @@ export class AppComponent {
 
   // Define the type of scheduler if possible
 
-  closeDialogOnNavClick = () => {
-    this.scheduler?.closeDialog(); // Optional chaining to avoid errors
-  };
+  // closeDialogOnNavClick = () => {
+  //   this.scheduler?.closeDialog(); // Optional chaining to avoid errors
+  // };
 
   logout() {
     this.accountService.logout();
