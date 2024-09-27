@@ -14,6 +14,7 @@ const routes: Routes = [{ path: '', component: HomeComponent }];
     CommonModule,
     ReactiveFormsModule,
     jqxSchedulerModule,
+
     RouterModule.forChild(routes), // Configure the routes for this module
   ],
   declarations: [HomeComponent],

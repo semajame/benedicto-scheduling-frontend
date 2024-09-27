@@ -250,10 +250,6 @@ export class firstSchedComponent implements AfterViewInit {
           keepAfterRouteChange: true,
           error,
         });
-        console.log(teacher);
-        console.log(units);
-        // window.location.reload();
-        console.log('asdasd');
       },
     });
   }
@@ -511,7 +507,7 @@ export class firstSchedComponent implements AfterViewInit {
         $('#subject').val(appointmentData.subject);
         $('#room').val(appointmentData.room);
         $('#teacher').val(appointmentData.teacher);
-      }, 100); // Slight delay to ensure elements are available
+      }, 100); // Slight delay to ensure elements are available 
     }
   };
 

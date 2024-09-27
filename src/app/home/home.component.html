@@ -18,8 +18,9 @@
     [resources]="resources"
     [views]="views"
     [view]="'monthView'"
-    [editDialogOpen]="editDialogOpen"
     (onAppointmentAdd)="AppointmentAdd($event)"
+    (onAppointmentChange)="AppointmentUpdate($event)"
+    (onAppointmentDelete)="AppointmentDelete($event)"
     [editDialogOpen]="editDialogOpen"
     style="margin: 0 auto"
   >

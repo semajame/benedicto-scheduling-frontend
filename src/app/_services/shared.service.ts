@@ -112,4 +112,12 @@ export class SharedService {
   addCalendar(calendar: any): Observable<any> {
     return this.http.post<any>(`${this.APICalendar}/event`, calendar);
   }
+
+  updateCalendar(id: number, calendar: any): Observable<any> {
+    return this.http.put(`${this.APICalendar}/event/${id}`, calendar);
+  }
+
+  deleteCalendar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.APICalendar}/event/${id}`);
+  }
 }

@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
 import { Alert, AlertType } from '@app/_models';
 import { AlertService } from '@app/_services';
 
+// import { ToastModule } from 'primeng/toast';
+
 @Component({
   selector: 'alert',
   templateUrl: 'alert.component.html',
