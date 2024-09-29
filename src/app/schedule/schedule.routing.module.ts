@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 // import { ProspectusThirdComponent } from './IT/3rd-year/prospectus-3rd.component';
 // import { ProspectusFourthComponent } from './IT/4th-year/prospectus-4th.component';
 
+//^ IT SCHED
 import { firstSchedComponent } from './IT/1st-year/firstSched.component';
 import { secondSchedComponent } from './IT/2nd-year/secondSched.component';
 import { thirdSchedComponent } from './IT/3rd-year/thirdSched.component';
@@ -13,12 +14,15 @@ import { fourthSchedComponent } from './IT/4th-year/fourthSched.component';
 import { allSchedComponent } from './IT/all/allSched.component';
 import { itLayoutComponent } from './IT/it.layout.component';
 
-//
-
+//^ CTE SCHED
 import { educLayoutComponent } from './CTE/educ.layout.component';
 import { bsedLayout } from './CTE/BSED/bsedLayout.component';
 import { beedLayout } from './CTE/BEED/beedLayout.component';
+import { bsedSchedComponent } from './CTE/BSED/all/allSched.component';
+import { bsedFirstSchedComponent } from './CTE/BSED/1st-year/firstSched.component';
+import { bsedScondSchedComponent } from './CTE/BSED/2nd-year/secondSched.component';
 
+//^ IT ENLISTMENT
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
 import { secondEnlistmentComponent } from './IT/2nd-year/secondEnlistment.component';
 import { thirdEnlistmentComponent } from './IT/3rd-year/thirdEnlistment.component';
@@ -84,7 +88,19 @@ const routes: Routes = [
       },
       {
         path: 'college-of-teacher-education/bachelor-of-elementary-education',
-        component: bsedLayout,
+        component: beedLayout,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/all-year',
+        component: bsedSchedComponent,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/1st-year',
+        component: bsedFirstSchedComponent,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/2nd-year',
+        component: bsedScondSchedComponent,
       },
     ],
   },

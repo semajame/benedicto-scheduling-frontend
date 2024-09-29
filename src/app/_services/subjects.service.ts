@@ -7,6 +7,7 @@ export interface Subject {
   subject: string;
   units: number;
   pre_req?: string;
+  year: string;
 }
 
 @Injectable({
@@ -17,7 +18,7 @@ export class SubjectService {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all subjects
+  //^ IT subjects
   getSubjects(): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.apiUrl}/1st-year`);
   }
@@ -32,5 +33,12 @@ export class SubjectService {
 
   getFourthSubjects(): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.apiUrl}/4th-year`);
+  }
+
+  //^ BSED subjects
+  getBsedSubjects(): Observable<Subject[]> {
+    return this.http.get<Subject[]>(
+      `${this.apiUrl}/bachelor-of-secondary-education`
+    );
   }
 }

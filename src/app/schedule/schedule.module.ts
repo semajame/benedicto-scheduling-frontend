@@ -20,6 +20,11 @@ import { itLayoutComponent } from './IT/it.layout.component';
 import { educLayoutComponent } from './CTE/educ.layout.component';
 import { bsedLayout } from './CTE/BSED/bsedLayout.component';
 import { beedLayout } from './CTE/BEED/beedLayout.component';
+import { bsedSchedComponent } from './CTE/BSED/all/allSched.component';
+import { bsedFirstSchedComponent } from './CTE/BSED/1st-year/firstSched.component';
+import { bsedScondSchedComponent } from './CTE/BSED/2nd-year/secondSched.component';
+import { bsedThirdSchedComponent } from './CTE/BSED/3rd-year/thirdSched.component';
+import { bsedFourthSchedComponent } from './CTE/BSED/4th-year/fourthSched.component';
 
 // ENLISTMENT
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
@@ -49,6 +54,11 @@ import { fourthEnlistmentComponent } from './IT/4th-year/fourthEnlistment.compon
     educLayoutComponent,
     bsedLayout,
     beedLayout,
+    bsedSchedComponent,
+    bsedFirstSchedComponent,
+    bsedScondSchedComponent,
+    bsedThirdSchedComponent,
+    bsedFourthSchedComponent,
 
     //^ ENLISTMENT
 
