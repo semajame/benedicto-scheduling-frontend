@@ -2,6 +2,15 @@
   <div class="">
     <h1>CCS Schedule</h1>
     <p>This section can only be accessed by administrators.</p>
+
+    <div>
+      <button
+        class="btn btn-primary"
+        (click)="this.scheduler5.openDialog(0, 0)"
+      >
+        Create Schedule
+      </button>
+    </div>
   </div>
   <div
     class="mt-5 border rounded note bg-warning-subtle"
@@ -54,11 +63,10 @@
     [views]="views"
     (onAppointmentAdd)="AppointmentAdd($event)"
     (onAppointmentChange)="AppointmentUpdate($event)"
+    (onAppointmentDelete)="AppointmentDelete($event)"
     [editDialogCreate]="editDialogCreate"
     [editDialogOpen]="editDialogOpen"
     style="margin: 0 auto"
   >
   </jqxScheduler>
 </div>
-
-<!--   (onAppointmentDelete)="AppointmentDelete($event)" -->

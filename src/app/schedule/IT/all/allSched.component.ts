@@ -1,10 +1,12 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
-import { SharedService } from 'src/app/_services/shared.service';
+import { CcsService } from '@app/_services/ccs.service';
+
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
 import { first, forkJoin } from 'rxjs';
+import { SubjectService, Subject } from '@app/_services/subjects.service';
 
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
@@ -17,15 +19,18 @@ export class allSchedComponent implements AfterViewInit {
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
+  subjects: Subject[] = [];
 
   constructor(
-    private sharedService: SharedService,
+    private ccsService: CcsService,
     private alertService: AlertService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private subjectService: SubjectService
   ) {}
 
   ngAfterViewInit(): void {
     this.generateAppointments();
+    this.loadSubjects();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
       .getAll()
@@ -66,34 +71,21 @@ export class allSchedComponent implements AfterViewInit {
     }
   }
 
+  loadSubjects(): void {
+    this.subjectService.getBsitSubjects().subscribe((data) => {
+      this.subjects = data;
+    });
+  }
+
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    // Clear localdata before fetching new data
-    this.source.localdata = [];
+    this.ccsService.getAllSchedules().subscribe({
+      next: (data) => {
+        // Clear previous conflicts
+        this.conflicts = [];
 
-    // Use forkJoin to wait for all observables to complete
-    forkJoin({
-      allSchedules: this.sharedService.getAllSchedules(),
-      schedules: this.sharedService.getSchedules(),
-      secondSchedules: this.sharedService.getSecondSchedules(),
-      thirdSchedules: this.sharedService.getThirdSchedules(),
-      fourthSchedules: this.sharedService.getFourthSchedules(),
-    }).subscribe({
-      next: ({
-        allSchedules,
-        schedules,
-        secondSchedules,
-        thirdSchedules,
-        fourthSchedules,
-      }) => {
-        // Concatenate all the schedules from different sources
-        const appointments = [
-          ...allSchedules,
-          ...schedules,
-          ...secondSchedules,
-          ...thirdSchedules,
-          ...fourthSchedules,
-        ].map((event) => ({
+        // Map data to appointment objects
+        const appointments = data.map((event) => ({
           id: event.id.toString(),
           subject_code: event.subject_code,
           subject: event.subject,
@@ -103,13 +95,14 @@ export class allSchedComponent implements AfterViewInit {
           start: new Date(event.start),
           end: new Date(event.end),
           day: event.dayName,
+          year: event.year,
           draggable: false,
           resizable: false,
-          readOnly: true,
           recurrencePattern: event.recurrencePattern,
           background: event.background,
         }));
 
+        // Detect conflicts and add conflict messages to notes
         appointments.forEach((appointment1, index1) => {
           appointments.slice(index1 + 1).forEach((appointment2) => {
             const isConflict =
@@ -163,15 +156,12 @@ export class allSchedComponent implements AfterViewInit {
           });
         });
 
-        // Assign the merged appointments to localdata
+        // Load the appointments into the scheduler (if needed)
         this.source.localdata = appointments;
-
-        // Refresh the scheduler with the updated data
         this.dataAdapter = new jqx.dataAdapter(this.source);
-        if (this.scheduler5) {
-          this.scheduler5.source(this.dataAdapter); // Refresh the scheduler
-        }
+        this.scheduler5.source(this.dataAdapter);
 
+        // Log conflicts if any
         if (this.conflicts.length > 0) {
           this.alertService.error('Schedule conflicts found', {
             keepAfterRouteChange: true,
@@ -196,6 +186,7 @@ export class allSchedComponent implements AfterViewInit {
     const subject = $('#subject').val();
     const room = $('#room').val();
     const teacher = $('#teacher').val();
+    const year = $('#year').val();
 
     const startDate = new Date(appointment.start);
 
@@ -233,6 +224,7 @@ export class allSchedComponent implements AfterViewInit {
       units: units,
       room: room,
       teacher: teacher,
+      year: year,
       start: new Date(startDate),
       end: new Date(appointment.end),
       recurrencePattern: recurrencePattern || null,
@@ -240,10 +232,9 @@ export class allSchedComponent implements AfterViewInit {
       background: appointment.background,
     };
 
-    console.log('Recurrence Pattern:', recurrencePattern);
-    console.log('Parsed Days:', dayNames);
+    console.log(newAppointment);
 
-    this.sharedService.addAllSchedule(newAppointment).subscribe({
+    this.ccsService.addAllSchedule(newAppointment).subscribe({
       next: (response) => {
         // this.alertService.success('Success adding schedule', {
         //   keepAfterRouteChange: true,
@@ -263,10 +254,6 @@ export class allSchedComponent implements AfterViewInit {
           keepAfterRouteChange: true,
           error,
         });
-        console.log(teacher);
-        console.log(units);
-        // window.location.reload();
-        console.log('asdasd');
       },
     });
   }
@@ -280,6 +267,7 @@ export class allSchedComponent implements AfterViewInit {
     const subject = $('#subject').val();
     const room = $('#room').val();
     const teacher = $('#teacher').val();
+    const year = $('#year').val();
 
     const startDate = new Date(appointment.start);
 
@@ -325,7 +313,7 @@ export class allSchedComponent implements AfterViewInit {
     };
 
     // Assume appointment.id is available in the event or the originalData
-    this.sharedService
+    this.ccsService
       .updateAllSchedule(appointment.id, updatedAppointment)
       .subscribe({
         next: (response) => {
@@ -347,32 +335,33 @@ export class allSchedComponent implements AfterViewInit {
   }
 
   //^ DELETE APPOINTMENT
-  // AppointmentDelete(event: any): void {
-  //   const appointment = event.args.appointment.originalData;
+  AppointmentDelete(event: any): void {
+    const appointment = event.args.appointment.originalData;
 
-  //   if (confirm('Are you sure you want to delete this appointment?')) {
-  //     this.sharedService.deleteAllSchedule(appointment.id).subscribe({
-  //       next: () => {
-  //         console.log('Appointment deleted successfully');
-  //         // Remove the appointment from the local data source
-  //         this.source.localdata = this.source.localdata.filter(
-  //           (item: { id: any }) => item.id !== appointment.id
-  //         );
-  //         this.scheduler5.source(this.dataAdapter);
-  //         localStorage.setItem('scheduleDeleted', 'true');
+    if (confirm('Are you sure you want to delete this appointment?')) {
+      this.ccsService.deleteAllSchedule(appointment.id).subscribe({
+        next: () => {
+          console.log('Appointment deleted successfully');
+          // Remove the appointment from the local data source
+          this.source.localdata = this.source.localdata.filter(
+            (item: { id: any }) => item.id !== appointment.id
+          );
+          this.scheduler5.source(this.dataAdapter);
+          localStorage.setItem('scheduleDeleted', 'true');
 
-  //         window.location.reload();
-  //       },
-  //       error: (error) => {
-  //         window.location.reload();
-  //         this.alertService.error('Error deleting schedule', {
-  //           keepAfterRouteChange: true,
-  //           error,
-  //         });
-  //       },
-  //     });
-  //   }
-  // }
+          window.location.reload();
+        },
+        error: (error) => {
+          window.location.reload();
+          this.alertService.error('Error deleting schedule', {
+            keepAfterRouteChange: true,
+            error,
+          });
+          console.log(error);
+        },
+      });
+    }
+  }
 
   source: any = {
     dataType: 'array',
@@ -385,6 +374,7 @@ export class allSchedComponent implements AfterViewInit {
       { name: 'room', type: 'string' },
       { name: 'teacher', type: 'string' },
       { name: 'day', type: 'string' },
+      { name: 'year', type: 'string' },
       { name: 'start', type: 'date' },
       { name: 'end', type: 'date' },
       { name: 'draggable', type: 'boolean' },
@@ -406,6 +396,7 @@ export class allSchedComponent implements AfterViewInit {
     from: 'start',
     to: 'end',
     day: 'day',
+    year: 'year',
     draggable: 'draggable',
     resizable: 'resizable',
     readOnly: 'readOnly',
@@ -424,6 +415,17 @@ export class allSchedComponent implements AfterViewInit {
       </div>`;
     fields.subjectContainer.append(subjectCodeContainer);
 
+    const subjectCode = document.getElementById('subjectCode');
+
+    if (subjectCode) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject_code}`;
+        option.text = `${subjects.subject_code} `;
+        subjectCode.appendChild(option);
+      });
+    }
+
     let subjectInput = `
     <div class="jqx-scheduler-edit-dialog-label">Subject</div>
       <div class="jqx-scheduler-edit-dialog-field">
@@ -434,6 +436,17 @@ export class allSchedComponent implements AfterViewInit {
  `;
 
     fields.subjectContainer.append(subjectInput);
+
+    const subject = document.getElementById('subject');
+
+    if (subject) {
+      this.subjects.forEach((subjects: any) => {
+        let option = document.createElement('option');
+        option.value = `${subjects.subject}`;
+        option.text = `${subjects.subject} `;
+        subject.appendChild(option);
+      });
+    }
 
     let unitsContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label">Units</div>
@@ -446,6 +459,20 @@ export class allSchedComponent implements AfterViewInit {
         </div>
       </div>`;
     fields.subjectContainer.append(unitsContainer);
+
+    let yearContainer = ` <div>
+    <div class="jqx-scheduler-edit-dialog-label">Year</div>
+    <div class="jqx-scheduler-edit-dialog-field">
+      <select id="year" name="year" >
+        <option value="1">1</option>
+        <option value="2">2</option>
+         <option value="3">3</option>
+          <option value="4">4</option>
+      </select>
+    </div>
+  </div>`;
+
+    fields.subjectContainer.append(yearContainer);
 
     let roomContainer = ` <div>
     <div class="jqx-scheduler-edit-dialog-label">Room</div>
@@ -499,7 +526,7 @@ export class allSchedComponent implements AfterViewInit {
 
       // $(dialog).find('.jqx-window-content').addClass('disabled');
 
-      $(dialog).find('.jqx-scheduler-edit-dialog-field').addClass('disabled');
+      // $(dialog).find('.jqx-scheduler-edit-dialog-field').addClass('disabled');
 
       $(dialog).closest('.jqx-window').addClass('center-fixed-dialog');
     }, 10);
@@ -512,6 +539,7 @@ export class allSchedComponent implements AfterViewInit {
         $('#subject').val(appointmentData.subject);
         $('#room').val(appointmentData.room);
         $('#teacher').val(appointmentData.teacher);
+        $('#year').val(appointmentData.year);
       }, 100); // Slight delay to ensure elements are available
     }
   };

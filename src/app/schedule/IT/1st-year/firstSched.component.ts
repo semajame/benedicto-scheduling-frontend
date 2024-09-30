@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
-import { SharedService } from 'src/app/_services/shared.service';
+import { CcsService } from '@app/_services/ccs.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
@@ -21,7 +21,7 @@ export class firstSchedComponent implements AfterViewInit {
   subjects: Subject[] = [];
 
   constructor(
-    private sharedService: SharedService,
+    private ccsService: CcsService,
     private alertService: AlertService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
@@ -34,50 +34,17 @@ export class firstSchedComponent implements AfterViewInit {
       .getAll()
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
-
-    //^ ADD ALERT
-    if (localStorage.getItem('scheduleAdded') === 'true') {
-      // Display the success alert
-      this.alertService.success('Added schedule successful', {
-        keepAfterRouteChange: true,
-      });
-
-      // Remove the flag from localStorage to prevent repeated alerts
-      localStorage.removeItem('scheduleAdded');
-    }
-
-    //^ UPDATED ALERT
-    if (localStorage.getItem('scheduleUpdated') === 'true') {
-      // Display the success alert
-      this.alertService.success('Updated schedule successful', {
-        keepAfterRouteChange: true,
-      });
-
-      // Remove the flag from localStorage to prevent repeated alerts
-      localStorage.removeItem('scheduleUpdated');
-    }
-
-    //^ DELETE ALERT
-    if (localStorage.getItem('scheduleDeleted') === 'true') {
-      // Display the success alert
-      this.alertService.success('Delete schedule successful', {
-        keepAfterRouteChange: true,
-      });
-
-      // Remove the flag from localStorage to prevent repeated alerts
-      localStorage.removeItem('scheduleDeleted');
-    }
   }
 
   loadSubjects(): void {
-    this.subjectService.getSubjects().subscribe((data) => {
+    this.subjectService.getBsedSubjects().subscribe((data) => {
       this.subjects = data;
     });
   }
 
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    this.sharedService.getSchedules().subscribe({
+    this.ccsService.getFirstSchedules().subscribe({
       next: (data) => {
         // Clear previous conflicts
         this.conflicts = [];
@@ -93,6 +60,7 @@ export class firstSchedComponent implements AfterViewInit {
           start: new Date(event.start),
           end: new Date(event.end),
           day: event.dayName,
+          year: event.year,
           draggable: false,
           resizable: false,
           recurrencePattern: event.recurrencePattern,
@@ -174,189 +142,6 @@ export class firstSchedComponent implements AfterViewInit {
     });
   }
 
-  //^ ADD APPOINTMENT
-  AppointmentAdd(event: any): void {
-    const appointment = event.args.appointment.originalData;
-
-    const subject_code = $('#subjectCode').val();
-    const units = $('#units').val();
-    const subject = $('#subject').val();
-    const room = $('#room').val();
-    const teacher = $('#teacher').val();
-
-    const startDate = new Date(appointment.start);
-
-    // If you need the name of the day instead of the numeric value
-    const daysOfWeek: { [key: string]: string } = {
-      SU: 'Sunday',
-      MO: 'M',
-      TU: 'T',
-      WE: 'W',
-      TH: 'TH',
-      FR: 'F',
-      SA: 'S',
-    };
-
-    // Extract and parse the recurrence pattern to get the days of the week
-    const recurrencePattern = appointment.recurrencePattern?.toString() ?? '';
-    const matchedDays = recurrencePattern.match(/BYDAY=([^;]+)/);
-    const dayNames = matchedDays
-      ? matchedDays[1]
-          .split(',')
-          .map((day: keyof typeof daysOfWeek) => daysOfWeek[day])
-      : [
-          daysOfWeek[
-            Object.keys(daysOfWeek)[
-              startDate.getDay()
-            ] as keyof typeof daysOfWeek
-          ],
-        ];
-
-    const dayName = dayNames.join(''); // Combine day names, e.g., "M, T"
-
-    const newAppointment = {
-      subject_code: subject_code,
-      subject: subject,
-      units: units,
-      room: room,
-      teacher: teacher,
-      start: new Date(startDate),
-      end: new Date(appointment.end),
-      recurrencePattern: recurrencePattern || null,
-      day: dayName, // Add the combined day names
-      background: appointment.background,
-    };
-
-    console.log('Recurrence Pattern:', recurrencePattern);
-    console.log('Parsed Days:', dayNames);
-
-    this.sharedService.addSchedule(newAppointment).subscribe({
-      next: (response) => {
-        // this.alertService.success('Success adding schedule', {
-        //   keepAfterRouteChange: true,
-        // });
-        appointment.id = response.id;
-
-        this.source.localdata.push(appointment);
-        this.scheduler.source(this.dataAdapter);
-
-        localStorage.setItem('scheduleAdded', 'true');
-
-        window.location.reload();
-      },
-
-      error: (error) => {
-        this.alertService.error('Error adding schedule', {
-          keepAfterRouteChange: true,
-          error,
-        });
-      },
-    });
-  }
-
-  //^ UPDATE APPOINTMENT
-  AppointmentUpdate(event: any): void {
-    const appointment = event.args.appointment.originalData;
-
-    const subject_code = $('#subjectCode').val();
-    const units = $('#units').val();
-    const subject = $('#subject').val();
-    const room = $('#room').val();
-    const teacher = $('#teacher').val();
-
-    const startDate = new Date(appointment.start);
-
-    // If you need the name of the day instead of the numeric value
-    const daysOfWeek: { [key: string]: string } = {
-      SU: 'Sunday',
-      MO: 'M',
-      TU: 'T',
-      WE: 'W',
-      TH: 'TH',
-      FR: 'F',
-      SA: 'S',
-    };
-
-    // Extract and parse the recurrence pattern to get the days of the week
-    const recurrencePattern = appointment.recurrencePattern?.toString() ?? '';
-    const matchedDays = recurrencePattern.match(/BYDAY=([^;]+)/);
-    const dayNames = matchedDays
-      ? matchedDays[1]
-          .split(',')
-          .map((day: keyof typeof daysOfWeek) => daysOfWeek[day])
-      : [
-          daysOfWeek[
-            Object.keys(daysOfWeek)[
-              startDate.getDay()
-            ] as keyof typeof daysOfWeek
-          ],
-        ];
-
-    const dayName = dayNames.join(''); // Combine day names, e.g., "M, T"
-
-    const updatedAppointment = {
-      subject_code: subject_code,
-      subject: subject,
-      units: units,
-      room: room,
-      teacher: teacher,
-      start: new Date(startDate),
-      end: new Date(appointment.end),
-      recurrencePattern: recurrencePattern || null,
-      day: dayName, // Add the combined day names
-      background: appointment.background,
-    };
-
-    // Assume appointment.id is available in the event or the originalData
-    this.sharedService
-      .updateSchedule(appointment.id, updatedAppointment)
-      .subscribe({
-        next: (response) => {
-          // Handle successful update
-          console.log('Appointment updated successfully', response);
-          this.source.localdata = this.source.localdata.map(
-            (item: { id: any }) =>
-              item.id === appointment.id ? updatedAppointment : item
-          );
-          this.scheduler.source(this.dataAdapter);
-          localStorage.setItem('scheduleUpdated', 'true');
-          window.location.reload();
-        },
-        error: (error) => {
-          // Handle error during update
-          console.error('Error updating appointment', error);
-        },
-      });
-  }
-
-  //^ DELETE APPOINTMENT
-  AppointmentDelete(event: any): void {
-    const appointment = event.args.appointment.originalData;
-
-    if (confirm('Are you sure you want to delete this appointment?')) {
-      this.sharedService.deleteSchedule(appointment.id).subscribe({
-        next: () => {
-          console.log('Appointment deleted successfully');
-          // Remove the appointment from the local data source
-          this.source.localdata = this.source.localdata.filter(
-            (item: { id: any }) => item.id !== appointment.id
-          );
-          this.scheduler.source(this.dataAdapter);
-          localStorage.setItem('scheduleDeleted', 'true');
-
-          window.location.reload();
-        },
-        error: (error) => {
-          this.alertService.error('Error deleting schedule', {
-            keepAfterRouteChange: true,
-            error,
-          });
-          console.error('Error deleting appointment', error);
-        },
-      });
-    }
-  }
-
   source: any = {
     dataType: 'array',
     localdata: this.generateAppointments(),
@@ -368,6 +153,7 @@ export class firstSchedComponent implements AfterViewInit {
       { name: 'room', type: 'string' },
       { name: 'teacher', type: 'string' },
       { name: 'day', type: 'string' },
+      { name: 'year', type: 'string' },
       { name: 'start', type: 'date' },
       { name: 'end', type: 'date' },
       { name: 'draggable', type: 'boolean' },
@@ -386,6 +172,7 @@ export class firstSchedComponent implements AfterViewInit {
     room: 'room',
     teacher: 'teacher',
     from: 'start',
+    year: 'year',
     to: 'end',
     day: 'day',
     draggable: 'draggable',
@@ -447,6 +234,20 @@ export class firstSchedComponent implements AfterViewInit {
       </div>`;
     fields.subjectContainer.append(unitsContainer);
 
+    let yearContainer = ` <div>
+    <div class="jqx-scheduler-edit-dialog-label">Year</div>
+    <div class="jqx-scheduler-edit-dialog-field">
+      <select id="year" name="year" >
+        <option value="1">1</option>
+        <option value="2">2</option>
+         <option value="3">3</option>
+          <option value="4">4</option>
+      </select>
+    </div>
+  </div>`;
+
+    fields.subjectContainer.append(yearContainer);
+
     let roomContainer = ` <div>
     <div class="jqx-scheduler-edit-dialog-label">Room</div>
     <div class="jqx-scheduler-edit-dialog-field">
@@ -495,20 +296,9 @@ export class firstSchedComponent implements AfterViewInit {
     fields.locationContainer.hide();
     fields.resetExceptionsContainer.hide();
 
-    setTimeout(() => {
-      $(dialog).closest('.jqx-window').addClass('center-fixed-dialog');
-    }, 10);
-
-    if (editAppointment) {
-      const appointmentData = editAppointment.originalData;
-      setTimeout(() => {
-        $('#subjectCode').val(appointmentData.subject_code);
-        $('#units').val(appointmentData.units);
-        $('#subject').val(appointmentData.subject);
-        $('#room').val(appointmentData.room);
-        $('#teacher').val(appointmentData.teacher);
-      }, 100); // Slight delay to ensure elements are available 
-    }
+    $(dialog)
+      .find('.jqx-scheduler-recurrence-yearly-panel')
+      .addClass('recurrence-hide');
   };
 
   dataAdapter: any = new jqx.dataAdapter(this.source);

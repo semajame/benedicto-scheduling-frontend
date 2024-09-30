@@ -3,7 +3,7 @@ import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 import { User } from '@app/_models';
 import { AccountService, AlertService } from '@app/_services';
 
-import { SharedService } from 'src/app/_services/shared.service';
+import { CalendarService } from '@app/_services/calendar.service';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -18,7 +18,7 @@ export class HomeComponent implements AfterViewInit {
   constructor(
     private accountService: AccountService,
     private alertService: AlertService,
-    private sharedService: SharedService
+    private calendarService: CalendarService
   ) {
     this.user = this.accountService.userValue;
   }
@@ -62,7 +62,7 @@ export class HomeComponent implements AfterViewInit {
 
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    this.sharedService.getCalendar().subscribe({
+    this.calendarService.getCalendar().subscribe({
       next: (data) => {
         console.log('API Response:', data); // Log the API response
 
@@ -109,7 +109,7 @@ export class HomeComponent implements AfterViewInit {
       background: appointment.background,
     };
 
-    this.sharedService.addCalendar(newAppointment).subscribe({
+    this.calendarService.addCalendar(newAppointment).subscribe({
       next: (response) => {
         appointment.id = response.id;
 
@@ -146,7 +146,7 @@ export class HomeComponent implements AfterViewInit {
     };
 
     // Assume appointment.id is available in the event or the originalData
-    this.sharedService
+    this.calendarService
       .updateCalendar(appointment.id, updatedAppointment)
       .subscribe({
         next: (response) => {
@@ -172,7 +172,7 @@ export class HomeComponent implements AfterViewInit {
     const appointment = event.args.appointment.originalData;
 
     if (confirm('Are you sure you want to delete this appointment?')) {
-      this.sharedService.deleteCalendar(appointment.id).subscribe({
+      this.calendarService.deleteCalendar(appointment.id).subscribe({
         next: () => {
           console.log('Appointment deleted successfully');
           // Remove the appointment from the local data source

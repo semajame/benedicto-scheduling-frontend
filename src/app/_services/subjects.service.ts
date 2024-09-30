@@ -19,20 +19,10 @@ export class SubjectService {
   constructor(private http: HttpClient) {}
 
   //^ IT subjects
-  getSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${this.apiUrl}/1st-year`);
-  }
-
-  getSecondSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${this.apiUrl}/2nd-year`);
-  }
-
-  getThirdSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${this.apiUrl}/3rd-year`);
-  }
-
-  getFourthSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${this.apiUrl}/4th-year`);
+  getBsitSubjects(): Observable<Subject[]> {
+    return this.http.get<Subject[]>(
+      `${this.apiUrl}/bachelor-of-information-technology`
+    );
   }
 
   //^ BSED subjects

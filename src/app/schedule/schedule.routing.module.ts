@@ -21,6 +21,8 @@ import { beedLayout } from './CTE/BEED/beedLayout.component';
 import { bsedSchedComponent } from './CTE/BSED/all/allSched.component';
 import { bsedFirstSchedComponent } from './CTE/BSED/1st-year/firstSched.component';
 import { bsedScondSchedComponent } from './CTE/BSED/2nd-year/secondSched.component';
+import { bsedThirdSchedComponent } from './CTE/BSED/3rd-year/thirdSched.component';
+import { bsedFourthSchedComponent } from './CTE/BSED/4th-year/fourthSched.component';
 
 //^ IT ENLISTMENT
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
@@ -38,43 +40,43 @@ const routes: Routes = [
     children: [
       { path: 'college-of-computer-studies', component: itLayoutComponent },
       {
-        path: 'college-of-computer-studies/1st-year',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/1st-year',
         component: firstSchedComponent,
       },
       {
-        path: 'college-of-computer-studies/1st-year/enlistment',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/1st-year/enlistment',
         component: firstEnlistmentComponent,
       },
 
       {
-        path: 'college-of-computer-studies/2nd-year',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/2nd-year',
         component: secondSchedComponent,
       },
       {
-        path: 'college-of-computer-studies/2nd-year/enlistment',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/2nd-year/enlistment',
         component: secondEnlistmentComponent,
       },
 
       {
-        path: 'college-of-computer-studies/3rd-year',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/3rd-year',
         component: thirdSchedComponent,
       },
       {
-        path: 'college-of-computer-studies/3rd-year/enlistment',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/3rd-year/enlistment',
         component: thirdEnlistmentComponent,
       },
 
       {
-        path: 'college-of-computer-studies/4th-year',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/4th-year',
         component: fourthSchedComponent,
       },
       {
-        path: 'college-of-computer-studies/4th-year/enlistment',
+        path: 'college-of-computer-studies/bachelor-of-information-technology/4th-year/enlistment',
         component: fourthEnlistmentComponent,
       },
 
       {
-        path: 'college-of-computer-studies/all-year',
+        path: 'college-of-computer-studies/bachelor-of-information-technology',
         component: allSchedComponent,
       },
       { path: '', component: LayoutComponent },
@@ -91,7 +93,7 @@ const routes: Routes = [
         component: beedLayout,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-secondary-education/all-year',
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/schedule',
         component: bsedSchedComponent,
       },
       {
@@ -101,6 +103,14 @@ const routes: Routes = [
       {
         path: 'college-of-teacher-education/bachelor-of-secondary-education/2nd-year',
         component: bsedScondSchedComponent,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/3rd-year',
+        component: bsedThirdSchedComponent,
+      },
+      {
+        path: 'college-of-teacher-education/bachelor-of-secondary-education/4th-year',
+        component: bsedFourthSchedComponent,
       },
     ],
   },
