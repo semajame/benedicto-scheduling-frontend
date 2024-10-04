@@ -33,7 +33,7 @@ export class bsedSchedComponent implements AfterViewInit {
     this.loadSubjects();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
-      .getAll()
+      .getCTEInstructors('Mandaue Campus', 'College of Education and Arts')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
 

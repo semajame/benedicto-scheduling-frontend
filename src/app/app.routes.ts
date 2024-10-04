@@ -31,7 +31,7 @@ export const APP_ROUTES: Routes = [
     path: 'prospectus',
     loadChildren: prospectusModule,
     canActivate: [authGuard],
-    data: { roles: [Role.Admin] },
+    // data: { roles: [Role.Admin] },
   },
   {
     path: 'teachers',
@@ -42,13 +42,13 @@ export const APP_ROUTES: Routes = [
     path: 'schedule',
     loadChildren: scheduleModule,
     canActivate: [authGuard],
-    data: { roles: [Role.Admin] },
+    // data: { roles: [Role.Admin] },
   },
   {
     path: 'admin',
     loadChildren: adminModule,
     canActivate: [authGuard],
-    data: { roles: [Role.Admin] },
+    // data: { roles: [Role.Admin] },
   },
 
   // otherwise redirect to home

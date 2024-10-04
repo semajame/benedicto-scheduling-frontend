@@ -31,7 +31,7 @@ export class firstSchedComponent implements AfterViewInit {
     this.scheduler.ensureAppointmentVisible('1');
     this.loadSubjects();
     this.teacherService
-      .getAll()
+      .getCSSInstructors('Mandaue Campus', 'College of Computer Studies')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
   }

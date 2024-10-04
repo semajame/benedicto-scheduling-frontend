@@ -1,5 +1,6 @@
 export enum Role {
-  User = 'User',
-  Admin = 'Admin',
-  CTE = 'Cte',
+  USER = 'User',
+  ADMIN = 'Admin',
+  CTE = 'College of Teaching Education',
+  CCS = 'College of Computer Studies',
 }

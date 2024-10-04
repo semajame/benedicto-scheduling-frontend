@@ -31,7 +31,7 @@ export class bsedFourthSchedComponent implements AfterViewInit {
     this.scheduler4.ensureAppointmentVisible('1');
     this.loadSubjects();
     this.teacherService
-      .getAll()
+      .getCTEInstructors('Mandaue Campus', 'College of Education and Arts')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
   }

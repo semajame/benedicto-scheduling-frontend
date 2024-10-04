@@ -54,50 +54,50 @@ const routes: Routes = [
       { path: '', component: LayoutComponent },
 
       //^ EDUC
-      { path: 'college-of-teacher-education', component: educLayoutComponent },
+      { path: 'college-of-education-and-arts', component: educLayoutComponent },
       {
-        path: 'college-of-teacher-education/bachelor-of-secondary-education',
+        path: 'college-of-education-and-arts/bachelor-of-secondary-education',
         component: bsedLayout,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-elementary-education',
+        path: 'college-of-education-and-arts/bachelor-of-elementary-education',
         component: beedLayout,
       },
 
       //^ BSED
       {
-        path: 'college-of-teacher-education/bachelor-of-secondary-education/1st-year',
+        path: 'college-of-education-and-arts/bachelor-of-secondary-education/1st-year',
         component: ProspectusBsedFirst,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-secondary-education/2nd-year',
+        path: 'college-of-education-and-arts/bachelor-of-secondary-education/2nd-year',
         component: ProspectusBsedSecond,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-secondary-education/3rd-year',
+        path: 'college-of-education-and-arts/bachelor-of-secondary-education/3rd-year',
         component: ProspectusBsedThird,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-secondary-education/4th-year',
+        path: 'college-of-education-and-arts/bachelor-of-secondary-education/4th-year',
         component: ProspectusBsedFourth,
       },
 
       //^ BEED
 
       {
-        path: 'college-of-teacher-education/bachelor-of-elementary-education/1st-year',
+        path: 'college-of-education-and-arts/bachelor-of-elementary-education/1st-year',
         component: ProspectusBeedFirst,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-elementary-education/2nd-year',
+        path: 'college-of-education-and-arts/bachelor-of-elementary-education/2nd-year',
         component: ProspectusBeedSecond,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-elementary-education/3rd-year',
+        path: 'college-of-education-and-arts/bachelor-of-elementary-education/3rd-year',
         component: ProspectusBeedThird,
       },
       {
-        path: 'college-of-teacher-education/bachelor-of-elementary-education/4th-year',
+        path: 'college-of-education-and-arts/bachelor-of-elementary-education/4th-year',
         component: ProspectusBeedFourth,
       },
     ],

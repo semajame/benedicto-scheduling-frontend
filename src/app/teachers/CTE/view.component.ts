@@ -6,9 +6,9 @@ import { first } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
 @Component({ templateUrl: 'view.component.html', providers: [DatePipe] })
-export class ViewComponent implements OnInit {
+export class CTEviewComponent implements OnInit {
   teacher?: Teachers;
-  loading = true;
+  loading = false;
   id?: string;
 
   schedules: any[] = [];
@@ -21,7 +21,7 @@ export class ViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const employeeId = this.route.snapshot.params['id']; // Get employee ID from the route
+    const employeeId = this.route.snapshot.params['employee_id']; // Get employee ID from the route
     if (employeeId) {
       this.loading = true; // Set loading to true while fetching data
       this.teacherService.getTeacherById(+employeeId).subscribe(
@@ -38,17 +38,17 @@ export class ViewComponent implements OnInit {
     }
   }
 
-  // loadTeacherSchedules(teacherId: number): void {
-  //   this.teacherService
-  //     .getTeacherSchedules(teacherId)
-  //     .subscribe((data: any[]) => {
-  //       // Adjust type as needed
-  //       this.schedules = data.map((item) => {
-  //         // Convert start and end to Date objects and format to AM/PM
-  //         item.start = this.datePipe.transform(new Date(item.start), 'h:mm a');
-  //         item.end = this.datePipe.transform(new Date(item.end), 'h:mm a');
-  //         return item;
-  //       });
-  //     });
-  // }
+  loadTeacherSchedules(teacherId: number): void {
+    this.teacherService
+      .getTeacherSchedules(teacherId)
+      .subscribe((data: any[]) => {
+        // Adjust type as needed
+        this.schedules = data.map((item) => {
+          // Convert start and end to Date objects and format to AM/PM
+          item.start = this.datePipe.transform(new Date(item.start), 'h:mm a');
+          item.end = this.datePipe.transform(new Date(item.end), 'h:mm a');
+          return item;
+        });
+      });
+  }
 }
