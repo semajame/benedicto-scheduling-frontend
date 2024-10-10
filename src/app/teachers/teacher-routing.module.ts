@@ -18,12 +18,12 @@ const routes: Routes = [
       // { path: 'college-of-computer-studies/add', component: AddComponent },
       // { path: 'college-of-computer-studies/edit/:id', component: AddComponent },
       {
-        path: 'college-of-computer-studies/teacher/:id',
+        path: 'college-of-computer-studies/instructor/:id',
         component: ViewComponent,
       },
       { path: 'college-of-computer-studies', component: itTeachersLayout },
       {
-        path: 'college-of-education-and-arts/view/:id',
+        path: 'college-of-education-and-arts/instructor/:id',
         component: CTEviewComponent,
       },
       { path: 'college-of-education-and-arts', component: cteTeachersLayout },

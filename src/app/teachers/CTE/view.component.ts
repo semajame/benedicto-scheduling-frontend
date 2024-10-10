@@ -21,13 +21,17 @@ export class CTEviewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const employeeId = this.route.snapshot.params['employee_id']; // Get employee ID from the route
+    const employeeId = this.route.snapshot.params['id']; // Get employee ID from the route
     if (employeeId) {
       this.loading = true; // Set loading to true while fetching data
       this.teacherService.getTeacherById(+employeeId).subscribe(
         (data) => {
           this.teacher = data; // Assign data to teacher variable
           this.loading = false; // Set loading to false
+
+          if (this.teacher?.name) {
+            this.loadTeacherSchedules(this.teacher.name); // Pass teacher's name to the function
+          }
         },
         (error) => {
           console.error('Error fetching teacher:', error);
@@ -38,17 +42,19 @@ export class CTEviewComponent implements OnInit {
     }
   }
 
-  loadTeacherSchedules(teacherId: number): void {
-    this.teacherService
-      .getTeacherSchedules(teacherId)
-      .subscribe((data: any[]) => {
-        // Adjust type as needed
+  loadTeacherSchedules(teacherName: string): void {
+    this.teacherService.getTeacherSchedules(teacherName).subscribe(
+      (data: any[]) => {
         this.schedules = data.map((item) => {
           // Convert start and end to Date objects and format to AM/PM
           item.start = this.datePipe.transform(new Date(item.start), 'h:mm a');
           item.end = this.datePipe.transform(new Date(item.end), 'h:mm a');
           return item;
         });
-      });
+      },
+      (error) => {
+        console.error('Error fetching schedules:', error);
+      }
+    );
   }
 }

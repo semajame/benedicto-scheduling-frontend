@@ -304,6 +304,7 @@ export class bsedSchedComponent implements AfterViewInit {
       subject: subject,
       units: units,
       room: room,
+      year: year,
       teacher: teacher,
       start: new Date(startDate),
       end: new Date(appointment.end),
@@ -357,6 +358,7 @@ export class bsedSchedComponent implements AfterViewInit {
             keepAfterRouteChange: true,
             error,
           });
+          console.log(error);
         },
       });
     }
@@ -465,8 +467,8 @@ export class bsedSchedComponent implements AfterViewInit {
       <select id="year" name="year" >
         <option value="1">1</option>
         <option value="2">2</option>
-         <option value="3">3</option>
-          <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
       </select>
     </div>
   </div>`;
@@ -484,27 +486,46 @@ export class bsedSchedComponent implements AfterViewInit {
   </div>`;
     fields.subjectContainer.append(roomContainer);
 
-    let teacherContainer = `
-    <div>
-      <div class="jqx-scheduler-edit-dialog-label">Teacher</div>
-      <div class="jqx-scheduler-edit-dialog-field">
-        <select id="teacher" name="teacher" ></select>
-      </div>
-    </div>
-  `;
+    const loadTeachers = async () => {
+      try {
+        // Fetch teachers filtered by campus and department
+        this.teacherService
+          .getCSSInstructors('Mandaue Campus', 'College of Education and Arts')
+          .subscribe((data: Teachers[]) => {
+            console.log('Teachers filtered by campus and department:', data);
+            this.teachers = data;
 
-    fields.subjectContainer.append(teacherContainer);
+            // Build the teacher container and populate the dropdown after fetching data
+            let teacherContainer = `
+              <div>
+                <div class="jqx-scheduler-edit-dialog-label">Teacher</div>
+                <div class="jqx-scheduler-edit-dialog-field">
+                  <select id="teacher" name="teacher"></select>
+                </div>
+              </div>
+            `;
 
-    const teacherSelect = document.getElementById('teacher');
+            fields.subjectContainer.append(teacherContainer);
 
-    if (teacherSelect) {
-      this.teachers.forEach((teacher: any) => {
-        let option = document.createElement('option');
-        option.value = `${teacher.firstName} ${teacher.lastName}`;
-        option.text = `${teacher.firstName} ${teacher.lastName}`;
-        teacherSelect.appendChild(option);
-      });
-    }
+            const teacherSelect = document.getElementById('teacher');
+
+            if (teacherSelect) {
+              this.teachers.forEach((teacher) => {
+                let option = document.createElement('option');
+                option.value = `${teacher.name}`; // Assuming your API returns firstName and lastName
+                option.text = `${teacher.name} `;
+                teacherSelect.appendChild(option);
+              });
+            }
+          });
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+        // Handle the error appropriately in your UI
+      }
+    };
+
+    // Call the function to load teachers when needed
+    loadTeachers();
   };
 
   editDialogOpen = (dialog: any, fields: any, editAppointment: any) => {

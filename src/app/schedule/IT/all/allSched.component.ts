@@ -512,8 +512,8 @@ export class allSchedComponent implements AfterViewInit {
             if (teacherSelect) {
               this.teachers.forEach((teacher) => {
                 let option = document.createElement('option');
-                option.value = `${teacher.firstName} ${teacher.lastName}`; // Assuming your API returns firstName and lastName
-                option.text = `${teacher.firstName} ${teacher.lastName}`;
+                option.value = `${teacher.name}`; // Assuming your API returns firstName and lastName
+                option.text = `${teacher.name} `;
                 teacherSelect.appendChild(option);
               });
             }

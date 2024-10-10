@@ -34,7 +34,7 @@ export const APP_ROUTES: Routes = [
     // data: { roles: [Role.Admin] },
   },
   {
-    path: 'teachers',
+    path: 'instructors',
     loadChildren: teachersModule,
     canActivate: [authGuard],
   },

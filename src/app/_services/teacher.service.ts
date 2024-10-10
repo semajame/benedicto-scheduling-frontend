@@ -46,7 +46,9 @@ export class TeacherService {
     return this.http.get(`${baseUrl}/datas/teacher/${employee_id}`);
   }
 
-  getTeacherSchedules(employee_id: number): Observable<any[]> {
-    return this.http.get<any[]>(`${baseUrl}/schedules/${employee_id}`);
+  getTeacherSchedules(teacher: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${environment.apiUrl}/schedule/teacher/${teacher}`
+    );
   }
 }
