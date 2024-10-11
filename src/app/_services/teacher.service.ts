@@ -42,6 +42,15 @@ export class TeacherService {
     );
   }
 
+  getCOEInstructors(
+    campusName: string,
+    departmentName: string
+  ): Observable<Teachers[]> {
+    return this.http.get<Teachers[]>(
+      `${baseUrl}/datas/campus/${campusName}/department/${departmentName}`
+    );
+  }
+
   getTeacherById(employee_id: number): Observable<any> {
     return this.http.get(`${baseUrl}/datas/teacher/${employee_id}`);
   }
