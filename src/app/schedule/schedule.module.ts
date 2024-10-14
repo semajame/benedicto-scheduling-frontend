@@ -7,7 +7,7 @@ import { LayoutComponent } from './layout.component';
 import { ProspectusRoutingModule } from './schedule.routing.module';
 import { ScheduleComponent } from './schedule.component';
 
-// SCHEDULE
+//^ SCHEDULE
 import { firstSchedComponent } from './IT/1st-year/firstSched.component';
 import { secondSchedComponent } from './IT/2nd-year/secondSched.component';
 import { thirdSchedComponent } from './IT/3rd-year/thirdSched.component';
@@ -15,8 +15,7 @@ import { fourthSchedComponent } from './IT/4th-year/fourthSched.component';
 import { allSchedComponent } from './IT/all/allSched.component';
 import { itLayoutComponent } from './IT/it.layout.component';
 
-// EDUC
-
+//^ EDUC
 import { educLayoutComponent } from './CTE/educ.layout.component';
 import { bsedLayout } from './CTE/BSED/bsedLayout.component';
 import { beedLayout } from './CTE/BEED/beedLayout.component';
@@ -25,8 +24,18 @@ import { bsedFirstSchedComponent } from './CTE/BSED/1st-year/firstSched.componen
 import { bsedScondSchedComponent } from './CTE/BSED/2nd-year/secondSched.component';
 import { bsedThirdSchedComponent } from './CTE/BSED/3rd-year/thirdSched.component';
 import { bsedFourthSchedComponent } from './CTE/BSED/4th-year/fourthSched.component';
+import { bsedFirstEnlistmentComponent } from './CTE/BSED/1st-year/firstEnlistment.component';
+import { bsedSecondEnlistmentComponent } from './CTE/BSED/2nd-year/secondEnlistment.component';
+import { bsedThirdEnlistmentComponent } from './CTE/BSED/3rd-year/thirdEnlistment.component';
+import { bsedFourthEnlistmentComponent } from './CTE/BSED/4th-year/fourthEnlistment.component';
 
-// ENLISTMENT
+//^ COE
+import { coeLayoutComponent } from './COE/coe.layout.component';
+
+//^ CBM
+import { cbmLayoutComponent } from './CBM/cbm.layout.component';
+
+//^ ENLISTMENT IT
 import { firstEnlistmentComponent } from './IT/1st-year/firstEnlistment.component';
 import { secondEnlistmentComponent } from './IT/2nd-year/secondEnlistment.component';
 import { thirdEnlistmentComponent } from './IT/3rd-year/thirdEnlistment.component';
@@ -49,6 +58,10 @@ import { fourthEnlistmentComponent } from './IT/4th-year/fourthEnlistment.compon
     fourthSchedComponent,
     allSchedComponent,
     itLayoutComponent,
+    firstEnlistmentComponent,
+    secondEnlistmentComponent,
+    thirdEnlistmentComponent,
+    fourthEnlistmentComponent,
 
     //^ EDUC
     educLayoutComponent,
@@ -59,16 +72,16 @@ import { fourthEnlistmentComponent } from './IT/4th-year/fourthEnlistment.compon
     bsedScondSchedComponent,
     bsedThirdSchedComponent,
     bsedFourthSchedComponent,
+    bsedFirstEnlistmentComponent,
+    bsedSecondEnlistmentComponent,
+    bsedThirdEnlistmentComponent,
+    bsedFourthEnlistmentComponent,
 
-    //^ ENLISTMENT
+    //^ COE
+    coeLayoutComponent,
 
-    //^ IT
-    firstEnlistmentComponent,
-    secondEnlistmentComponent,
-    thirdEnlistmentComponent,
-    fourthEnlistmentComponent,
-
-    //^ EDUC
+    //^ CBM
+    cbmLayoutComponent,
 
     LayoutComponent,
     ScheduleComponent,

@@ -31,4 +31,10 @@ export class SubjectService {
       `${this.apiUrl}/bachelor-of-secondary-education`
     );
   }
+
+  getBeedSubjects(): Observable<Subject[]> {
+    return this.http.get<Subject[]>(
+      `${this.apiUrl}/bachelor-of-elementary-education`
+    );
+  }
 }

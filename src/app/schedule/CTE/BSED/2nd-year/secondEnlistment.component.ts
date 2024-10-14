@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: 'secondEnlistment.component.html',
   providers: [DatePipe], // Add DatePipe to providers
 })
-export class secondEnlistmentComponent implements AfterViewInit {
+export class bsedSecondEnlistmentComponent implements AfterViewInit {
   schedule: schedule[] = [];
 
   constructor(private cteService: CteService, private datePipe: DatePipe) {}

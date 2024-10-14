@@ -1,19 +1,16 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-5">
-      <div class="mx-5">
-        <div class="mb-3">
-          <img
-            src="https://benedicto.octanity.net/lms/pluginfile.php/1/core_admin/logo/0x200/1707970871/bc_logo.jpeg"
-            alt="benedicto college logo"
-            style="width: 100px; height: 100px; margin-top: 2rem"
-          />
-        </div>
-        <div>
-          <h3 class="card-header mt-5 fs-1">Hello,</h3>
-          <h3 class="fw-bold fs-1 welcome">welcome!</h3>
-        </div>
-        <div class="card-body mt-5">
+  <div
+    class="row justify-content-center align-items-center"
+    style="height: 100vh"
+  >
+    <div class="col-4">
+      <div class="card">
+        <img
+          src="assets/img/bc-logo.png"
+          alt="benedicto college logo"
+          style="width: 100px; height: 100px; margin: 2rem auto 2rem auto"
+        />
+        <div class="card-body">
           <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label>Username</label>
@@ -54,7 +51,7 @@
             </div>
             <div class="form-row">
               <div class="form-group col">
-                <button [disabled]="loading" class="btn btn-primary">
+                <button [disabled]="loading" class="btn btn-primary mt-3">
                   <span
                     *ngIf="loading"
                     class="spinner-border spinner-border-sm mr-1"
@@ -73,6 +70,5 @@
         </div>
       </div>
     </div>
-    <div class="col bg-section"></div>
   </div>
 </div>
