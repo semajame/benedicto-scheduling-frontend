@@ -14,7 +14,7 @@ export interface Subject {
   providedIn: 'root',
 })
 export class SubjectService {
-  private apiUrl = 'http://localhost:4000/subjects'; // Change to your backend URL
+  private apiUrl = 'https://benedicto-scheduling-backend.onrender.com/subjects'; // Change to your backend URL
 
   constructor(private http: HttpClient) {}
 

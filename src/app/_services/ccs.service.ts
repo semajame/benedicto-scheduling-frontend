@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class CcsService {
   readonly APIUrl =
-    'http://localhost:4000/schedule/bachelor-of-information-technology';
+    'https://benedicto-scheduling-backend.onrender.com/schedule/bachelor-of-information-technology';
 
   constructor(private http: HttpClient) {}
 
