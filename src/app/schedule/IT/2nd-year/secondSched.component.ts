@@ -4,8 +4,9 @@ import { CcsService } from '@app/_services/ccs.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
-import { SubjectService, Subject } from '@app/_services/subjects.service';
+import { SubjectService } from '@app/_services/subjects.service';
 
+import { Subjects } from '@app/_models/subjects';
 import { first } from 'rxjs';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
@@ -18,7 +19,7 @@ export class secondSchedComponent implements AfterViewInit {
   scheduler2!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
-  subjects: Subject[] = [];
+  subjects: Subjects[] = [];
 
   constructor(
     private ccsService: CcsService,
@@ -29,17 +30,11 @@ export class secondSchedComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.scheduler2.ensureAppointmentVisible('1');
-    this.loadSubjects();
+
     this.teacherService
-      .getCSSInstructors('Mandaue Campus', 'College of Computer Studies')
+      .getInstructors('Mandaue Campus', 'College of Computer Studies')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
-  }
-
-  loadSubjects(): void {
-    this.subjectService.getBsedSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
   }
 
   //^ GET APPOINTMENT

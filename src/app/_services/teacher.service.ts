@@ -24,25 +24,7 @@ export class TeacherService {
     return this.teacherSubject.value;
   }
 
-  getCSSInstructors(
-    campusName: string,
-    departmentName: string
-  ): Observable<Teachers[]> {
-    return this.http.get<Teachers[]>(
-      `${baseUrl}/datas/campus/${campusName}/department/${departmentName}`
-    );
-  }
-
-  getCTEInstructors(
-    campusName: string,
-    departmentName: string
-  ): Observable<Teachers[]> {
-    return this.http.get<Teachers[]>(
-      `${baseUrl}/datas/campus/${campusName}/department/${departmentName}`
-    );
-  }
-
-  getCOEInstructors(
+  getInstructors(
     campusName: string,
     departmentName: string
   ): Observable<Teachers[]> {

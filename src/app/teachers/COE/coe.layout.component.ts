@@ -16,7 +16,7 @@ export class coeTeachersLayout implements OnInit {
   ngOnInit() {
     // Example: Fetch teachers from 'Mandaue Campus' and 'College of Computer Studies'
     this.teacherService
-      .getCOEInstructors('Mandaue Campus', 'College of Engineering')
+      .getInstructors('Mandaue Campus', 'College of Engineering')
       .subscribe((data: Teachers[]) => {
         console.log('Teachers filtered by campus and department:', data);
         this.teachers = data;

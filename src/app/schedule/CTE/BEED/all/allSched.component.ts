@@ -6,7 +6,8 @@ import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
 import { first, forkJoin } from 'rxjs';
-import { SubjectService, Subject } from '@app/_services/subjects.service';
+import { SubjectService } from '@app/_services/subjects.service';
+import { Subjects } from '@app/_models/subjects';
 
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
@@ -19,7 +20,7 @@ export class beedSchedComponent implements AfterViewInit {
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
-  subjects: Subject[] = [];
+  subjects: Subjects[] = [];
 
   constructor(
     private cteService: CteService,
@@ -30,10 +31,10 @@ export class beedSchedComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.generateAppointments();
-    this.loadSubjects();
+
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
-      .getCTEInstructors('Mandaue Campus', 'College of Education and Arts')
+      .getInstructors('Mandaue Campus', 'College of Education and Arts')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
 
@@ -69,12 +70,6 @@ export class beedSchedComponent implements AfterViewInit {
       // Remove the flag from localStorage to prevent repeated alerts
       localStorage.removeItem('scheduleDeleted');
     }
-  }
-
-  loadSubjects(): void {
-    this.subjectService.getBeedSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
   }
 
   //^ GET APPOINTMENT
@@ -490,7 +485,7 @@ export class beedSchedComponent implements AfterViewInit {
       try {
         // Fetch teachers filtered by campus and department
         this.teacherService
-          .getCSSInstructors('Mandaue Campus', 'College of Education and Arts')
+          .getInstructors('Mandaue Campus', 'College of Education and Arts')
           .subscribe((data: Teachers[]) => {
             console.log('Teachers filtered by campus and department:', data);
             this.teachers = data;

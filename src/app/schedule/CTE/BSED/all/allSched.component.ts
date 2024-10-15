@@ -6,7 +6,9 @@ import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
 import { first, forkJoin } from 'rxjs';
-import { SubjectService, Subject } from '@app/_services/subjects.service';
+import { SubjectService } from '@app/_services/subjects.service';
+
+import { Subjects } from '@app/_models/subjects';
 
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
@@ -19,7 +21,7 @@ export class bsedSchedComponent implements AfterViewInit {
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
-  subjects: Subject[] = [];
+  subjects: Subjects[] = [];
 
   constructor(
     private cteService: CteService,
@@ -30,10 +32,9 @@ export class bsedSchedComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.generateAppointments();
-    this.loadSubjects();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
-      .getCTEInstructors('Mandaue Campus', 'College of Education and Arts')
+      .getInstructors('Mandaue Campus', 'College of Education and Arts')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
 
@@ -69,12 +70,6 @@ export class bsedSchedComponent implements AfterViewInit {
       // Remove the flag from localStorage to prevent repeated alerts
       localStorage.removeItem('scheduleDeleted');
     }
-  }
-
-  loadSubjects(): void {
-    this.subjectService.getBsedSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
   }
 
   //^ GET APPOINTMENT
@@ -406,48 +401,73 @@ export class bsedSchedComponent implements AfterViewInit {
   };
 
   editDialogCreate = (dialog: any, fields: any, editAppointment: any) => {
-    let subjectCodeContainer = ` <div>
-        <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
-        <div class="jqx-scheduler-edit-dialog-field">
-          <select id="subjectCode" name="subjectCode" >
-          
-          </select>
-        </div>
-      </div>`;
-    fields.subjectContainer.append(subjectCodeContainer);
+    const loadSubjects = async () => {
+      try {
+        // Fetch subjects filtered by department code
+        this.subjectService
+          .getSubjects('COE') // Ensure this returns Observable<Subjects[]>
+          .subscribe({
+            next: (data: Subjects[]) => {
+              // Use Subjects[] directly
+              console.log('Subjects filtered by department code:', data);
+              this.subjects = data;
 
-    const subjectCode = document.getElementById('subjectCode');
+              // Build the subject code container and populate the dropdown after fetching data
+              let subjectCodeContainer = `
+                <div>
+                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0;">Subject Code</div>
+                  <div class="jqx-scheduler-edit-dialog-field">
+                    <select id="subjectCode" name="subjectCode"></select>
+                  </div>
+                </div>
+              `;
 
-    if (subjectCode) {
-      this.subjects.forEach((subjects: any) => {
-        let option = document.createElement('option');
-        option.value = `${subjects.subject_code}`;
-        option.text = `${subjects.subject_code} `;
-        subjectCode.appendChild(option);
-      });
-    }
+              fields.subjectContainer.append(subjectCodeContainer);
 
-    let subjectInput = `
-    <div class="jqx-scheduler-edit-dialog-label">Subject</div>
-      <div class="jqx-scheduler-edit-dialog-field">
-        <select id="subject" name="subject" >
-         
-        </select>
-      </div>
- `;
+              const subjectSelect = document.getElementById('subjectCode');
 
-    fields.subjectContainer.append(subjectInput);
+              if (subjectSelect) {
+                this.subjects.forEach((subject) => {
+                  let option = document.createElement('option');
+                  option.value = `${subject.courseCode}`; // Assuming your API returns courseCode
+                  option.text = `${subject.courseCode}`; // Modify as needed
+                  subjectSelect.appendChild(option);
+                });
+              }
 
-    const subject = document.getElementById('subject');
+              let subjectInput = `
+              <div class="jqx-scheduler-edit-dialog-label">Subject</div>
+                <div class="jqx-scheduler-edit-dialog-field">
+                  <select id="subject" name="subject" >
+                   
+                  </select>
+                </div>
+           `;
 
-    if (subject) {
-      this.subjects.forEach((subjects: any) => {
-        let option = document.createElement('option');
-        option.value = `${subjects.subject}`;
-        option.text = `${subjects.subject} `;
-        subject.appendChild(option);
-      });
-    }
+              fields.subjectContainer.append(subjectInput);
+
+              const subjectDesc = document.getElementById('subject');
+
+              if (subjectDesc) {
+                this.subjects.forEach((subject) => {
+                  let option = document.createElement('option');
+                  option.value = `${subject.courseDescription}`;
+                  option.text = `${subject.courseDescription} `;
+                  subjectDesc.appendChild(option);
+                });
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching subjects:', error);
+            },
+          });
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
+      }
+    };
+
+    // Call the function to load subjects when needed
+    loadSubjects();
 
     let unitsContainer = ` <div>
         <div class="jqx-scheduler-edit-dialog-label">Units</div>
@@ -490,7 +510,7 @@ export class bsedSchedComponent implements AfterViewInit {
       try {
         // Fetch teachers filtered by campus and department
         this.teacherService
-          .getCSSInstructors('Mandaue Campus', 'College of Education and Arts')
+          .getInstructors('Mandaue Campus', 'College of Education and Arts')
           .subscribe((data: Teachers[]) => {
             console.log('Teachers filtered by campus and department:', data);
             this.teachers = data;

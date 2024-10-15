@@ -4,8 +4,8 @@ import { CteService } from '@app/_services/cte.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
-import { SubjectService, Subject } from '@app/_services/subjects.service';
-
+import { SubjectService } from '@app/_services/subjects.service';
+import { Subjects } from '@app/_models/subjects';
 import { first } from 'rxjs';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
@@ -18,7 +18,7 @@ export class bsedFourthSchedComponent implements AfterViewInit {
   scheduler4!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
-  subjects: Subject[] = [];
+  subjects: Subjects[] = [];
 
   constructor(
     private cteService: CteService,
@@ -29,17 +29,11 @@ export class bsedFourthSchedComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.scheduler4.ensureAppointmentVisible('1');
-    this.loadSubjects();
+
     this.teacherService
-      .getCTEInstructors('Mandaue Campus', 'College of Education and Arts')
+      .getInstructors('Mandaue Campus', 'College of Education and Arts')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
-  }
-
-  loadSubjects(): void {
-    this.subjectService.getBsedSubjects().subscribe((data) => {
-      this.subjects = data;
-    });
   }
 
   //^ GET APPOINTMENT

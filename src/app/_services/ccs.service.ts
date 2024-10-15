@@ -3,12 +3,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from '@app/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class CcsService {
-  readonly APIUrl =
-    'https://benedicto-scheduling-backend.onrender.com/schedule/bachelor-of-information-technology';
+  readonly APIUrl = `${environment.apiUrl}/schedule/bachelor-of-information-technology`;
+
+  // readonly APIUrl =
+  // 'https://benedicto-scheduling-backend.onrender.com/schedule/bachelor-of-information-technology';
 
   constructor(private http: HttpClient) {}
 
