@@ -1,7 +1,49 @@
 <div class="p-4">
   <div class="container">
-    <h1>Hi {{ user?.user?.first_name }}!</h1>
-    <p>You're logged in with Benedicto College Scheduling.</p>
+    <div>
+      <h1>Hi {{ user?.user?.first_name }}!</h1>
+      <p>You're logged in with Benedicto College Scheduling.</p>
+    </div>
+
+    <div class="mt-5 border rounded bg-light p-3">
+      <h4>Quote of the Day</h4>
+      <blockquote class="blockquote">
+        <p class="mb-2">"{{ dailyQuote }}"</p>
+        <footer class="blockquote-footer mt-2">— {{ dailyAuthor }}</footer>
+      </blockquote>
+    </div>
+
+    <div
+      class="mt-5 border rounded note bg-success-subtle"
+      *ngIf="appointments.length > 0"
+    >
+      <div class="m-3">
+        <h3>Scheduled Events</h3>
+
+        <table class="w-100 mt-4">
+          <thead>
+            <tr>
+              <th>What</th>
+              <th>Where</th>
+              <th>Start</th>
+              <th>End</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let schedule of appointments">
+              <td>{{ schedule.subject }}</td>
+              <td>{{ schedule.location }}</td>
+              <td>
+                {{ schedule.start | date : "MMMM d, y" }}
+              </td>
+              <td>
+                {{ schedule.end | date : "MMMM d, y" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 

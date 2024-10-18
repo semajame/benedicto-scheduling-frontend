@@ -405,7 +405,7 @@ export class bsedSchedComponent implements AfterViewInit {
       try {
         // Fetch subjects filtered by department code
         this.subjectService
-          .getSubjects('COE') // Ensure this returns Observable<Subjects[]>
+          .getSubjects('BSED') // Ensure this returns Observable<Subjects[]>
           .subscribe({
             next: (data: Subjects[]) => {
               // Use Subjects[] directly
@@ -456,59 +456,49 @@ export class bsedSchedComponent implements AfterViewInit {
                   subjectDesc.appendChild(option);
                 });
               }
+
+              let unitsContainer = ` <div>
+              <div class="jqx-scheduler-edit-dialog-label">Units</div>
+              <div class="jqx-scheduler-edit-dialog-field">
+                <select id="units" name="units" >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>`;
+              fields.subjectContainer.append(unitsContainer);
+
+              let yearContainer = ` <div>
+          <div class="jqx-scheduler-edit-dialog-label">Year</div>
+          <div class="jqx-scheduler-edit-dialog-field">
+            <select id="year" name="year" >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>`;
+
+              fields.subjectContainer.append(yearContainer);
+
+              let roomContainer = ` <div>
+          <div class="jqx-scheduler-edit-dialog-label">Room</div>
+          <div class="jqx-scheduler-edit-dialog-field">
+            <select id="room" name="room" >
+              <option value="Computer Lab 1">Computer Lab 1</option>
+              <option value="Computer Lab 2">Computer Lab 2</option>
+            </select>
+          </div>
+        </div>`;
+              fields.subjectContainer.append(roomContainer);
             },
             error: (error) => {
               console.error('Error fetching subjects:', error);
             },
           });
-      } catch (error) {
-        console.error('Error fetching subjects:', error);
-      }
-    };
 
-    // Call the function to load subjects when needed
-    loadSubjects();
-
-    let unitsContainer = ` <div>
-        <div class="jqx-scheduler-edit-dialog-label">Units</div>
-        <div class="jqx-scheduler-edit-dialog-field">
-          <select id="units" name="units" >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-        </div>
-      </div>`;
-    fields.subjectContainer.append(unitsContainer);
-
-    let yearContainer = ` <div>
-    <div class="jqx-scheduler-edit-dialog-label">Year</div>
-    <div class="jqx-scheduler-edit-dialog-field">
-      <select id="year" name="year" >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-    </div>
-  </div>`;
-
-    fields.subjectContainer.append(yearContainer);
-
-    let roomContainer = ` <div>
-    <div class="jqx-scheduler-edit-dialog-label">Room</div>
-    <div class="jqx-scheduler-edit-dialog-field">
-      <select id="room" name="room" >
-        <option value="Computer Lab 1">Computer Lab 1</option>
-        <option value="Computer Lab 2">Computer Lab 2</option>
-      </select>
-    </div>
-  </div>`;
-    fields.subjectContainer.append(roomContainer);
-
-    const loadTeachers = async () => {
-      try {
-        // Fetch teachers filtered by campus and department
         this.teacherService
           .getInstructors('Mandaue Campus', 'College of Education and Arts')
           .subscribe((data: Teachers[]) => {
@@ -539,13 +529,12 @@ export class bsedSchedComponent implements AfterViewInit {
             }
           });
       } catch (error) {
-        console.error('Error fetching teachers:', error);
-        // Handle the error appropriately in your UI
+        console.error('Error fetching subjects:', error);
       }
     };
 
-    // Call the function to load teachers when needed
-    loadTeachers();
+    // Call the function to load subjects when needed
+    loadSubjects();
   };
 
   editDialogOpen = (dialog: any, fields: any, editAppointment: any) => {

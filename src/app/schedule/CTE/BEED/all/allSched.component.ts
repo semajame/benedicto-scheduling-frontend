@@ -74,7 +74,7 @@ export class beedSchedComponent implements AfterViewInit {
 
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    this.cteService.getAllSchedules().subscribe({
+    this.cteService.getAllBeedSchedules().subscribe({
       next: (data) => {
         // Clear previous conflicts
         this.conflicts = [];
@@ -229,7 +229,7 @@ export class beedSchedComponent implements AfterViewInit {
 
     console.log(newAppointment);
 
-    this.cteService.addAllSchedule(newAppointment).subscribe({
+    this.cteService.addAllBeedSchedule(newAppointment).subscribe({
       next: (response) => {
         // this.alertService.success('Success adding schedule', {
         //   keepAfterRouteChange: true,
@@ -335,7 +335,7 @@ export class beedSchedComponent implements AfterViewInit {
     const appointment = event.args.appointment.originalData;
 
     if (confirm('Are you sure you want to delete this appointment?')) {
-      this.cteService.deleteAllSchedule(appointment.id).subscribe({
+      this.cteService.deleteAllBeedSchedule(appointment.id).subscribe({
         next: () => {
           console.log('Appointment deleted successfully');
           // Remove the appointment from the local data source
@@ -401,89 +401,104 @@ export class beedSchedComponent implements AfterViewInit {
   };
 
   editDialogCreate = (dialog: any, fields: any, editAppointment: any) => {
-    let subjectCodeContainer = ` <div>
-        <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
-        <div class="jqx-scheduler-edit-dialog-field">
-          <select id="subjectCode" name="subjectCode" >
-          
-          </select>
-        </div>
-      </div>`;
-    fields.subjectContainer.append(subjectCodeContainer);
-
-    const subjectCode = document.getElementById('subjectCode');
-
-    if (subjectCode) {
-      this.subjects.forEach((subjects: any) => {
-        let option = document.createElement('option');
-        option.value = `${subjects.subject_code}`;
-        option.text = `${subjects.subject_code} `;
-        subjectCode.appendChild(option);
-      });
-    }
-
-    let subjectInput = `
-    <div class="jqx-scheduler-edit-dialog-label">Subject</div>
-      <div class="jqx-scheduler-edit-dialog-field">
-        <select id="subject" name="subject" >
-         
-        </select>
-      </div>
- `;
-
-    fields.subjectContainer.append(subjectInput);
-
-    const subject = document.getElementById('subject');
-
-    if (subject) {
-      this.subjects.forEach((subjects: any) => {
-        let option = document.createElement('option');
-        option.value = `${subjects.subject}`;
-        option.text = `${subjects.subject} `;
-        subject.appendChild(option);
-      });
-    }
-
-    let unitsContainer = ` <div>
-        <div class="jqx-scheduler-edit-dialog-label">Units</div>
-        <div class="jqx-scheduler-edit-dialog-field">
-          <select id="units" name="units" >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-        </div>
-      </div>`;
-    fields.subjectContainer.append(unitsContainer);
-
-    let yearContainer = ` <div>
-    <div class="jqx-scheduler-edit-dialog-label">Year</div>
-    <div class="jqx-scheduler-edit-dialog-field">
-      <select id="year" name="year" >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-    </div>
-  </div>`;
-
-    fields.subjectContainer.append(yearContainer);
-
-    let roomContainer = ` <div>
-    <div class="jqx-scheduler-edit-dialog-label">Room</div>
-    <div class="jqx-scheduler-edit-dialog-field">
-      <select id="room" name="room" >
-        <option value="Computer Lab 1">Computer Lab 1</option>
-        <option value="Computer Lab 2">Computer Lab 2</option>
-      </select>
-    </div>
-  </div>`;
-    fields.subjectContainer.append(roomContainer);
-
-    const loadTeachers = async () => {
+    const loadSubjects = async () => {
       try {
-        // Fetch teachers filtered by campus and department
+        // Fetch subjects filtered by department code
+        this.subjectService
+          .getSubjects('BEED') // Ensure this returns Observable<Subjects[]>
+          .subscribe({
+            next: (data: Subjects[]) => {
+              // Use Subjects[] directly
+              console.log('Subjects filtered by department code:', data);
+              this.subjects = data;
+
+              // Build the subject code container and populate the dropdown after fetching data
+              let subjectCodeContainer = `
+                <div>
+                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0;">Subject Code</div>
+                  <div class="jqx-scheduler-edit-dialog-field">
+                    <select id="subjectCode" name="subjectCode"></select>
+                  </div>
+                </div>
+              `;
+
+              fields.subjectContainer.append(subjectCodeContainer);
+
+              const subjectSelect = document.getElementById('subjectCode');
+
+              if (subjectSelect) {
+                this.subjects.forEach((subject) => {
+                  let option = document.createElement('option');
+                  option.value = `${subject.courseCode}`; // Assuming your API returns courseCode
+                  option.text = `${subject.courseCode}`; // Modify as needed
+                  subjectSelect.appendChild(option);
+                });
+              }
+
+              let subjectInput = `
+              <div class="jqx-scheduler-edit-dialog-label">Subject</div>
+                <div class="jqx-scheduler-edit-dialog-field">
+                  <select id="subject" name="subject" >
+                   
+                  </select>
+                </div>
+           `;
+
+              fields.subjectContainer.append(subjectInput);
+
+              const subjectDesc = document.getElementById('subject');
+
+              if (subjectDesc) {
+                this.subjects.forEach((subject) => {
+                  let option = document.createElement('option');
+                  option.value = `${subject.courseDescription}`;
+                  option.text = `${subject.courseDescription} `;
+                  subjectDesc.appendChild(option);
+                });
+              }
+
+              let unitsContainer = ` <div>
+              <div class="jqx-scheduler-edit-dialog-label">Units</div>
+              <div class="jqx-scheduler-edit-dialog-field">
+                <select id="units" name="units" >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>`;
+              fields.subjectContainer.append(unitsContainer);
+
+              let yearContainer = ` <div>
+          <div class="jqx-scheduler-edit-dialog-label">Year</div>
+          <div class="jqx-scheduler-edit-dialog-field">
+            <select id="year" name="year" >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>`;
+
+              fields.subjectContainer.append(yearContainer);
+
+              let roomContainer = ` <div>
+          <div class="jqx-scheduler-edit-dialog-label">Room</div>
+          <div class="jqx-scheduler-edit-dialog-field">
+            <select id="room" name="room" >
+              <option value="Computer Lab 1">Computer Lab 1</option>
+              <option value="Computer Lab 2">Computer Lab 2</option>
+            </select>
+          </div>
+        </div>`;
+              fields.subjectContainer.append(roomContainer);
+            },
+            error: (error) => {
+              console.error('Error fetching subjects:', error);
+            },
+          });
+
         this.teacherService
           .getInstructors('Mandaue Campus', 'College of Education and Arts')
           .subscribe((data: Teachers[]) => {
@@ -514,13 +529,12 @@ export class beedSchedComponent implements AfterViewInit {
             }
           });
       } catch (error) {
-        console.error('Error fetching teachers:', error);
-        // Handle the error appropriately in your UI
+        console.error('Error fetching subjects:', error);
       }
     };
 
-    // Call the function to load teachers when needed
-    loadTeachers();
+    // Call the function to load subjects when needed
+    loadSubjects();
   };
 
   editDialogOpen = (dialog: any, fields: any, editAppointment: any) => {

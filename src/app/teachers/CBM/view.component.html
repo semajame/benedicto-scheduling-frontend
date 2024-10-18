@@ -3,9 +3,8 @@
   <h1 *ngIf="!teacher && !loading">Teacher not found</h1>
   <h1 *ngIf="loading">Loading...</h1>
 
-  <!-- teacher-schedules.component.html -->
-  <div class="main-body p-0">
-    <!-- teacher-schedules.component.html -->
+  <div class="main-body p-0" *ngIf="schedules.length > 0">
+    <!-- Only show table if schedules exist -->
     <table class="table mt-5 table-bordered">
       <thead>
         <tr>
@@ -30,9 +29,15 @@
         </tr>
       </tbody>
     </table>
+
+    <div>
+      <strong class="text-black">Total Hours:</strong>
+      {{ totalCumulativeHours | number : "1.2-2" }} hours
+    </div>
   </div>
 
-  <div *ngIf="!schedules.length">
+  <!-- Message when no schedules are available -->
+  <div *ngIf="schedules.length === 0 && !loading">
     <p>No schedules found for the teacher.</p>
   </div>
 </div>

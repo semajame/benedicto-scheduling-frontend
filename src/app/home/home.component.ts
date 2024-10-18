@@ -4,6 +4,7 @@ import { User } from '@app/_models';
 import { AccountService, AlertService } from '@app/_services';
 
 import { CalendarService } from '@app/_services/calendar.service';
+import { QuoteService } from '@app/_services/quote.service'; // Import the service
 
 @Component({
   templateUrl: 'home.component.html',
@@ -15,16 +16,37 @@ export class HomeComponent implements AfterViewInit {
   schedulerHome!: jqxSchedulerComponent;
   user?: User | null;
 
+  appointments: any[] = [];
+  dailyQuote: string = ''; // Holds the daily quote
+  dailyAuthor: string = ''; // Holds the author
+
   constructor(
     private accountService: AccountService,
     private alertService: AlertService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private quoteService: QuoteService
   ) {
     this.user = this.accountService.userValue;
   }
 
+  fetchDailyQuote(): void {
+    this.quoteService.getDailyQuote().subscribe(
+      (data) => {
+        // Assuming the API returns an array of quotes
+        if (data && data.length > 0) {
+          this.dailyQuote = data[0].q; // Quote text
+          this.dailyAuthor = data[0].a; // Author name
+        }
+      },
+      (error) => {
+        console.error('Error fetching the quote of the day:', error);
+      }
+    );
+  }
+
   ngAfterViewInit(): void {
     this.schedulerHome.ensureAppointmentVisible('1');
+    this.fetchDailyQuote();
 
     //^ ADD ALERT
     if (localStorage.getItem('scheduleAdded') === 'true') {
@@ -77,7 +99,9 @@ export class HomeComponent implements AfterViewInit {
           background: event.background,
         }));
 
-        // Load the appointments into the scheduler (if needed)
+        this.appointments = appointments.sort(
+          (a, b) => a.start.getTime() - b.start.getTime()
+        );
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.schedulerHome.source(this.dataAdapter);
