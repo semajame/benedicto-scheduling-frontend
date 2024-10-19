@@ -1,96 +1,176 @@
-// import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-// import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-// import { environment } from '@app/environments/environment';
+import { environment } from '@app/environments/environment';
 
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class CteService {
-//   readonly APIBSME = `${environment.apiUrl}/schedule/bachelor-of-secondary-education`;
-//   readonly APIBEED = `${environment.apiUrl}/schedule/bachelor-of-elementary-education`;
+@Injectable({
+  providedIn: 'root',
+})
+export class CoeService {
+  readonly APIBSME = `${environment.apiUrl}/schedule/mechanical-engineering`;
+  readonly APIBSIE = `${environment.apiUrl}/schedule/industrial-engineering`;
+  readonly APIBSCE = `${environment.apiUrl}/schedule/civil-engineering`;
+  readonly APIBSEE = `${environment.apiUrl}/schedule/electrical-engineering`;
 
-//   constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-//   //^ ALL YEAR
+  //^ ALL YEAR
 
-//   getAllSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIUrl}`);
-//   }
+  getAllBsmeSchedule(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}`);
+  }
 
-//   getAllBeedSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIBEED}`);
-//   }
+  getAllBsieSchedule(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}`);
+  }
 
-//   addAllSchedule(schedule: any): Observable<any> {
-//     return this.http.post<any>(`${this.APIUrl}`, schedule);
-//   }
+  getAllBsceSchedule(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}`);
+  }
 
-//   addAllBeedSchedule(schedule: any): Observable<any> {
-//     return this.http.post<any>(`${this.APIBEED}`, schedule);
-//   }
+  getAllBseeSchedule(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}`);
+  }
 
-//   updateAllSchedule(id: number, schedule: any): Observable<any> {
-//     return this.http.put(`${this.APIUrl}/${id}`, schedule);
-//   }
+  addBsmeSchedule(schedule: any): Observable<any> {
+    return this.http.post<any>(`${this.APIBSME}`, schedule);
+  }
 
-//   updateAllBeedSchedule(id: number, schedule: any): Observable<any> {
-//     return this.http.put(`${this.APIBEED}/${id}`, schedule);
-//   }
+  addBsieSchedule(schedule: any): Observable<any> {
+    return this.http.post<any>(`${this.APIBSIE}`, schedule);
+  }
 
-//   deleteAllSchedule(id: number): Observable<void> {
-//     return this.http.delete<void>(`${this.APIUrl}/${id}`);
-//   }
+  addBsceSchedule(schedule: any): Observable<any> {
+    return this.http.post<any>(`${this.APIBSCE}`, schedule);
+  }
 
-//   deleteAllBeedSchedule(id: number): Observable<void> {
-//     return this.http.delete<void>(`${this.APIBEED}/${id}`);
-//   }
+  addBseeSchedule(schedule: any): Observable<any> {
+    return this.http.post<any>(`${this.APIBSEE}`, schedule);
+  }
 
-//   //^ BSED
-//   //^ FIRST YEAR
+  updateBsmeSchedule(id: number, schedule: any): Observable<any> {
+    return this.http.put(`${this.APIBSME}/${id}`, schedule);
+  }
 
-//   getFirstSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIUrl}/1st-year`);
-//   }
+  updateBsieSchedule(id: number, schedule: any): Observable<any> {
+    return this.http.put(`${this.APIBSIE}/${id}`, schedule);
+  }
 
-//   //^ SECOND YEAR
-//   getSecondSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIUrl}/2nd-year`);
-//   }
+  updateBsceSchedule(id: number, schedule: any): Observable<any> {
+    return this.http.put(`${this.APIBSCE}/${id}`, schedule);
+  }
 
-//   //^ THIRD YEAR
-//   getThirdSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIUrl}/3rd-year`);
-//   }
+  updateBseeSchedule(id: number, schedule: any): Observable<any> {
+    return this.http.put(`${this.APIBSEE}/${id}`, schedule);
+  }
 
-//   //^ FOURTH YEAR
+  deleteBsmeSchedule(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.APIBSEE}/${id}`);
+  }
 
-//   getFourthSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIUrl}/4th-year`);
-//   }
+  deleteBsieSchedule(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.APIBSIE}/${id}`);
+  }
 
-//   //^ BEED
-//   //^ FIRST YEAR
+  deleteBsceSchedule(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.APIBSCE}/${id}`);
+  }
 
-//   getBeedFirstSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIBEED}/1st-year`);
-//   }
+  deleteBseeSchedule(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.APIBSEE}/${id}`);
+  }
 
-//   //^ SECOND YEAR
-//   getBeedSecondSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIBEED}/2nd-year`);
-//   }
+  //* BSME
+  //^ FIRST YEAR
 
-//   //^ THIRD YEAR
-//   getBeedThirdSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIBEED}/3rd-year`);
-//   }
+  getFirstBsmeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/1st-year`);
+  }
 
-//   //^ FOURTH YEAR
+  //^ SECOND YEAR
+  getSecondBsmeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/2nd-year`);
+  }
 
-//   getBeedFourthSchedules(): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.APIBEED}/4th-year`);
-//   }
-// }
+  //^ THIRD YEAR
+  getThirdBsmeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/3rd-year`);
+  }
+
+  //^ FOURTH YEAR
+
+  getFourthBsmeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/4th-year`);
+  }
+
+  //* BSIE
+  //^ FIRST YEAR
+
+  getFirstBsieSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/1st-year`);
+  }
+
+  //^ SECOND YEAR
+  getSecondBsieSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/2nd-year`);
+  }
+
+  //^ THIRD YEAR
+  getThirdBsieSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/3rd-year`);
+  }
+
+  //^ FOURTH YEAR
+
+  getFourthBsieSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/4th-year`);
+  }
+
+  //* BSCE
+  //^ FIRST YEAR
+
+  getFirstBsceSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/1st-year`);
+  }
+
+  //^ SECOND YEAR
+  getSecondBsceSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/2nd-year`);
+  }
+
+  //^ THIRD YEAR
+  getThirdBsceSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/3rd-year`);
+  }
+
+  //^ FOURTH YEAR
+
+  getFourthBsceSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/4th-year`);
+  }
+
+  //* BSEE
+  //^ FIRST YEAR
+
+  getFirstBseeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/1st-year`);
+  }
+
+  //^ SECOND YEAR
+  getSecondBseeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/2nd-year`);
+  }
+
+  //^ THIRD YEAR
+  getThirdBseeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/3rd-year`);
+  }
+
+  //^ FOURTH YEAR
+
+  getFourthBseeSchedules(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/4th-year`);
+  }
+}

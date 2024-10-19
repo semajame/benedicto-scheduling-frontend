@@ -30,17 +30,18 @@ export class AddEditComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
+    // Removed 'title' from the form group
     this.form = this.formBuilder.group(
       {
-        title: ['', Validators.required],
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
+        first_name: ['', Validators.required],
+        last_name: ['', Validators.required],
+        username: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         role: ['', Validators.required],
         password: [
           '',
           [
-            Validators.minLength(6),
+            Validators.minLength(5),
             this.isAddMode ? Validators.required : Validators.nullValidator,
           ],
         ],

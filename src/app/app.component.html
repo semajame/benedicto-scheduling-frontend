@@ -19,6 +19,7 @@
       <a
         routerLink="/"
         routerLinkActive="active"
+        *ngIf="user.user?.role !== Role.Admin"
         (click)="this.scheduler.closeDialog()"
         [routerLinkActiveOptions]="{ exact: true }"
         class="nav-item nav-link d-flex gap-2 align-items-center text-light"
@@ -28,6 +29,7 @@
       <a
         routerLink="/instructors"
         routerLinkActive="active"
+        *ngIf="user.user?.role !== Role.Admin"
         (click)="this.scheduler.closeDialog()"
         class="nav-item nav-link d-flex gap-2 align-items-center text-light"
       >
@@ -40,16 +42,16 @@
         >Profile</a
       > -->
 
-      <!-- <a
-          *ngIf="account.role === Role.Admin"
-          routerLink="/admin"
-          routerLinkActive="active"
-      
-          class="nav-item nav-link d-flex gap-2 align-items-center text-light"
-          >Admin</a
-        > -->
+      <a
+        *ngIf="user.user?.role === Role.Admin"
+        routerLink="/admin"
+        routerLinkActive="active"
+        class="nav-item nav-link d-flex gap-2 align-items-center text-light"
+        >Admin</a
+      >
       <a
         routerLink="/prospectus"
+        *ngIf="user.user?.role !== Role.Admin"
         routerLinkActive="active"
         (click)="this.scheduler.closeDialog()"
         class="nav-item nav-link d-flex gap-2 align-items-center text-light"
@@ -58,6 +60,7 @@
       <a
         class="nav-item nav-link d-flex gap-2 align-items-center text-light"
         routerLink="/schedule"
+        *ngIf="user.user?.role !== Role.Admin"
         (click)="this.scheduler.closeDialog()"
         routerLinkActive="active"
       >
@@ -76,17 +79,20 @@
               aria-expanded="false"
             >
               <img
-                src="/assets/img/james.jpg"
+                src="https://img.freepik.com/premium-photo/cartoon-character-with-glasses-blue-shirt-with-smile-his-face_1221953-47923.jpg"
                 alt="user profile-pic"
                 class="rounded-circle profile-pic"
               />
-              <div class="d-flex align-items-start flex-column">
-                <span>{{ user.user?.first_name }}</span>
-                <span
-                  class="text-sm-end text-white rounded-pill py-1 px-3"
+              <div class="d-flex align-items-center flex-column">
+                <p class="m-0">
+                  {{ user.user?.first_name }} {{ user.user?.last_name }}
+                </p>
+                <p
+                  class="text-sm-end text-white rounded-pill py-1 px-3 m-0"
                   style="font-size: 12px; background-color: #ff6100"
-                  >{{ user.user?.role }}</span
                 >
+                  {{ user.user?.role }}
+                </p>
               </div>
             </button>
             <ul class="dropdown-menu dropdown-menu-dark">

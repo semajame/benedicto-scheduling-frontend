@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
-import { CcsService } from '@app/_services/ccs.service';
+import { CoeService } from '@app/_services/coe.service';
 
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
@@ -15,7 +15,7 @@ import { TeacherService } from '@app/_services/teacher.service';
 @Component({
   templateUrl: 'allSched.component.html',
 })
-export class allSchedComponent implements AfterViewInit {
+export class bsmeallSchedComponent implements AfterViewInit {
   @ViewChild('schedulerReference5')
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
@@ -23,7 +23,7 @@ export class allSchedComponent implements AfterViewInit {
   subjects: Subjects[] = [];
 
   constructor(
-    private ccsService: CcsService,
+    private coeService: CoeService,
     private alertService: AlertService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
@@ -73,7 +73,7 @@ export class allSchedComponent implements AfterViewInit {
 
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    this.ccsService.getAllSchedules().subscribe({
+    this.coeService.getAllBsmeSchedule().subscribe({
       next: (data) => {
         // Clear previous conflicts
         this.conflicts = [];
@@ -228,7 +228,7 @@ export class allSchedComponent implements AfterViewInit {
 
     console.log(newAppointment);
 
-    this.ccsService.addAllSchedule(newAppointment).subscribe({
+    this.coeService.addBsmeSchedule(newAppointment).subscribe({
       next: (response) => {
         // this.alertService.success('Success adding schedule', {
         //   keepAfterRouteChange: true,
@@ -308,8 +308,8 @@ export class allSchedComponent implements AfterViewInit {
     };
 
     // Assume appointment.id is available in the event or the originalData
-    this.ccsService
-      .updateAllSchedule(appointment.id, updatedAppointment)
+    this.coeService
+      .updateBsmeSchedule(appointment.id, updatedAppointment)
       .subscribe({
         next: (response) => {
           // Handle successful update
@@ -334,7 +334,7 @@ export class allSchedComponent implements AfterViewInit {
     const appointment = event.args.appointment.originalData;
 
     if (confirm('Are you sure you want to delete this appointment?')) {
-      this.ccsService.deleteAllSchedule(appointment.id).subscribe({
+      this.coeService.deleteBsmeSchedule(appointment.id).subscribe({
         next: () => {
           console.log('Appointment deleted successfully');
           // Remove the appointment from the local data source
@@ -404,7 +404,7 @@ export class allSchedComponent implements AfterViewInit {
       try {
         // Fetch subjects filtered by department code
         this.subjectService
-          .getSubjects('CCS') // Ensure this returns Observable<Subjects[]>
+          .getSubjects('COE') // Ensure this returns Observable<Subjects[]>
           .subscribe({
             next: (data: Subjects[]) => {
               // Use Subjects[] directly
@@ -532,7 +532,6 @@ export class allSchedComponent implements AfterViewInit {
       }
     };
 
-    // Call the function to load subjects when needed
     loadSubjects();
   };
 

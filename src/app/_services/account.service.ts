@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 // import { environment } from '@environments/environment';
 import { environment } from '@app/environments/environment';
-import { User } from '@app/_models';
+import { Role, User } from '@app/_models';
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -30,6 +30,7 @@ export class AccountService {
     return this.http.post<User>(`${baseUrl}/auth`, { username, password }).pipe(
       map((user) => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
+
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
@@ -57,7 +58,7 @@ export class AccountService {
   }
 
   create(params: any) {
-    return this.http.post(baseUrl, params);
+    return this.http.post(`${baseUrl}/users`, params);
   }
 
   update(id: string, params: any) {

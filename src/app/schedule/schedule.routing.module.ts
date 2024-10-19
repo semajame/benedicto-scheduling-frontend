@@ -43,6 +43,7 @@ import { beedThirdSchedComponent } from './CTE/BEED/3rd-year/thirdSched.componen
 import { beedThirdEnlistmentComponent } from './CTE/BEED/3rd-year/thirdEnlistment.component';
 import { beedFourthSchedComponent } from './CTE/BEED/4th-year/fourthSched.component';
 import { beedFourthEnlistmentComponent } from './CTE/BEED/4th-year/fourthEnlistment.component';
+
 //^ COE
 
 import { coeLayoutComponent } from './COE/coe.layout.component';
@@ -50,6 +51,42 @@ import { bsmeLayout } from './COE/BSME/bsmeLayout.component';
 import { bsieLayout } from './COE/BSIE/bsieLayout.component';
 import { bsceLayout } from './COE/BSCE/bsceLayout.component';
 import { bseeLayout } from './COE/BSEE/bseeLayout.component';
+import { bscefirstEnlistmentComponent } from './COE/BSCE/1st-year/firstEnlistment.component';
+import { bscefirstSchedComponent } from './COE/BSCE/1st-year/firstSched.component';
+import { bscesecondEnlistmentComponent } from './COE/BSCE/2nd-year/secondEnlistment.component';
+import { bscesecondSchedComponent } from './COE/BSCE/2nd-year/secondSched.component';
+import { bscethirdEnlistmentComponent } from './COE/BSCE/3rd-year/thirdEnlistment.component';
+import { bscethirdSchedComponent } from './COE/BSCE/3rd-year/thirdSched.component';
+import { bscefourthEnlistmentComponent } from './COE/BSCE/4th-year/fourthEnlistment.component';
+import { bscefourthSchedComponent } from './COE/BSCE/4th-year/fourthSched.component';
+import { bsceallSchedComponent } from './COE/BSCE/all/allSched.component';
+import { bseeallSchedComponent } from './COE/BSEE/all/allSched.component';
+import { bseefirstSchedComponent } from './COE/BSEE/1st-year/firstSched.component';
+import { bseefirstEnlistmentComponent } from './COE/BSEE/1st-year/firstEnlistment.component';
+import { bseesecondEnlistmentComponent } from './COE/BSEE/2nd-year/secondEnlistment.component';
+import { bseesecondSchedComponent } from './COE/BSEE/2nd-year/secondSched.component';
+import { bseethirdEnlistmentComponent } from './COE/BSEE/3rd-year/thirdEnlistment.component';
+import { bseethirdSchedComponent } from './COE/BSEE/3rd-year/thirdSched.component';
+import { bseefourthEnlistmentComponent } from './COE/BSEE/4th-year/fourthEnlistment.component';
+import { bseefourthSchedComponent } from './COE/BSEE/4th-year/fourthSched.component';
+import { bsieallSchedComponent } from './COE/BSIE/all/allSched.component';
+import { bsiefirstSchedComponent } from './COE/BSIE/1st-year/firstSched.component';
+import { bsiefirstEnlistmentComponent } from './COE/BSIE/1st-year/firstEnlistment.component';
+import { bsiesecondEnlistmentComponent } from './COE/BSIE/2nd-year/secondEnlistment.component';
+import { bsiesecondSchedComponent } from './COE/BSIE/2nd-year/secondSched.component';
+import { bsiethirdEnlistmentComponent } from './COE/BSIE/3rd-year/thirdEnlistment.component';
+import { bsiethirdSchedComponent } from './COE/BSIE/3rd-year/thirdSched.component';
+import { bsiefourthEnlistmentComponent } from './COE/BSIE/4th-year/fourthEnlistment.component';
+import { bsiefourthSchedComponent } from './COE/BSIE/4th-year/fourthSched.component';
+import { bsmefirstEnlistmentComponent } from './COE/BSME/1st-year/firstEnlistment.component';
+import { bsmefirstSchedComponent } from './COE/BSME/1st-year/firstSched.component';
+import { bsmesecondEnlistmentComponent } from './COE/BSME/2nd-year/secondEnlistment.component';
+import { bsmesecondSchedComponent } from './COE/BSME/2nd-year/secondSched.component';
+import { bsmethirdEnlistmentComponent } from './COE/BSME/3rd-year/thirdEnlistment.component';
+import { bsmethirdSchedComponent } from './COE/BSME/3rd-year/thirdSched.component';
+import { bsmefourthEnlistmentComponent } from './COE/BSME/4th-year/fourthEnlistment.component';
+import { bsmefourthSchedComponent } from './COE/BSME/4th-year/fourthSched.component';
+import { bsmeallSchedComponent } from './COE/BSME/all/allSched.component';
 
 //^ CBM
 
@@ -58,6 +95,15 @@ import { bsaLayout } from './CBM/BSA/bsaLayout.component';
 import { bsmmLayout } from './CBM/BSMM/bsmmLayout.component';
 import { bshmLayout } from './CBM/BSHM/bshmLayout.component';
 import { bshrmLayout } from './CBM/BSHRM/bshrmLayout.component';
+import { bsaallSchedComponent } from './CBM/BSA/all/allSched.component';
+import { bsafirstEnlistmentComponent } from './CBM/BSA/1st-year/firstEnlistment.component';
+import { bsafirstSchedComponent } from './CBM/BSA/1st-year/firstSched.component';
+import { bsasecondEnlistmentComponent } from './CBM/BSA/2nd-year/secondEnlistment.component';
+import { bsasecondSchedComponent } from './CBM/BSA/2nd-year/secondSched.component';
+import { bsathirdEnlistmentComponent } from './CBM/BSA/3rd-year/thirdEnlistment.component';
+import { bsathirdSchedComponent } from './CBM/BSA/3rd-year/thirdSched.component';
+import { bsafourthEnlistmentComponent } from './CBM/BSA/4th-year/fourthEnlistment.component';
+import { bsafourthSchedComponent } from './CBM/BSA/4th-year/fourthSched.component';
 
 const routes: Routes = [
   {
@@ -213,6 +259,168 @@ const routes: Routes = [
         component: bseeLayout,
       },
 
+      //^ BSME
+
+      {
+        path: 'college-of-engineering/mechanical-engineering/schedule',
+        component: bsmeallSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/1st-year',
+        component: bsmefirstSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/1st-year/enlistment',
+        component: bsmefirstEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/2nd-year/enlistment',
+        component: bsmesecondEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/2nd-year',
+        component: bsmesecondSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/3rd-year/enlistment',
+        component: bsmethirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/3rd-year',
+        component: bsmethirdSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/3rd-year/enlistment',
+        component: bsmethirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/4th-year',
+        component: bsmefourthSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/mechanical-engineering/4th-year/enlistment',
+        component: bsmefourthEnlistmentComponent,
+      },
+
+      //^ BSCE
+      {
+        path: 'college-of-engineering/civil-engineering/schedule',
+        component: bsceallSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/1st-year',
+        component: bscefirstSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/1st-year/enlistment',
+        component: bscefirstEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/2nd-year/enlistment',
+        component: bscesecondEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/2nd-year',
+        component: bscesecondSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/3rd-year/enlistment',
+        component: bscethirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/3rd-year',
+        component: bscethirdSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/3rd-year/enlistment',
+        component: bscethirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/4th-year',
+        component: bscefourthSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/civil-engineering/4th-year/enlistment',
+        component: bscefourthEnlistmentComponent,
+      },
+
+      //^ BSEE
+      {
+        path: 'college-of-engineering/electrical-engineering/schedule',
+        component: bseeallSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/1st-year',
+        component: bseefirstSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/1st-year/enlistment',
+        component: bseefirstEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/2nd-year/enlistment',
+        component: bseesecondEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/2nd-year',
+        component: bseesecondSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/3rd-year/enlistment',
+        component: bseethirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/3rd-year',
+        component: bseethirdSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/4th-year',
+        component: bseefourthSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/electrical-engineering/4th-year/enlistment',
+        component: bseefourthEnlistmentComponent,
+      },
+
+      //^ BSIE
+
+      {
+        path: 'college-of-engineering/industrial-engineering/schedule',
+        component: bsieallSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/1st-year',
+        component: bsiefirstSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/1st-year/enlistment',
+        component: bsiefirstEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/2nd-year/enlistment',
+        component: bsiesecondEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/2nd-year',
+        component: bsiesecondSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/3rd-year/enlistment',
+        component: bsiethirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/3rd-year',
+        component: bsiethirdSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/4th-year',
+        component: bsiefourthSchedComponent,
+      },
+      {
+        path: 'college-of-engineering/industrial-engineering/4th-year/enlistment',
+        component: bsiefourthEnlistmentComponent,
+      },
+
       //^ CBM
 
       { path: 'college-of-business-management', component: cbmLayoutComponent },
@@ -231,6 +439,42 @@ const routes: Routes = [
       {
         path: 'college-of-business-management/human-resource-management',
         component: bshrmLayout,
+      },
+      {
+        path: 'college-of-business-management/accountancy/schedule',
+        component: bsaallSchedComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/1st-year',
+        component: bsafirstSchedComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/1st-year/enlistment',
+        component: bsafirstEnlistmentComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/2nd-year/enlistment',
+        component: bsasecondEnlistmentComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/2nd-year',
+        component: bsasecondSchedComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/3rd-year/enlistment',
+        component: bsathirdEnlistmentComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/3rd-year',
+        component: bsathirdSchedComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/4th-year',
+        component: bsafourthSchedComponent,
+      },
+      {
+        path: 'college-of-business-management/accountancy/4th-year/enlistment',
+        component: bsafourthEnlistmentComponent,
       },
     ],
   },

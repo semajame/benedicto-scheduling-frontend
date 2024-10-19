@@ -1,0 +1,58 @@
+<div class="pt-4 px-4 container">
+  <div class="">
+    <h1>1st Year Schedule</h1>
+    <p>This section can only be accessed by administrators.</p>
+  </div>
+  <div
+    class="mt-5 border rounded note bg-warning-subtle"
+    *ngIf="conflicts.length > 0"
+  >
+    <div class="m-3">
+      <h3>Conflicts Schedules</h3>
+
+      <table class="w-100 mt-4">
+        <thead>
+          <tr>
+            <th>Subject</th>
+
+            <!-- <th>Day</th> -->
+            <th>Start</th>
+            <th>End</th>
+            <th>Room</th>
+
+            <!-- Column for conflict notes -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let schedule of conflicts">
+            <td>{{ schedule.subject }}</td>
+            <!-- <td>{{ schedule.day }}</td> -->
+            <td>{{ schedule.start | date : "shortTime" }}</td>
+            <td>
+              {{ schedule.end | date : "shortTime" }}
+            </td>
+            <td>{{ schedule.room }}</td>
+            <!-- <td>{{ schedule.notes }}</td> -->
+            <!-- Display conflict notes -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="mt-5">
+  <jqxScheduler
+    #schedulerReference
+    [date]="date"
+    [height]="2200"
+    [width]="1300"
+    [source]="dataAdapter"
+    [showLegend]="true"
+    [view]="'weekView'"
+    [appointmentDataFields]="appointmentDataFields"
+    [resources]="resources"
+    [views]="views"
+    style="margin: 0 auto"
+  >
+  </jqxScheduler>
+</div>

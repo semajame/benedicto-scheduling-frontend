@@ -38,7 +38,7 @@ export class bsedFourthSchedComponent implements AfterViewInit {
 
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    this.cteService.getSecondSchedules().subscribe({
+    this.cteService.getFourthSchedules().subscribe({
       next: (data) => {
         // Clear previous conflicts
         this.conflicts = [];
