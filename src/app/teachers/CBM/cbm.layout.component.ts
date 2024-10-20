@@ -16,7 +16,7 @@ export class cbmTeachersLayout implements OnInit {
   ngOnInit() {
     // Example: Fetch teachers from 'Mandaue Campus' and 'College of Computer Studies'
     this.teacherService
-      .getInstructors('Mandaue Campus', 'College of Business Management')
+      .getInstructors('Mandaue Campus', 'College of Business and Management')
       .subscribe((data: Teachers[]) => {
         console.log('Teachers filtered by campus and department:', data);
         this.teachers = data;

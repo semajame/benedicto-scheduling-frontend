@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
-import { CoeService } from '@app/_services/coe.service';
+import { CbmService } from '@app/_services/cbm.service';
 
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
@@ -16,16 +16,16 @@ import { TeacherService } from '@app/_services/teacher.service';
 @Component({
   templateUrl: 'allSched.component.html',
 })
-export class bsieallSchedComponent implements AfterViewInit {
+export class bsmmallSchedComponent implements AfterViewInit {
   @ViewChild('schedulerReference5')
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
-  rooms: Room[] = [];
   conflicts: any[] = [];
+  rooms: Room[] = [];
   subjects: Subjects[] = [];
 
   constructor(
-    private coeService: CoeService,
+    private cbmService: CbmService,
     private alertService: AlertService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
@@ -35,7 +35,7 @@ export class bsieallSchedComponent implements AfterViewInit {
     this.generateAppointments();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
-      .getInstructors('Mandaue Campus', 'College of Engineering')
+      .getInstructors('Mandaue Campus', 'College of Business and Marketing')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
 
@@ -75,7 +75,7 @@ export class bsieallSchedComponent implements AfterViewInit {
 
   //^ GET APPOINTMENT
   generateAppointments(): any {
-    this.coeService.getAllBsieSchedule().subscribe({
+    this.cbmService.getAllBsmmSchedule().subscribe({
       next: (data) => {
         // Clear previous conflicts
         this.conflicts = [];
@@ -230,7 +230,7 @@ export class bsieallSchedComponent implements AfterViewInit {
 
     console.log(newAppointment);
 
-    this.coeService.addBsieSchedule(newAppointment).subscribe({
+    this.cbmService.addBsmmSchedule(newAppointment).subscribe({
       next: (response) => {
         // this.alertService.success('Success adding schedule', {
         //   keepAfterRouteChange: true,
@@ -310,8 +310,8 @@ export class bsieallSchedComponent implements AfterViewInit {
     };
 
     // Assume appointment.id is available in the event or the originalData
-    this.coeService
-      .updateBsieSchedule(appointment.id, updatedAppointment)
+    this.cbmService
+      .updateBsmmSchedule(appointment.id, updatedAppointment)
       .subscribe({
         next: (response) => {
           // Handle successful update
@@ -336,7 +336,7 @@ export class bsieallSchedComponent implements AfterViewInit {
     const appointment = event.args.appointment.originalData;
 
     if (confirm('Are you sure you want to delete this appointment?')) {
-      this.coeService.deleteBsieSchedule(appointment.id).subscribe({
+      this.cbmService.deleteBsmmSchedule(appointment.id).subscribe({
         next: () => {
           console.log('Appointment deleted successfully');
           // Remove the appointment from the local data source
@@ -406,7 +406,7 @@ export class bsieallSchedComponent implements AfterViewInit {
       try {
         // Fetch subjects filtered by department code
         this.subjectService
-          .getSubjects('COE') // Ensure this returns Observable<Subjects[]>
+          .getSubjects('CBM') // Ensure this returns Observable<Subjects[]>
           .subscribe({
             next: (data: Subjects[]) => {
               // Use Subjects[] directly
@@ -516,7 +516,10 @@ export class bsieallSchedComponent implements AfterViewInit {
           });
 
         this.teacherService
-          .getInstructors('Mandaue Campus', 'College of Computer Studies')
+          .getInstructors(
+            'Mandaue Campus',
+            'College of Business and Management'
+          )
           .subscribe((data: Teachers[]) => {
             console.log('Teachers filtered by campus and department:', data);
             this.teachers = data;

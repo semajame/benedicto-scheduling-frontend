@@ -100,6 +100,33 @@ import { bsathirdSchedComponent } from './CBM/BSA/3rd-year/thirdSched.component'
 import { bsafourthEnlistmentComponent } from './CBM/BSA/4th-year/fourthEnlistment.component';
 import { bsafourthSchedComponent } from './CBM/BSA/4th-year/fourthSched.component';
 import { bsaallSchedComponent } from './CBM/BSA/all/allSched.component';
+import { bshmallSchedComponent } from './CBM/BSHM/all/allSched.component';
+import { bshmfirstEnlistmentComponent } from './CBM/BSHM/1st-year/firstEnlistment.component';
+import { bshmfirstSchedComponent } from './CBM/BSHM/1st-year/firstSched.component';
+import { bshmsecondEnlistmentComponent } from './CBM/BSHM/2nd-year/secondEnlistment.component';
+import { bshmsecondSchedComponent } from './CBM/BSHM/2nd-year/secondSched.component';
+import { bshmthirdEnlistmentComponent } from './CBM/BSHM/3rd-year/thirdEnlistment.component';
+import { bshmthirdSchedComponent } from './CBM/BSHM/3rd-year/thirdSched.component';
+import { bshmfourthEnlistmentComponent } from './CBM/BSHM/4th-year/fourthEnlistment.component';
+import { bshmfourthSchedComponent } from './CBM/BSHM/4th-year/fourthSched.component';
+import { bshrmallSchedComponent } from './CBM/BSHRM/all/allSched.component';
+import { bshrmfirstEnlistmentComponent } from './CBM/BSHRM/1st-year/firstEnlistment.component';
+import { bshrmfirstSchedComponent } from './CBM/BSHRM/1st-year/firstSched.component';
+import { bshrmsecondEnlistmentComponent } from './CBM/BSHRM/2nd-year/secondEnlistment.component';
+import { bshrmsecondSchedComponent } from './CBM/BSHRM/2nd-year/secondSched.component';
+import { bshrmthirdEnlistmentComponent } from './CBM/BSHRM/3rd-year/thirdEnlistment.component';
+import { bshrmthirdSchedComponent } from './CBM/BSHRM/3rd-year/thirdSched.component';
+import { bshrmfourthEnlistmentComponent } from './CBM/BSHRM/4th-year/fourthEnlistment.component';
+import { bshrmfourthSchedComponent } from './CBM/BSHRM/4th-year/fourthSched.component';
+import { bsmmallSchedComponent } from './CBM/BSMM/all/allSched.component';
+import { bsmmfirstEnlistmentComponent } from './CBM/BSMM/1st-year/firstEnlistment.component';
+import { bsmmfirstSchedComponent } from './CBM/BSMM/1st-year/firstSched.component';
+import { bsmmsecondEnlistmentComponent } from './CBM/BSMM/2nd-year/secondEnlistment.component';
+import { bsmmsecondSchedComponent } from './CBM/BSMM/2nd-year/secondSched.component';
+import { bsmmthirdEnlistmentComponent } from './CBM/BSMM/3rd-year/thirdEnlistment.component';
+import { bsmmthirdSchedComponent } from './CBM/BSMM/3rd-year/thirdSched.component';
+import { bsmmfourthEnlistmentComponent } from './CBM/BSMM/4th-year/fourthEnlistment.component';
+import { bsmmfourthSchedComponent } from './CBM/BSMM/4th-year/fourthSched.component';
 
 @NgModule({
   imports: [
@@ -204,6 +231,33 @@ import { bsaallSchedComponent } from './CBM/BSA/all/allSched.component';
     bsafourthEnlistmentComponent,
     bsafourthSchedComponent,
     bsaallSchedComponent,
+    bshmallSchedComponent,
+    bshmfirstEnlistmentComponent,
+    bshmfirstSchedComponent,
+    bshmsecondEnlistmentComponent,
+    bshmsecondSchedComponent,
+    bshmthirdEnlistmentComponent,
+    bshmthirdSchedComponent,
+    bshmfourthEnlistmentComponent,
+    bshmfourthSchedComponent,
+    bshrmallSchedComponent,
+    bshrmfirstEnlistmentComponent,
+    bshrmfirstSchedComponent,
+    bshrmsecondEnlistmentComponent,
+    bshrmsecondSchedComponent,
+    bshrmthirdEnlistmentComponent,
+    bshrmthirdSchedComponent,
+    bshrmfourthEnlistmentComponent,
+    bshrmfourthSchedComponent,
+    bsmmallSchedComponent,
+    bsmmfirstEnlistmentComponent,
+    bsmmfirstSchedComponent,
+    bsmmsecondEnlistmentComponent,
+    bsmmsecondSchedComponent,
+    bsmmthirdEnlistmentComponent,
+    bsmmthirdSchedComponent,
+    bsmmfourthEnlistmentComponent,
+    bsmmfourthSchedComponent,
 
     LayoutComponent,
     ScheduleComponent,

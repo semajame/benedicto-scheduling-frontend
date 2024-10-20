@@ -5,6 +5,7 @@ import { CbmService } from '@app/_services/cbm.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 import { Subjects } from '@app/_models/subjects';
+import { Room } from '@app/_models/rooms';
 
 import { first, forkJoin } from 'rxjs';
 import { SubjectService } from '@app/_services/subjects.service';
@@ -20,6 +21,7 @@ export class bsaallSchedComponent implements AfterViewInit {
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
+  rooms: Room[] = [];
   subjects: Subjects[] = [];
 
   constructor(
@@ -482,16 +484,31 @@ export class bsaallSchedComponent implements AfterViewInit {
 
               fields.subjectContainer.append(yearContainer);
 
-              let roomContainer = ` <div>
-          <div class="jqx-scheduler-edit-dialog-label">Room</div>
-          <div class="jqx-scheduler-edit-dialog-field">
-            <select id="room" name="room" >
-              <option value="Computer Lab 1">Computer Lab 1</option>
-              <option value="Computer Lab 2">Computer Lab 2</option>
-            </select>
-          </div>
-        </div>`;
-              fields.subjectContainer.append(roomContainer);
+              this.subjectService.getRooms().subscribe((data: Room[]) => {
+                this.rooms = data;
+
+                // Build the teacher container and populate the dropdown after fetching data
+                let roomContainer = ` <div>
+                <div class="jqx-scheduler-edit-dialog-label">Room</div>
+                <div class="jqx-scheduler-edit-dialog-field">
+                  <select id="room" name="room" >
+                    
+                  </select>
+                </div>
+              </div>`;
+                fields.subjectContainer.append(roomContainer);
+
+                const roomSelect = document.getElementById('room');
+
+                if (roomSelect) {
+                  this.rooms.forEach((room) => {
+                    let option = document.createElement('option');
+                    option.value = `${room.roomName}`; // Assuming your API returns firstName and lastName
+                    option.text = `${room.roomName} `;
+                    roomSelect.appendChild(option);
+                  });
+                }
+              });
             },
             error: (error) => {
               console.error('Error fetching subjects:', error);
