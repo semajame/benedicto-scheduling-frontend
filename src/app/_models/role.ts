@@ -6,5 +6,5 @@ export enum Role {
   CEA = 'College of Education and Arts',
   CCS = 'College of Computer Studies',
   COE = 'College of Engineering',
-  CBM = 'College of Business Management',
+  CBM = 'College of Business and Management',
 }

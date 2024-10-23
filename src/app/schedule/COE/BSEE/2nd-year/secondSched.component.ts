@@ -1,13 +1,14 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 import { CoeService } from '@app/_services/coe.service';
+import { CcsService } from '@app/_services/ccs.service';
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 
 import { SubjectService } from '@app/_services/subjects.service';
 
 import { Subjects } from '@app/_models/subjects';
-import { first } from 'rxjs';
+import { first, forkJoin } from 'rxjs';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
 
@@ -23,6 +24,8 @@ export class bseesecondSchedComponent implements AfterViewInit {
 
   constructor(
     private coeService: CoeService,
+    private cssService: CcsService,
+
     private alertService: AlertService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
@@ -38,14 +41,26 @@ export class bseesecondSchedComponent implements AfterViewInit {
   }
 
   //^ GET APPOINTMENT
-  generateAppointments(): any {
-    this.coeService.getSecondBseeSchedules().subscribe({
-      next: (data) => {
+  generateAppointments(): void {
+    // Use forkJoin to wait for both `getMinorSubjects` and `getAllSchedules` to complete
+    forkJoin({
+      minorSubjects: this.coeService.findMinorSubjectsBseeSecondYear(),
+      technoSubject: this.cssService.findTechnoForCoe(),
+      getSecondBseeSchedules: this.coeService.getSecondBseeSchedules(),
+    }).subscribe({
+      next: ({ technoSubject, getSecondBseeSchedules, minorSubjects }) => {
         // Clear previous conflicts
         this.conflicts = [];
 
+        // Combine both sets of data into one array (you can change this logic based on your needs)
+        const combinedData = [
+          ...getSecondBseeSchedules,
+          ...technoSubject,
+          ...minorSubjects,
+        ];
+
         // Map data to appointment objects
-        const appointments = data.map((event) => ({
+        const appointments = combinedData.map((event) => ({
           id: event.id.toString(),
           subject_code: event.subject_code,
           subject: event.subject,
@@ -63,8 +78,11 @@ export class bseesecondSchedComponent implements AfterViewInit {
         }));
 
         // Detect conflicts and add conflict messages to notes
-        appointments.forEach((appointment1, index1) => {
-          appointments.slice(index1 + 1).forEach((appointment2) => {
+        for (let i = 0; i < appointments.length; i++) {
+          for (let j = i + 1; j < appointments.length; j++) {
+            const appointment1 = appointments[i];
+            const appointment2 = appointments[j];
+
             const isConflict =
               appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
@@ -74,49 +92,34 @@ export class bseesecondSchedComponent implements AfterViewInit {
               const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
               const conflictMessage2 = `Conflict with appointment ${appointment1.id}`;
 
-              // Append conflict messages to notes
+              // Log conflict messages
+              console.log(conflictMessage1, conflictMessage2);
 
-              // Add to conflicts array
-              if (
-                !this.conflicts.some(
-                  (conflict) => conflict.id === appointment1.id
-                )
-              ) {
-                this.conflicts.push({
-                  id: appointment1.id,
-                  subject_code: appointment1.subject_code,
-                  subject: appointment1.subject,
-                  units: appointment1.units,
-                  teacher: appointment1.teacher,
-                  room: appointment1.room,
-                  start: appointment1.start,
-                  end: appointment1.end,
-                  day: appointment1.day,
-                });
-              }
-
-              if (
-                !this.conflicts.some(
-                  (conflict) => conflict.id === appointment2.id
-                )
-              ) {
-                this.conflicts.push({
-                  id: appointment2.id,
-                  subject_code: appointment2.subject_code,
-                  subject: appointment2.subject,
-                  units: appointment2.units,
-                  teacher: appointment2.teacher,
-                  room: appointment2.room,
-                  start: appointment2.start,
-                  end: appointment2.end,
-                  day: appointment2.day,
-                });
-              }
+              // Add to conflicts array if not already present
+              [appointment1, appointment2].forEach((appointment) => {
+                if (
+                  !this.conflicts.some(
+                    (conflict) => conflict.id === appointment.id
+                  )
+                ) {
+                  this.conflicts.push({
+                    id: appointment.id,
+                    subject_code: appointment.subject_code,
+                    subject: appointment.subject,
+                    units: appointment.units,
+                    teacher: appointment.teacher,
+                    room: appointment.room,
+                    start: appointment.start,
+                    end: appointment.end,
+                    day: appointment.day,
+                  });
+                }
+              });
             }
-          });
-        });
+          }
+        }
 
-        // Load the appointments into the scheduler (if needed)
+        // Load the appointments into the scheduler
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.scheduler2.source(this.dataAdapter);
@@ -132,7 +135,7 @@ export class bseesecondSchedComponent implements AfterViewInit {
         this.alertService.error('Error loading schedules', {
           keepAfterRouteChange: true,
         });
-        console.error('Error loading schedules:', error);
+        console.error('Error loading schedules or minor subjects:', error);
       },
     });
   }

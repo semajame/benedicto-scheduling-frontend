@@ -176,7 +176,7 @@ export class bsafourthSchedComponent implements AfterViewInit {
 
   editDialogCreate = (dialog: any, fields: any, editAppointment: any) => {
     let subjectCodeContainer = ` <div>
-        <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0; ">Subject Code</div>
+        <div class="jqx-scheduler-edit-dialog-label pr-0" style="replace ">Subject Code</div>
         <div class="jqx-scheduler-edit-dialog-field">
           <select id="subjectCode" name="subjectCode"></select>
         </div>

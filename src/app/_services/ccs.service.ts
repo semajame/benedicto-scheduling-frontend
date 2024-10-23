@@ -16,6 +16,26 @@ export class CcsService {
 
   constructor(private http: HttpClient) {}
 
+  findMinorSubjectsIT(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIUrl}/minor-subjects`);
+  }
+
+  findTechnoForCoe(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIUrl}/minor-subjects/techno`);
+  }
+
+  findMinorSubjectsITFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIUrl}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsITSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIUrl}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsITThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIUrl}/minor-subjects/3rd-year`);
+  }
+
   //^ FIRST YEAR
 
   getFirstSchedules(): Observable<any[]> {

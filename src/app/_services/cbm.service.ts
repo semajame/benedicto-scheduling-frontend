@@ -173,4 +173,93 @@ export class CbmService {
   getFourthBsmmSchedules(): Observable<any[]> {
     return this.http.get<any[]>(`${this.APIBSMM}/4th-year`);
   }
+
+  //* MINOR SUBJECTS
+
+  //^ BSA
+  findMinorSubjectsBsa(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSA}/minor-subjects`);
+  }
+
+  findMinorSubjectsBsaFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSA}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBsaSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSA}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBsaThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSA}/minor-subjects/3rd-year`);
+  }
+
+  findMinorSubjectsBsaFourthYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSA}/minor-subjects/4th-year`);
+  }
+
+  //^ BSHM
+
+  findMinorSubjectsBshm(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHM}/minor-subjects`);
+  }
+
+  findMinorSubjectsBshmFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHM}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBshmSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHM}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBshmThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHM}/minor-subjects/3rd-year`);
+  }
+
+  findMinorSubjectsBshmFourthYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHM}/minor-subjects/4th-year`);
+  }
+
+  //^ BSMM
+
+  findMinorSubjectsBsmm(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSMM}/minor-subjects`);
+  }
+
+  findMinorSubjectsBsmmFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSMM}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBsmmSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSMM}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBsmmThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSMM}/minor-subjects/3rd-year`);
+  }
+
+  findMinorSubjectsBsmmFourthYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSMM}/minor-subjects/4th-year`);
+  }
+
+  //^ BSHRM
+
+  findMinorSubjectsBshrm(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHRM}/minor-subjects`);
+  }
+
+  findMinorSubjectsBshrmFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHRM}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBshrmSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHRM}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBshrmThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHRM}/minor-subjects/3rd-year`);
+  }
+
+  findMinorSubjectsBshrmFourthYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSHRM}/minor-subjects/4th-year`);
+  }
 }

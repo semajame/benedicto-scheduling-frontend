@@ -173,4 +173,65 @@ export class CoeService {
   getFourthBseeSchedules(): Observable<any[]> {
     return this.http.get<any[]>(`${this.APIBSEE}/4th-year`);
   }
+
+  //* MINOR SUBJECTS
+  findMinorSubjectsBsme(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/minor-subjects`);
+  }
+
+  findMinorSubjectsBsmeFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBsmeSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBsmeThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSME}/minor-subjects/3rd-year`);
+  }
+
+  findMinorSubjectsBsce(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/minor-subjects`);
+  }
+
+  findMinorSubjectsBsceFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBsceSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSCE}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBsee(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/minor-subjects`);
+  }
+
+  findMinorSubjectsBseeFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBseeSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBseeThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSEE}/minor-subjects/3rd-year`);
+  }
+
+  findMinorSubjectsBsie(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/minor-subjects`);
+  }
+
+  findMinorSubjectsBsieFirstYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/minor-subjects/1st-year`);
+  }
+
+  findMinorSubjectsBsieSecondYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/minor-subjects/2nd-year`);
+  }
+
+  findMinorSubjectsBsieThirdYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIBSIE}/minor-subjects/3rd-year`);
+  }
 }

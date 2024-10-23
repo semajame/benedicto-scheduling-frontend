@@ -1,15 +1,18 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 import { CcsService } from '@app/_services/ccs.service';
+import { CteService } from '@app/_services/cte.service';
 
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 import { Subjects } from '@app/_models/subjects';
 import { Room } from '@app/_models/rooms';
+import { Role } from '@app/_models/role';
+import { User } from '@app/_models';
 
 import { first, forkJoin } from 'rxjs';
 import { SubjectService } from '@app/_services/subjects.service';
-
+import { AccountService } from '@app/_services';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
 
@@ -23,13 +26,19 @@ export class allSchedComponent implements AfterViewInit {
   rooms: Room[] = [];
   conflicts: any[] = [];
   subjects: Subjects[] = [];
+  Role = Role;
+  user?: User | null;
 
   constructor(
     private ccsService: CcsService,
+    private cteService: CteService,
     private alertService: AlertService,
     private teacherService: TeacherService,
-    private subjectService: SubjectService
-  ) {}
+    private subjectService: SubjectService,
+    private accountService: AccountService
+  ) {
+    this.accountService.user.subscribe((x) => (this.user = x));
+  }
 
   ngAfterViewInit(): void {
     this.generateAppointments();
@@ -74,14 +83,22 @@ export class allSchedComponent implements AfterViewInit {
   }
 
   //^ GET APPOINTMENT
-  generateAppointments(): any {
-    this.ccsService.getAllSchedules().subscribe({
-      next: (data) => {
+
+  generateAppointments(): void {
+    // Use forkJoin to wait for both `getMinorSubjects` and `getAllSchedules` to complete
+    forkJoin({
+      minorSubjects: this.ccsService.findMinorSubjectsIT(),
+      allSchedules: this.ccsService.getAllSchedules(),
+    }).subscribe({
+      next: ({ minorSubjects, allSchedules }) => {
         // Clear previous conflicts
         this.conflicts = [];
 
+        // Combine both sets of data into one array (you can change this logic based on your needs)
+        const combinedData = [...minorSubjects, ...allSchedules];
+
         // Map data to appointment objects
-        const appointments = data.map((event) => ({
+        const appointments = combinedData.map((event) => ({
           id: event.id.toString(),
           subject_code: event.subject_code,
           subject: event.subject,
@@ -99,8 +116,11 @@ export class allSchedComponent implements AfterViewInit {
         }));
 
         // Detect conflicts and add conflict messages to notes
-        appointments.forEach((appointment1, index1) => {
-          appointments.slice(index1 + 1).forEach((appointment2) => {
+        for (let i = 0; i < appointments.length; i++) {
+          for (let j = i + 1; j < appointments.length; j++) {
+            const appointment1 = appointments[i];
+            const appointment2 = appointments[j];
+
             const isConflict =
               appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
@@ -110,49 +130,34 @@ export class allSchedComponent implements AfterViewInit {
               const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
               const conflictMessage2 = `Conflict with appointment ${appointment1.id}`;
 
-              // Append conflict messages to notes
+              // Log conflict messages
+              console.log(conflictMessage1, conflictMessage2);
 
-              // Add to conflicts array
-              if (
-                !this.conflicts.some(
-                  (conflict) => conflict.id === appointment1.id
-                )
-              ) {
-                this.conflicts.push({
-                  id: appointment1.id,
-                  subject_code: appointment1.subject_code,
-                  subject: appointment1.subject,
-                  units: appointment1.units,
-                  teacher: appointment1.teacher,
-                  room: appointment1.room,
-                  start: appointment1.start,
-                  end: appointment1.end,
-                  day: appointment1.day,
-                });
-              }
-
-              if (
-                !this.conflicts.some(
-                  (conflict) => conflict.id === appointment2.id
-                )
-              ) {
-                this.conflicts.push({
-                  id: appointment2.id,
-                  subject_code: appointment2.subject_code,
-                  subject: appointment2.subject,
-                  units: appointment2.units,
-                  teacher: appointment2.teacher,
-                  room: appointment2.room,
-                  start: appointment2.start,
-                  end: appointment2.end,
-                  day: appointment2.day,
-                });
-              }
+              // Add to conflicts array if not already present
+              [appointment1, appointment2].forEach((appointment) => {
+                if (
+                  !this.conflicts.some(
+                    (conflict) => conflict.id === appointment.id
+                  )
+                ) {
+                  this.conflicts.push({
+                    id: appointment.id,
+                    subject_code: appointment.subject_code,
+                    subject: appointment.subject,
+                    units: appointment.units,
+                    teacher: appointment.teacher,
+                    room: appointment.room,
+                    start: appointment.start,
+                    end: appointment.end,
+                    day: appointment.day,
+                  });
+                }
+              });
             }
-          });
-        });
+          }
+        }
 
-        // Load the appointments into the scheduler (if needed)
+        // Load the appointments into the scheduler
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.scheduler5.source(this.dataAdapter);
@@ -168,7 +173,7 @@ export class allSchedComponent implements AfterViewInit {
         this.alertService.error('Error loading schedules', {
           keepAfterRouteChange: true,
         });
-        console.error('Error loading schedules:', error);
+        console.error('Error loading schedules or minor subjects:', error);
       },
     });
   }
@@ -416,7 +421,7 @@ export class allSchedComponent implements AfterViewInit {
               // Build the subject code container and populate the dropdown after fetching data
               let subjectCodeContainer = `
                 <div>
-                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0;">Subject Code</div>
+                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="">Subject Code</div>
                   <div class="jqx-scheduler-edit-dialog-field">
                     <select id="subjectCode" name="subjectCode"></select>
                   </div>
@@ -515,35 +520,37 @@ export class allSchedComponent implements AfterViewInit {
             },
           });
 
-        this.teacherService
-          .getInstructors('Mandaue Campus', 'College of Computer Studies')
-          .subscribe((data: Teachers[]) => {
-            console.log('Teachers filtered by campus and department:', data);
-            this.teachers = data;
+        setTimeout(() => {
+          this.teacherService
+            .getInstructors('Mandaue Campus', 'College of Computer Studies')
+            .subscribe((data: Teachers[]) => {
+              console.log('Teachers filtered by campus and department:', data);
+              this.teachers = data;
 
-            // Build the teacher container and populate the dropdown after fetching data
-            let teacherContainer = `
-              <div>
-                <div class="jqx-scheduler-edit-dialog-label">Teacher</div>
-                <div class="jqx-scheduler-edit-dialog-field">
-                  <select id="teacher" name="teacher"></select>
-                </div>
-              </div>
-            `;
+              // Build the teacher container and populate the dropdown after fetching data
+              let teacherContainer = `
+                  <div>
+                    <div class="jqx-scheduler-edit-dialog-label">Teacher</div>
+                    <div class="jqx-scheduler-edit-dialog-field">
+                      <select id="teacher" name="teacher"></select>
+                    </div>
+                  </div>
+                `;
 
-            fields.subjectContainer.append(teacherContainer);
+              fields.subjectContainer.append(teacherContainer);
 
-            const teacherSelect = document.getElementById('teacher');
+              const teacherSelect = document.getElementById('teacher');
 
-            if (teacherSelect) {
-              this.teachers.forEach((teacher) => {
-                let option = document.createElement('option');
-                option.value = `${teacher.name}`; // Assuming your API returns firstName and lastName
-                option.text = `${teacher.name} `;
-                teacherSelect.appendChild(option);
-              });
-            }
-          });
+              if (teacherSelect) {
+                this.teachers.forEach((teacher) => {
+                  let option = document.createElement('option');
+                  option.value = `${teacher.name}`; // Assuming your API returns firstName and lastName
+                  option.text = `${teacher.name} `;
+                  teacherSelect.appendChild(option);
+                });
+              }
+            });
+        }, 800); // 1 second delay
       } catch (error) {
         console.error('Error fetching subjects:', error);
       }

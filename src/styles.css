@@ -38,7 +38,14 @@ body {
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   margin: 0 !important; /* Remove any margins */
+  /* height: 0px !important; */
 }
+
+/* .jqx-window-content {
+  height: 380px !important;
+  width: 530px !important;
+  overflow-x: hidden;
+} */
 
 .alert-container {
   position: fixed;
@@ -73,21 +80,6 @@ button > img {
 .logged-as {
   font-size: 12px;
 }
-
-/* .alert-green {
-  background-color: #206527;
-  color: #fff;
-}
-
-.alert-red {
-  background-color: #7c2c2c;
-  color: white;
-}
-
-.alert-blue {
-  background-color: #1f4a7e;
-  color: white;
-} */
 
 .schedule-container {
   margin: 0 auto;

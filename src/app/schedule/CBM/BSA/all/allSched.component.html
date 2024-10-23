@@ -6,6 +6,7 @@
     <div>
       <button
         class="btn btn-primary"
+        *ngIf="user?.user?.role === Role.CBM"
         (click)="this.scheduler5.openDialog(0, 0)"
       >
         Create Schedule

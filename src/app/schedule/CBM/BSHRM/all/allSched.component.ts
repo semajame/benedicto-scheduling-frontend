@@ -6,6 +6,8 @@ import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
 import { Subjects } from '@app/_models/subjects';
 import { Room } from '@app/_models/rooms';
+import { Role } from '@app/_models/role';
+import { User } from '@app/_models';
 
 import { first, forkJoin } from 'rxjs';
 import { SubjectService } from '@app/_services/subjects.service';
@@ -23,6 +25,8 @@ export class bshrmallSchedComponent implements AfterViewInit {
   conflicts: any[] = [];
   rooms: Room[] = [];
   subjects: Subjects[] = [];
+  Role = Role;
+  user?: User | null;
 
   constructor(
     private cbmService: CbmService,
@@ -416,7 +420,7 @@ export class bshrmallSchedComponent implements AfterViewInit {
               // Build the subject code container and populate the dropdown after fetching data
               let subjectCodeContainer = `
                 <div>
-                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="padding-right: 0; padding-left: 0;">Subject Code</div>
+                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="">Subject Code</div>
                   <div class="jqx-scheduler-edit-dialog-field">
                     <select id="subjectCode" name="subjectCode"></select>
                   </div>
@@ -515,17 +519,18 @@ export class bshrmallSchedComponent implements AfterViewInit {
             },
           });
 
-        this.teacherService
-          .getInstructors(
-            'Mandaue Campus',
-            'College of Business and Management'
-          )
-          .subscribe((data: Teachers[]) => {
-            console.log('Teachers filtered by campus and department:', data);
-            this.teachers = data;
+        setTimeout(() => {
+          this.teacherService
+            .getInstructors(
+              'Mandaue Campus',
+              'College of Business and Management'
+            )
+            .subscribe((data: Teachers[]) => {
+              console.log('Teachers filtered by campus and department:', data);
+              this.teachers = data;
 
-            // Build the teacher container and populate the dropdown after fetching data
-            let teacherContainer = `
+              // Build the teacher container and populate the dropdown after fetching data
+              let teacherContainer = `
               <div>
                 <div class="jqx-scheduler-edit-dialog-label">Teacher</div>
                 <div class="jqx-scheduler-edit-dialog-field">
@@ -534,19 +539,20 @@ export class bshrmallSchedComponent implements AfterViewInit {
               </div>
             `;
 
-            fields.subjectContainer.append(teacherContainer);
+              fields.subjectContainer.append(teacherContainer);
 
-            const teacherSelect = document.getElementById('teacher');
+              const teacherSelect = document.getElementById('teacher');
 
-            if (teacherSelect) {
-              this.teachers.forEach((teacher) => {
-                let option = document.createElement('option');
-                option.value = `${teacher.name}`; // Assuming your API returns firstName and lastName
-                option.text = `${teacher.name} `;
-                teacherSelect.appendChild(option);
-              });
-            }
-          });
+              if (teacherSelect) {
+                this.teachers.forEach((teacher) => {
+                  let option = document.createElement('option');
+                  option.value = `${teacher.name}`; // Assuming your API returns firstName and lastName
+                  option.text = `${teacher.name} `;
+                  teacherSelect.appendChild(option);
+                });
+              }
+            });
+        }, 800);
       } catch (error) {
         console.error('Error fetching subjects:', error);
       }
