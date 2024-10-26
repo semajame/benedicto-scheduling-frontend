@@ -39,7 +39,7 @@ export class bshmallSchedComponent implements AfterViewInit {
     this.generateAppointments();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
-      .getInstructors('Mandaue Campus', 'College of Engineering')
+      .getInstructors('Mandaue Campus', 'College of Business and Management')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
 
@@ -78,14 +78,21 @@ export class bshmallSchedComponent implements AfterViewInit {
   }
 
   //^ GET APPOINTMENT
-  generateAppointments(): any {
-    this.cbmService.getAllBshmSchedule().subscribe({
-      next: (data) => {
+  generateAppointments(): void {
+    // Use forkJoin to wait for both `getMinorSubjects` and `getAllSchedules` to complete
+    forkJoin({
+      minorSubject: this.cbmService.findMinorSubjectsBshm(),
+      getAllBshmSchedules: this.cbmService.getAllBshmSchedule(),
+    }).subscribe({
+      next: ({ getAllBshmSchedules, minorSubject }) => {
         // Clear previous conflicts
         this.conflicts = [];
 
+        // Combine both sets of data into one array (you can change this logic based on your needs)
+        const combinedData = [...getAllBshmSchedules, ...minorSubject];
+
         // Map data to appointment objects
-        const appointments = data.map((event) => ({
+        const appointments = combinedData.map((event) => ({
           id: event.id.toString(),
           subject_code: event.subject_code,
           subject: event.subject,
@@ -103,8 +110,11 @@ export class bshmallSchedComponent implements AfterViewInit {
         }));
 
         // Detect conflicts and add conflict messages to notes
-        appointments.forEach((appointment1, index1) => {
-          appointments.slice(index1 + 1).forEach((appointment2) => {
+        for (let i = 0; i < appointments.length; i++) {
+          for (let j = i + 1; j < appointments.length; j++) {
+            const appointment1 = appointments[i];
+            const appointment2 = appointments[j];
+
             const isConflict =
               appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
@@ -114,49 +124,34 @@ export class bshmallSchedComponent implements AfterViewInit {
               const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
               const conflictMessage2 = `Conflict with appointment ${appointment1.id}`;
 
-              // Append conflict messages to notes
+              // Log conflict messages
+              console.log(conflictMessage1, conflictMessage2);
 
-              // Add to conflicts array
-              if (
-                !this.conflicts.some(
-                  (conflict) => conflict.id === appointment1.id
-                )
-              ) {
-                this.conflicts.push({
-                  id: appointment1.id,
-                  subject_code: appointment1.subject_code,
-                  subject: appointment1.subject,
-                  units: appointment1.units,
-                  teacher: appointment1.teacher,
-                  room: appointment1.room,
-                  start: appointment1.start,
-                  end: appointment1.end,
-                  day: appointment1.day,
-                });
-              }
-
-              if (
-                !this.conflicts.some(
-                  (conflict) => conflict.id === appointment2.id
-                )
-              ) {
-                this.conflicts.push({
-                  id: appointment2.id,
-                  subject_code: appointment2.subject_code,
-                  subject: appointment2.subject,
-                  units: appointment2.units,
-                  teacher: appointment2.teacher,
-                  room: appointment2.room,
-                  start: appointment2.start,
-                  end: appointment2.end,
-                  day: appointment2.day,
-                });
-              }
+              // Add to conflicts array if not already present
+              [appointment1, appointment2].forEach((appointment) => {
+                if (
+                  !this.conflicts.some(
+                    (conflict) => conflict.id === appointment.id
+                  )
+                ) {
+                  this.conflicts.push({
+                    id: appointment.id,
+                    subject_code: appointment.subject_code,
+                    subject: appointment.subject,
+                    units: appointment.units,
+                    teacher: appointment.teacher,
+                    room: appointment.room,
+                    start: appointment.start,
+                    end: appointment.end,
+                    day: appointment.day,
+                  });
+                }
+              });
             }
-          });
-        });
+          }
+        }
 
-        // Load the appointments into the scheduler (if needed)
+        // Load the appointments into the scheduler
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.scheduler5.source(this.dataAdapter);
@@ -172,7 +167,7 @@ export class bshmallSchedComponent implements AfterViewInit {
         this.alertService.error('Error loading schedules', {
           keepAfterRouteChange: true,
         });
-        console.error('Error loading schedules:', error);
+        console.error('Error loading schedules or minor subjects:', error);
       },
     });
   }
@@ -185,12 +180,17 @@ export class bshmallSchedComponent implements AfterViewInit {
     const units = $('#units').val();
     const subject = $('#subject').val();
     const room = $('#room').val();
-    const teacher = $('#teacher').val();
+    const teacher = $('#teacher').val(); // teacher could be string | number | string[] | undefined
     const year = $('#year').val();
 
     const startDate = new Date(appointment.start);
 
-    // If you need the name of the day instead of the numeric value
+    if (typeof subject_code !== 'string') {
+      console.error('Invalid subject code:', subject_code);
+      return; // Exit early if subject_code is not a string
+    }
+
+    // Days of the week mapping
     const daysOfWeek: { [key: string]: string } = {
       SU: 'Sunday',
       MO: 'M',
@@ -201,7 +201,6 @@ export class bshmallSchedComponent implements AfterViewInit {
       SA: 'S',
     };
 
-    // Extract and parse the recurrence pattern to get the days of the week
     const recurrencePattern = appointment.recurrencePattern?.toString() ?? '';
     const matchedDays = recurrencePattern.match(/BYDAY=([^;]+)/);
     const dayNames = matchedDays
@@ -216,44 +215,73 @@ export class bshmallSchedComponent implements AfterViewInit {
           ],
         ];
 
-    const dayName = dayNames.join(''); // Combine day names, e.g., "M, T"
+    const dayName = dayNames.join('');
 
-    const newAppointment = {
-      subject_code: subject_code,
-      subject: subject,
-      units: units,
-      room: room,
-      teacher: teacher,
-      year: year,
-      start: new Date(startDate),
-      end: new Date(appointment.end),
-      recurrencePattern: recurrencePattern || null,
-      day: dayName, // Add the combined day names
-      background: appointment.background,
-    };
+    // Fetch `subject_id` based on subject_code
+    this.subjectService.searchSubjectsBySubjectCode(subject_code).subscribe({
+      next: (subjectData) => {
+        if (subjectData && subjectData.course_id) {
+          const course_id = subjectData.course_id;
 
-    console.log(newAppointment);
+          // Type guard to ensure teacher is a string
+          if (typeof teacher === 'string') {
+            // Fetch `teacher_id` based on teacher name
+            this.teacherService.getTeacherByName(teacher).subscribe({
+              next: (teacherData) => {
+                if (teacherData && teacherData.employee_id) {
+                  const newAppointment = {
+                    subject_id: course_id, // Populate subject_id with retrieved subject_id
+                    subject_code: subject_code,
+                    subject: subject,
+                    teacher: teacher,
+                    units: units,
+                    room: room,
+                    teacher_id: teacherData.employee_id, // Populate teacher_id with employee_id
+                    year: year,
+                    start: new Date(startDate),
+                    end: new Date(appointment.end),
+                    recurrencePattern: recurrencePattern || null,
+                    day: dayName,
+                    background: appointment.background,
+                  };
 
-    this.cbmService.addBshmSchedule(newAppointment).subscribe({
-      next: (response) => {
-        // this.alertService.success('Success adding schedule', {
-        //   keepAfterRouteChange: true,
-        // });
-        appointment.id = response.id;
+                  console.log(newAppointment);
 
-        this.source.localdata.push(appointment);
-        this.scheduler5.source(this.dataAdapter);
+                  this.cbmService.addBshmSchedule(newAppointment).subscribe({
+                    next: (response) => {
+                      appointment.id = response.id;
+                      this.source.localdata.push(appointment);
+                      this.scheduler5.source(this.dataAdapter);
+                      localStorage.setItem('scheduleAdded', 'true');
+                      window.location.reload();
+                    },
+                    error: (error) => {
+                      this.alertService.error('Error adding schedule', {
+                        keepAfterRouteChange: true,
+                        error,
+                      });
 
-        localStorage.setItem('scheduleAdded', 'true');
-
-        window.location.reload();
+                      console.error('Error adding schedule:', error.message);
+                      console.error('Error details:', error); // Log full error for troubleshooting
+                    },
+                  });
+                } else {
+                  console.error('Employee ID not found for teacher:', teacher);
+                }
+              },
+              error: (error) => {
+                console.error('Error fetching teacher by name:', error);
+              },
+            });
+          } else {
+            console.error('Invalid teacher name:', teacher);
+          }
+        } else {
+          console.error('Subject ID not found for subject code:', subject_code);
+        }
       },
-
       error: (error) => {
-        this.alertService.error('Error adding schedule', {
-          keepAfterRouteChange: true,
-          error,
-        });
+        console.error('Error fetching subject by code:', error);
       },
     });
   }
@@ -261,7 +289,6 @@ export class bshmallSchedComponent implements AfterViewInit {
   //^ UPDATE APPOINTMENT
   AppointmentUpdate(event: any): void {
     const appointment = event.args.appointment.originalData;
-
     const subject_code = $('#subjectCode').val();
     const units = $('#units').val();
     const subject = $('#subject').val();
@@ -269,9 +296,12 @@ export class bshmallSchedComponent implements AfterViewInit {
     const teacher = $('#teacher').val();
     const year = $('#year').val();
 
-    const startDate = new Date(appointment.start);
+    if (typeof subject_code !== 'string') {
+      console.error('Invalid subject code:', subject_code);
+      return; // Exit early if subject_code is not a string
+    }
 
-    // If you need the name of the day instead of the numeric value
+    const startDate = new Date(appointment.start);
     const daysOfWeek: { [key: string]: string } = {
       SU: 'Sunday',
       MO: 'M',
@@ -282,8 +312,8 @@ export class bshmallSchedComponent implements AfterViewInit {
       SA: 'S',
     };
 
-    // Extract and parse the recurrence pattern to get the days of the week
     const recurrencePattern = appointment.recurrencePattern?.toString() ?? '';
+
     const matchedDays = recurrencePattern.match(/BYDAY=([^;]+)/);
     const dayNames = matchedDays
       ? matchedDays[1]
@@ -299,40 +329,72 @@ export class bshmallSchedComponent implements AfterViewInit {
 
     const dayName = dayNames.join(''); // Combine day names, e.g., "M, T"
 
-    const updatedAppointment = {
-      subject_code: subject_code,
-      subject: subject,
-      units: units,
-      room: room,
-      year: year,
-      teacher: teacher,
-      start: new Date(startDate),
-      end: new Date(appointment.end),
-      recurrencePattern: recurrencePattern || null,
-      day: dayName, // Add the combined day names
-      background: appointment.background,
-    };
+    // Fetch `subject_id` and `teacher_id` in a chained manner
+    this.subjectService.searchSubjectsBySubjectCode(subject_code).subscribe({
+      next: (subjectData) => {
+        const course_id = subjectData?.course_id;
+        if (!course_id) {
+          console.error('Subject ID not found for subject code:', subject_code);
+          return;
+        }
 
-    // Assume appointment.id is available in the event or the originalData
-    this.cbmService
-      .updateBshmSchedule(appointment.id, updatedAppointment)
-      .subscribe({
-        next: (response) => {
-          // Handle successful update
-          console.log('Appointment updated successfully', response);
-          this.source.localdata = this.source.localdata.map(
-            (item: { id: any }) =>
-              item.id === appointment.id ? updatedAppointment : item
-          );
-          this.scheduler5.source(this.dataAdapter);
-          localStorage.setItem('scheduleUpdated', 'true');
-          window.location.reload();
-        },
-        error: (error) => {
-          // Handle error during update
-          console.error('Error updating appointment', error);
-        },
-      });
+        if (typeof teacher !== 'string') {
+          console.error('Invalid teacher name:', teacher);
+          return;
+        }
+
+        this.teacherService.getTeacherByName(teacher).subscribe({
+          next: (teacherData) => {
+            const teacher_id = teacherData?.employee_id;
+            if (!teacher_id) {
+              console.error('Employee ID not found for teacher:', teacher);
+              return;
+            }
+
+            // Create the updated appointment data
+            const updatedAppointment = {
+              subject_id: course_id,
+              subject_code: subject_code,
+              subject: subject,
+              teacher: teacher,
+              units: units,
+              room: room,
+              teacher_id: teacher_id,
+              year: year,
+              start: new Date(startDate),
+              end: new Date(appointment.end),
+              recurrencePattern: recurrencePattern || null,
+              day: dayName,
+              background: appointment.background,
+            };
+
+            // Update the appointment
+            this.cbmService
+              .updateBshmSchedule(appointment.id, updatedAppointment)
+              .subscribe({
+                next: (response) => {
+                  // Handle successful update
+                  console.log('Appointment updated successfully', response);
+                  this.source.localdata = this.source.localdata.map(
+                    (item: { id: any }) =>
+                      item.id === appointment.id ? updatedAppointment : item
+                  );
+                  this.scheduler5.source(this.dataAdapter);
+                  localStorage.setItem('scheduleUpdated', 'true');
+                  window.location.reload();
+                },
+                error: (error) => {
+                  // Handle error during update
+                  console.error('Error updating appointment', error);
+                },
+              });
+          },
+          error: (error) =>
+            console.error('Error fetching teacher by name:', error),
+        });
+      },
+      error: (error) => console.error('Error fetching subject by code:', error),
+    });
   }
 
   //^ DELETE APPOINTMENT

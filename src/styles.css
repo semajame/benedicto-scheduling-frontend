@@ -24,8 +24,16 @@ body {
   height: 100vh;
 }
 
+.card-img-top {
+  background: url(https://mis.benedictocollege.edu.ph/assets/bene-school-815be6299a10bcc76c09c819b5a1f49beb216565f77ba611270de3b63f1b33f6.jpg)
+    no-repeat bottom / cover;
+  border: 1px solid white;
+  height: 120px;
+}
+
 .jqx-scheduler-edit-dialog-label {
   width: unset !important;
+  margin: 0px !important;
 }
 
 .jqx-scheduler-not-work-time-cell {

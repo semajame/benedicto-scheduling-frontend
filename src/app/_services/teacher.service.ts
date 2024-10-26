@@ -33,6 +33,20 @@ export class TeacherService {
     );
   }
 
+  getTeacherByName(name: string): Observable<Teachers | null> {
+    return this.http
+      .get<Teachers[]>(
+        `${baseUrl}/datas/teachers/search?name=${encodeURIComponent(name)}`
+      )
+      .pipe(
+        map((response) => {
+          const teachers = Array.isArray(response) ? response : [response]; // Ensure teachers is always an array
+          const teacher = teachers.find((teacher) => teacher.name === name);
+          return teacher || null;
+        })
+      );
+  }
+
   getTeacherById(employee_id: number): Observable<any> {
     return this.http.get(`${baseUrl}/datas/teacher/${employee_id}`);
   }
