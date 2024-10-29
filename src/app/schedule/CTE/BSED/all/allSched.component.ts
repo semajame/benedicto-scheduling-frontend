@@ -27,7 +27,7 @@ export class bsedSchedComponent implements AfterViewInit {
   conflicts: any[] = [];
   subjects: Subjects[] = [];
   Role = Role;
-  user?: User | null;
+  user?: User;
 
   constructor(
     private cteService: CteService,

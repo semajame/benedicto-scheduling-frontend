@@ -1,0 +1,45 @@
+<div class="container">
+  <h1>Rooms</h1>
+  <p>You're logged in with Benedicto College Scheduling.</p>
+</div>
+
+<div class="container mt-5 p-0">
+  <div class="main-body p-0" class="overflow-auto" style="height: 400px">
+    <!-- your-component.component.html -->
+    <table class="table">
+      <thead>
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">Room</th>
+          <th scope="col">Floor</th>
+          <th scope="col">Building</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+
+      <div
+        *ngIf="loading"
+        class="d-flex justify-content-center align-items-center mt-3"
+      >
+        <div class="loader"></div>
+      </div>
+
+      <tbody *ngIf="!loading">
+        <tr *ngFor="let room of rooms">
+          <!-- <th scope="row">{{ teacher.id }}</th> -->
+          <td>{{ room.roomName }}</td>
+          <td>{{ room.floorName }}</td>
+          <td>{{ room.buildingName }}</td>
+
+          <td>
+            <div class="d-flex gap-2">
+              <a class="btn btn-success" routerLink="{{ room.roomName }}"
+                >View</a
+              >
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

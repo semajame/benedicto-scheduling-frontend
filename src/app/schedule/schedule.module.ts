@@ -128,6 +128,9 @@ import { bsmmthirdSchedComponent } from './CBM/BSMM/3rd-year/thirdSched.componen
 import { bsmmfourthEnlistmentComponent } from './CBM/BSMM/4th-year/fourthEnlistment.component';
 import { bsmmfourthSchedComponent } from './CBM/BSMM/4th-year/fourthSched.component';
 
+import { roomsLayoutComponent } from './ROOMS/rooms.layout.component';
+import { ViewComponent } from './ROOMS/view.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -261,6 +264,8 @@ import { bsmmfourthSchedComponent } from './CBM/BSMM/4th-year/fourthSched.compon
 
     LayoutComponent,
     ScheduleComponent,
+    roomsLayoutComponent,
+    ViewComponent,
   ],
 })
 export class scheduleModule {}

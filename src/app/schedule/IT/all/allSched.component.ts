@@ -251,8 +251,6 @@ export class allSchedComponent implements AfterViewInit {
                     background: appointment.background,
                   };
 
-                  console.log(newAppointment);
-
                   this.ccsService.addAllSchedule(newAppointment).subscribe({
                     next: (response) => {
                       appointment.id = response.id;

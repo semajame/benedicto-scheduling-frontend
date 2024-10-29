@@ -54,4 +54,12 @@ export class SubjectService {
   getRooms(): Observable<Room[]> {
     return this.http.get<Room[]>(`${this.apiRooms}`);
   }
+
+  getRoomById(roomName: string): Observable<Room> {
+    return this.http.get<Room>(`${this.apiRooms}/${roomName}`);
+  }
+
+  getRoomSchedule(room: string): Observable<Room> {
+    return this.http.get<Room>(`${this.apiRooms}/schedule/${room}`);
+  }
 }

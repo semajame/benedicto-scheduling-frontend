@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LayoutComponent } from './layout.component';
 import { ScheduleComponent } from './schedule.component';
+import { roomsLayoutComponent } from './ROOMS/rooms.layout.component';
 
 //^ IT
 import { firstSchedComponent } from './IT/1st-year/firstSched.component';
@@ -131,12 +132,15 @@ import { bshrmthirdSchedComponent } from './CBM/BSHRM/3rd-year/thirdSched.compon
 import { bshrmfourthEnlistmentComponent } from './CBM/BSHRM/4th-year/fourthEnlistment.component';
 import { bshrmfourthSchedComponent } from './CBM/BSHRM/4th-year/fourthSched.component';
 import { bshrmallSchedComponent } from './CBM/BSHRM/all/allSched.component';
+import { ViewComponent } from './ROOMS/view.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ScheduleComponent,
     children: [
+      { path: 'rooms', component: roomsLayoutComponent },
+      { path: 'rooms/:roomName', component: ViewComponent },
       { path: 'college-of-computer-studies', component: itLayoutComponent },
       {
         path: 'college-of-computer-studies/information-technology/1st-year',
