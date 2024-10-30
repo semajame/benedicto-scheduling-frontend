@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { CbmService } from '@app/_services/cbm.service';
 import { schedule } from '@app/_models/schedule';
 import { DatePipe } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   templateUrl: 'fourthEnlistment.component.html',
@@ -9,17 +10,30 @@ import { DatePipe } from '@angular/common';
 })
 export class bshmfourthEnlistmentComponent implements AfterViewInit {
   schedule: schedule[] = [];
+  minorSubjects: any[] = []; // Declare minorSubjects as an array
 
   constructor(private cbmService: CbmService, private datePipe: DatePipe) {}
 
   ngAfterViewInit(): void {
-    this.cbmService.getFourthBshmSchedules().subscribe((data) => {
-      this.schedule = data.map((item) => {
-        // Convert start and end to Date objects and format to AM/PM
+    forkJoin({
+      schedules: this.cbmService.getFourthBshmSchedules(),
+      minorSubjects: this.cbmService.findMinorSubjectsBshmFourthYear(),
+    }).subscribe(({ schedules, minorSubjects }) => {
+      // Process schedule data
+      this.schedule = schedules.map((item) => {
         item.start = this.datePipe.transform(new Date(item.start), 'h:mm a');
         item.end = this.datePipe.transform(new Date(item.end), 'h:mm a');
         return item;
       });
+
+      const processedMinorSubjects = minorSubjects.map((item) => {
+        item.start = this.datePipe.transform(new Date(item.start), 'h:mm a');
+        item.end = this.datePipe.transform(new Date(item.end), 'h:mm a');
+        return item;
+      });
+
+      // Merge schedules and minorSubjects into a single array
+      this.schedule = [...this.schedule, ...processedMinorSubjects];
     });
   }
 }
