@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th style="width: 30%">Name</th>
+      <th style="width: 30%">Username</th>
       <th style="width: 30%">Email</th>
       <th style="width: 30%">Role</th>
       <th style="width: 10%"></th>
@@ -13,6 +14,7 @@
   <tbody>
     <tr *ngFor="let account of accounts">
       <td>{{ account.first_name }} {{ account.last_name }}</td>
+      <td>{{ account.username }}</td>
       <td>{{ account.email }}</td>
       <td>{{ account.role }}</td>
       <td style="white-space: nowrap">
