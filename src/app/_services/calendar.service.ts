@@ -17,8 +17,13 @@ export class CalendarService {
 
   //^ CALENDAR
 
+  // Fetch calendar events for a specific user
+  // getCalendarByDean(username: string): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.APICalendar}/event/${username}`);
+  // }
+
   getCalendar(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.APICalendar}/event`);
+    return this.http.get<any[]>(`${this.APICalendar}/event/`);
   }
 
   addCalendar(calendar: any): Observable<any> {

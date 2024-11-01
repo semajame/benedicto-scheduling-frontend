@@ -19,6 +19,7 @@ export class HomeComponent implements AfterViewInit {
   appointments: any[] = [];
   dailyQuote: string = ''; // Holds the daily quote
   dailyAuthor: string = ''; // Holds the author
+  currentDate: Date = new Date(); // Tracks the current date for filtering
 
   constructor(
     private accountService: AccountService,

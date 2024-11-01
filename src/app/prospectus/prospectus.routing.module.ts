@@ -26,8 +26,15 @@ import { ProspectusBeedSecond } from './CTE/BEED/2nd-year/prospectus-2nd.compone
 import { ProspectusBeedThird } from './CTE/BEED/3rd-year/prospectus-3rd.component';
 import { ProspectusBeedFourth } from './CTE/BEED/4th-year/prospectus-4th.component';
 
+//^ COE
+import { coeLayoutComponent } from './COE/coe.layout.component';
+
 import { LayoutComponent } from './layout.component';
 import { ProspectusComponent } from './prospectus.component';
+import { bsceLayout } from './COE/BSCE/bsceLayout.component';
+import { bsmeLayout } from './COE/BSME/bsmeLayout.component';
+import { bsieLayout } from './COE/BSIE/bsieLayout.component';
+import { bseeLayout } from './COE/BSEE/bseeLayout.component';
 
 const routes: Routes = [
   {
@@ -99,6 +106,33 @@ const routes: Routes = [
       {
         path: 'college-of-education-and-arts/bachelor-of-elementary-education/4th-year',
         component: ProspectusBeedFourth,
+      },
+
+      //^ COE
+
+      {
+        path: 'college-of-engineering',
+        component: coeLayoutComponent,
+      },
+
+      {
+        path: 'college-of-engineering/civil-engineering',
+        component: bsceLayout,
+      },
+
+      {
+        path: 'college-of-engineering/mechanical-engineering',
+        component: bsmeLayout,
+      },
+
+      {
+        path: 'college-of-engineering/industrial-engineering',
+        component: bsieLayout,
+      },
+
+      {
+        path: 'college-of-engineering/electrical-engineering',
+        component: bseeLayout,
       },
     ],
   },

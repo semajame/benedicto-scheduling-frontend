@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
           });
         },
         error: (error) => {
-          this.alertService.error('Login failed', {
+          this.alertService.error('Wrong username or password', {
             keepAfterRouteChange: true,
           });
           this.loading = false;

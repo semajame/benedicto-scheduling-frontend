@@ -17,7 +17,7 @@
         style="width: 100%; margin: 0 1rem 0 1.5rem"
       />
       <a
-        routerLink="/"
+        routerLink="/{{ user.user?.username }}"
         routerLinkActive="active"
         *ngIf="user.user?.role !== Role.Admin"
         (click)="this.scheduler.closeDialog()"
@@ -95,7 +95,7 @@
                 </p>
               </div>
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
+            <ul class="dropdown-menu dropdown-menu-dark w-100">
               <li>
                 <a class="dropdown-item" (click)="logout()"> Logout </a>
               </li>

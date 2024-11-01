@@ -26,10 +26,17 @@ import { ProspectusBeedSecond } from './CTE/BEED/2nd-year/prospectus-2nd.compone
 import { ProspectusBeedThird } from './CTE/BEED/3rd-year/prospectus-3rd.component';
 import { ProspectusBeedFourth } from './CTE/BEED/4th-year/prospectus-4th.component';
 
+//^ COE
+import { coeLayoutComponent } from './COE/coe.layout.component';
+import { bsceLayout } from './COE/BSCE/bsceLayout.component';
+import { bsmeLayout } from './COE/BSME/bsmeLayout.component';
+
 import { itLayoutComponent } from './IT/it.layout.component';
 import { LayoutComponent } from './layout.component';
 import { ProspectusRoutingModule } from './prospectus.routing.module';
 import { ProspectusComponent } from './prospectus.component';
+import { bsieLayout } from './COE/BSIE/bsieLayout.component';
+import { bseeLayout } from './COE/BSEE/bseeLayout.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, ProspectusRoutingModule],
@@ -58,6 +65,14 @@ import { ProspectusComponent } from './prospectus.component';
     ProspectusBeedSecond,
     ProspectusBeedThird,
     ProspectusBeedFourth,
+
+    //^ COE
+
+    coeLayoutComponent,
+    bsceLayout,
+    bsmeLayout,
+    bsieLayout,
+    bseeLayout,
   ],
 })
 export class prospectusModule {}

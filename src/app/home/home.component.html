@@ -1,7 +1,7 @@
 <div class="p-4">
   <div class="container">
     <div>
-      <h1>Hi {{ user?.user?.first_name }}!</h1>
+      <h1>Hi {{ user?.user?.first_name }}! 👋</h1>
       <p>You're logged in with Benedicto College Scheduling.</p>
     </div>
 
@@ -30,18 +30,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let schedule of appointments">
-              <td>{{ schedule.subject }}</td>
-              <td>{{ schedule.location }}</td>
-              <td>
-                {{ schedule.start | date : "MMMM d, y" }}
-              </td>
-              <td>
-                {{ schedule.end | date : "MMMM d, y" }}
-              </td>
-            </tr>
+            <!-- Filter to only show events where the end date is in the future -->
+            <ng-container *ngFor="let schedule of appointments">
+              <tr *ngIf="schedule.end > currentDate">
+                <td>{{ schedule.subject }}</td>
+                <td>{{ schedule.location }}</td>
+                <td>{{ schedule.start | date: 'MMMM d, y' }}</td>
+                <td>{{ schedule.end | date: 'MMMM d, y' }}</td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
+        
       </div>
     </div>
   </div>

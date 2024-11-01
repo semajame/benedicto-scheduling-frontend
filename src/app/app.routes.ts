@@ -19,7 +19,11 @@ const scheduleModule = () =>
 
 export const APP_ROUTES: Routes = [
   // Non-admin routes
-  { path: '', loadChildren: homeModule, canActivate: [authGuard, AdminGuard] },
+  {
+    path: '',
+    loadChildren: homeModule,
+    canActivate: [authGuard, AdminGuard],
+  },
   { path: 'account/login', component: LoginComponent },
   {
     path: 'profile',
