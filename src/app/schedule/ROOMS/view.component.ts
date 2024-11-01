@@ -195,10 +195,10 @@ export class ViewComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.alertService.error('Error loading schedules', {
-          keepAfterRouteChange: true,
-        });
-        console.error('Error loading schedules:', error);
+           this.alertService.warn('No schedules found in this room', {
+                keepAfterRouteChange: true,
+            });
+            console.error('No schedules found in this room:', error);
       },
     });
   }
