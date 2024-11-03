@@ -18,7 +18,7 @@
       *ngIf="appointments.length > 0"
     >
       <div class="m-3">
-        <h3>Scheduled Events</h3>
+        <h3>Scheduled Events 📅📌</h3>
 
         <table class="w-100 mt-4">
           <thead>
@@ -35,13 +35,12 @@
               <tr *ngIf="schedule.end > currentDate">
                 <td>{{ schedule.subject }}</td>
                 <td>{{ schedule.location }}</td>
-                <td>{{ schedule.start | date: 'MMMM d, y' }}</td>
-                <td>{{ schedule.end | date: 'MMMM d, y' }}</td>
+                <td>{{ schedule.start | date : "MMMM d, y" }}</td>
+                <td>{{ schedule.end | date : "MMMM d, y" }}</td>
               </tr>
             </ng-container>
           </tbody>
         </table>
-        
       </div>
     </div>
   </div>

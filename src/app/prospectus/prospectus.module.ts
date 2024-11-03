@@ -64,6 +64,30 @@ import { bshmLayout } from './CBM/BSHM/bshmLayout.component';
 import { bshrmLayout } from './CBM/BSHRM/bshrmLayout.component';
 import { bsmmLayout } from './CBM/BSMM/bsmmLayout.component';
 
+//^ BSA
+import { ProspectusBsaFirst } from './CBM/BSA/1st-year/prospectus-1st.component';
+import { ProspectusBsaSecond } from './CBM/BSA/2nd-year/prospectus-2nd.component';
+import { ProspectusBsaThird } from './CBM/BSA/3rd-year/prospectus-3rd.component';
+import { ProspectusBsaFourth } from './CBM/BSA/4th-year/prospectus-4th.component';
+
+//^ BSHM
+import { ProspectusBshmFirst } from './CBM/BSHM/1st-year/prospectus-1st.component';
+import { ProspectusBshmSecond } from './CBM/BSHM/2nd-year/prospectus-2nd.component';
+import { ProspectusBshmThird } from './CBM/BSHM/3rd-year/prospectus-3rd.component';
+import { ProspectusBshmFourth } from './CBM/BSHM/4th-year/prospectus-4th.component';
+
+//^ BSHRM
+import { ProspectusBshrmFirst } from './CBM/BSHRM/1st-year/prospectus-1st.component';
+import { ProspectusBshrmSecond } from './CBM/BSHRM/2nd-year/prospectus-2nd.component';
+import { ProspectusBshrmThird } from './CBM/BSHRM/3rd-year/prospectus-3rd.component';
+import { ProspectusBshrmFourth } from './CBM/BSHRM/4th-year/prospectus-4th.component';
+
+//^ BSMM
+import { ProspectusBsmmFirst } from './CBM/BSMM/1st-year/prospectus-1st.component';
+import { ProspectusBsmmSecond } from './CBM/BSMM/2nd-year/prospectus-2nd.component';
+import { ProspectusBsmmThird } from './CBM/BSMM/3rd-year/prospectus-3rd.component';
+import { ProspectusBsmmFourth } from './CBM/BSMM/4th-year/prospectus-4th.component';
+
 import { itLayoutComponent } from './IT/it.layout.component';
 import { LayoutComponent } from './layout.component';
 import { ProspectusRoutingModule } from './prospectus.routing.module';
@@ -134,6 +158,30 @@ import { ProspectusComponent } from './prospectus.component';
     bshmLayout,
     bshrmLayout,
     bsmmLayout,
+
+    //^ BSA
+    ProspectusBsaFirst,
+    ProspectusBsaSecond,
+    ProspectusBsaThird,
+    ProspectusBsaFourth,
+
+    //^ BSHM
+    ProspectusBshmFirst,
+    ProspectusBshmSecond,
+    ProspectusBshmThird,
+    ProspectusBshmFourth,
+
+    //^ BSHRM
+    ProspectusBshrmFirst,
+    ProspectusBshrmSecond,
+    ProspectusBshrmThird,
+    ProspectusBshrmFourth,
+
+    //^ BSMM
+    ProspectusBsmmFirst,
+    ProspectusBsmmSecond,
+    ProspectusBsmmThird,
+    ProspectusBsmmFourth,
   ],
 })
 export class prospectusModule {}

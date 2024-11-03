@@ -251,23 +251,23 @@ const routes: Routes = [
         component: cbmLayoutComponent,
       },
       {
-        path: 'college-of-business-management/accounting',
+        path: 'college-of-business-management/accountancy',
         component: bsaLayout,
       },
       {
-        path: 'college-of-business-management/accounting/1st-year',
+        path: 'college-of-business-management/accountancy/1st-year',
         component: ProspectusBsaFirst,
       },
       {
-        path: 'college-of-business-management/accounting/2nd-year',
+        path: 'college-of-business-management/accountancy/2nd-year',
         component: ProspectusBsaSecond,
       },
       {
-        path: 'college-of-business-management/accounting/3rd-year',
+        path: 'college-of-business-management/accountancy/3rd-year',
         component: ProspectusBsaThird,
       },
       {
-        path: 'college-of-business-management/accounting/4th-year',
+        path: 'college-of-business-management/accountancy/4th-year',
         component: ProspectusBsaFourth,
       },
       {
