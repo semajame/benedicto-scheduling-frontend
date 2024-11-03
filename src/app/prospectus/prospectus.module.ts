@@ -30,13 +30,44 @@ import { ProspectusBeedFourth } from './CTE/BEED/4th-year/prospectus-4th.compone
 import { coeLayoutComponent } from './COE/coe.layout.component';
 import { bsceLayout } from './COE/BSCE/bsceLayout.component';
 import { bsmeLayout } from './COE/BSME/bsmeLayout.component';
+import { bsieLayout } from './COE/BSIE/bsieLayout.component';
+import { bseeLayout } from './COE/BSEE/bseeLayout.component';
+
+//^ BSEE
+import { ProspectusBseeFirst } from './COE/BSEE/1st-year/prospectus-1st.component';
+import { ProspectusBseeSecond } from './COE/BSEE/2nd-year/prospectus-2nd.component';
+import { ProspectusBseeThird } from './COE/BSEE/3rd-year/prospectus-3rd.component';
+import { ProspectusBseeFourth } from './COE/BSEE/4th-year/prospectus-4th.component';
+
+//^ BSIE
+import { ProspectusBsieFirst } from './COE/BSIE/1st-year/prospectus-1st.component';
+import { ProspectusBsieSecond } from './COE/BSIE/2nd-year/prospectus-2nd.component';
+import { ProspectusBsieThird } from './COE/BSIE/3rd-year/prospectus-3rd.component';
+import { ProspectusBsieFourth } from './COE/BSIE/4th-year/prospectus-4th.component';
+
+//^ BSCE
+import { ProspectusBsceFirst } from './COE/BSCE/1st-year/prospectus-1st.component';
+import { ProspectusBsceSecond } from './COE/BSCE/2nd-year/prospectus-2nd.component';
+import { ProspectusBsceThird } from './COE/BSCE/3rd-year/prospectus-3rd.component';
+import { ProspectusBsceFourth } from './COE/BSCE/4th-year/prospectus-4th.component';
+
+//^ BSME
+import { ProspectusBsmeFirst } from './COE/BSME/1st-year/prospectus-1st.component';
+import { ProspectusBsmeSecond } from './COE/BSME/2nd-year/prospectus-2nd.component';
+import { ProspectusBsmeThird } from './COE/BSME/3rd-year/prospectus-3rd.component';
+import { ProspectusBsmeFourth } from './COE/BSME/4th-year/prospectus-4th.component';
+
+//^ CBM
+import { cbmLayoutComponent } from './CBM/cbm.layout.component';
+import { bsaLayout } from './CBM/BSA/bsaLayout.component';
+import { bshmLayout } from './CBM/BSHM/bshmLayout.component';
+import { bshrmLayout } from './CBM/BSHRM/bshrmLayout.component';
+import { bsmmLayout } from './CBM/BSMM/bsmmLayout.component';
 
 import { itLayoutComponent } from './IT/it.layout.component';
 import { LayoutComponent } from './layout.component';
 import { ProspectusRoutingModule } from './prospectus.routing.module';
 import { ProspectusComponent } from './prospectus.component';
-import { bsieLayout } from './COE/BSIE/bsieLayout.component';
-import { bseeLayout } from './COE/BSEE/bseeLayout.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, ProspectusRoutingModule],
@@ -67,12 +98,42 @@ import { bseeLayout } from './COE/BSEE/bseeLayout.component';
     ProspectusBeedFourth,
 
     //^ COE
-
     coeLayoutComponent,
     bsceLayout,
     bsmeLayout,
     bsieLayout,
     bseeLayout,
+
+    //^ BSEE
+    ProspectusBseeFirst,
+    ProspectusBseeSecond,
+    ProspectusBseeThird,
+    ProspectusBseeFourth,
+
+    //^ BSIE
+    ProspectusBsieFirst,
+    ProspectusBsieSecond,
+    ProspectusBsieThird,
+    ProspectusBsieFourth,
+
+    //^ BSCE
+    ProspectusBsceFirst,
+    ProspectusBsceSecond,
+    ProspectusBsceThird,
+    ProspectusBsceFourth,
+
+    //^ BSME
+    ProspectusBsmeFirst,
+    ProspectusBsmeSecond,
+    ProspectusBsmeThird,
+    ProspectusBsmeFourth,
+
+    //^ CBM
+    cbmLayoutComponent,
+    bsaLayout,
+    bshmLayout,
+    bshrmLayout,
+    bsmmLayout,
   ],
 })
 export class prospectusModule {}
