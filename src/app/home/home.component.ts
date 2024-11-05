@@ -87,8 +87,6 @@ export class HomeComponent implements AfterViewInit {
   generateAppointments(): any {
     this.calendarService.getCalendar().subscribe({
       next: (data) => {
-        console.log('API Response:', data); // Log the API response
-
         const appointments = data.map((event) => ({
           id: event.id.toString(),
           subject: event.subject,
@@ -106,9 +104,6 @@ export class HomeComponent implements AfterViewInit {
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.schedulerHome.source(this.dataAdapter);
-
-        console.log('Appointment object:', appointments);
-        // Log conflicts if any
       },
       error: () => {
         this.alertService.error('Error loading events', {

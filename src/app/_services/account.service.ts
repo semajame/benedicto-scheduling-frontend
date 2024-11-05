@@ -63,6 +63,7 @@ export class AccountService {
 
   update(id: string, params: any) {
     console.log('user update...', params);
+
     return this.http.put(`${environment.apiUrl}/users/${id}`, params).pipe(
       map((x) => {
         // update stored user if the logged in user updated their own record

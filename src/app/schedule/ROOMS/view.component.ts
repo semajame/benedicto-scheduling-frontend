@@ -140,7 +140,7 @@ export class ViewComponent implements OnInit {
           room: event.room,
           start: new Date(event.start),
           end: new Date(event.end),
-          day: event.dayName,
+          day: event.day,
           year: event.year,
           draggable: false,
           resizable: false,
@@ -148,13 +148,15 @@ export class ViewComponent implements OnInit {
           background: event.background,
         }));
 
+        console.log(appointments);
+
         // Detect conflicts and add conflict messages
         for (let i = 0; i < appointments.length; i++) {
           for (let j = i + 1; j < appointments.length; j++) {
             const appointment1 = appointments[i];
             const appointment2 = appointments[j];
             const isConflict =
-              appointment1.room === appointment2.room &&
+              // appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 
@@ -175,6 +177,7 @@ export class ViewComponent implements OnInit {
                     start: appointment.start,
                     end: appointment.end,
                     day: appointment.day,
+                    reccurencePattern: appointment.recurrencePattern,
                   });
                 }
               });
@@ -195,10 +198,10 @@ export class ViewComponent implements OnInit {
         }
       },
       error: (error) => {
-           this.alertService.warn('No schedules found in this room', {
-                keepAfterRouteChange: true,
-            });
-            console.error('No schedules found in this room:', error);
+        this.alertService.warn('No schedules found in this room', {
+          keepAfterRouteChange: true,
+        });
+        console.error('No schedules found in this room:', error);
       },
     });
   }

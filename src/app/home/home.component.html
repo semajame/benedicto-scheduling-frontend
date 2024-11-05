@@ -3,6 +3,10 @@
     <div>
       <h1>Hi {{ user?.user?.first_name }}! 👋</h1>
       <p>You're logged in with Benedicto College Scheduling.</p>
+
+      <a routerLink="/profile/update" routerLinkActive="active" class=""
+        >Edit Profile</a
+      >
     </div>
 
     <div class="mt-5 border rounded bg-light p-3">
@@ -44,26 +48,26 @@
       </div>
     </div>
   </div>
-</div>
 
-<div class="my-5">
-  <jqxScheduler
-    #schedulerReference
-    [date]="date"
-    [width]="1300"
-    [height]="800"
-    [source]="dataAdapter"
-    [showLegend]="true"
-    [view]="'weekView'"
-    [appointmentDataFields]="appointmentDataFields"
-    [resources]="resources"
-    [views]="views"
-    [view]="'monthView'"
-    (onAppointmentAdd)="AppointmentAdd($event)"
-    (onAppointmentChange)="AppointmentUpdate($event)"
-    (onAppointmentDelete)="AppointmentDelete($event)"
-    [editDialogOpen]="editDialogOpen"
-    style="margin: 0 auto"
-  >
-  </jqxScheduler>
+  <div class="my-5">
+    <jqxScheduler
+      #schedulerReference
+      [date]="date"
+      [width]="1300"
+      [height]="800"
+      [source]="dataAdapter"
+      [showLegend]="true"
+      [view]="'weekView'"
+      [appointmentDataFields]="appointmentDataFields"
+      [resources]="resources"
+      [views]="views"
+      [view]="'monthView'"
+      (onAppointmentAdd)="AppointmentAdd($event)"
+      (onAppointmentChange)="AppointmentUpdate($event)"
+      (onAppointmentDelete)="AppointmentDelete($event)"
+      [editDialogOpen]="editDialogOpen"
+      style="margin: 0 auto"
+    >
+    </jqxScheduler>
+  </div>
 </div>

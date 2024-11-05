@@ -107,7 +107,7 @@ export class bsedSchedComponent implements AfterViewInit {
         appointments.forEach((appointment1, index1) => {
           appointments.slice(index1 + 1).forEach((appointment2) => {
             const isConflict =
-              appointment1.room === appointment2.room &&
+              // appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 
@@ -133,6 +133,7 @@ export class bsedSchedComponent implements AfterViewInit {
                   start: appointment1.start,
                   end: appointment1.end,
                   day: appointment1.day,
+                  reccurencePattern: appointment1.recurrencePattern,
                 });
               }
 
@@ -151,6 +152,7 @@ export class bsedSchedComponent implements AfterViewInit {
                   start: appointment2.start,
                   end: appointment2.end,
                   day: appointment2.day,
+                  reccurencePattern: appointment2.recurrencePattern,
                 });
               }
             }

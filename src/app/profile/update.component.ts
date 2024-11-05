@@ -12,12 +12,12 @@ import { MustMatch } from '../_helpers/must-match.validator';
 
 @Component({ templateUrl: 'update.component.html' })
 export class UpdateComponent implements OnInit {
-  //   account = this.accountService.userValue;
+  account = this.accountService.userValue;
   form!: UntypedFormGroup;
   loading = false;
   submitted = false;
   deleting = false;
-  account: any = {};
+  // account: any = {};
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -28,13 +28,17 @@ export class UpdateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.account?.user?.id!);
     this.form = this.formBuilder.group(
       {
-        // title: [this.account.title, Validators.required],
-        firstName: [this.account.firstName, Validators.required],
-        lastName: [this.account.lastName, Validators.required],
-        email: [this.account.email, [Validators.required, Validators.email]],
-        password: ['', [Validators.minLength(6)]],
+        first_name: [this.account?.user?.first_name || '', Validators.required],
+        last_name: [this.account?.user?.last_name || '', Validators.required],
+        email: [
+          this.account?.user?.email || '',
+          [Validators.required, Validators.email],
+        ],
+        username: [this.account?.user?.username || '', Validators.required],
+        password: ['', [Validators.minLength(5)]],
         confirmPassword: [''],
       },
       {
@@ -60,34 +64,22 @@ export class UpdateComponent implements OnInit {
     }
 
     this.loading = true;
+
     this.accountService
-      .update(this.account.id, this.form.value)
+      .update(this.account?.user?.id!, this.form.value)
       .pipe(first())
       .subscribe({
         next: () => {
+          console.log(this.account?.user?.id!);
           this.alertService.success('Update successful', {
             keepAfterRouteChange: true,
           });
-          this.router.navigate(['../'], { relativeTo: this.route });
+          this.router.navigate(['/'], { relativeTo: this.route });
         },
         error: (error) => {
           this.alertService.error(error);
           this.loading = false;
         },
       });
-  }
-
-  onDelete() {
-    if (confirm('Are you sure?')) {
-      this.deleting = true;
-      this.accountService
-        .delete(this.account.id)
-        .pipe(first())
-        .subscribe(() => {
-          this.alertService.success('Account deleted successfully', {
-            keepAfterRouteChange: true,
-          });
-        });
-    }
   }
 }

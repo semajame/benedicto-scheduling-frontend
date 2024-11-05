@@ -80,7 +80,7 @@ export class bsmefirstSchedComponent implements AfterViewInit {
             const appointment2 = appointments[j];
 
             const isConflict =
-              appointment1.room === appointment2.room &&
+              // appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 
@@ -108,6 +108,7 @@ export class bsmefirstSchedComponent implements AfterViewInit {
                     start: appointment.start,
                     end: appointment.end,
                     day: appointment.day,
+                    reccurencePattern: appointment.recurrencePattern,
                   });
                 }
               });
