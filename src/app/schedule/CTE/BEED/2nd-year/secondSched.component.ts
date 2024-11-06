@@ -65,7 +65,7 @@ export class beedSecondSchedComponent implements AfterViewInit {
         appointments.forEach((appointment1, index1) => {
           appointments.slice(index1 + 1).forEach((appointment2) => {
             const isConflict =
-              // appointment1.room === appointment2.room &&
+              appointment1.room === appointment2.room &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 
