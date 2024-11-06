@@ -126,9 +126,6 @@ export class bsmmfirstSchedComponent implements AfterViewInit {
         }
       },
       error: (error) => {
-        this.alertService.error('Error loading schedules', {
-          keepAfterRouteChange: true,
-        });
         console.error('Error loading schedules or minor subjects:', error);
       },
     });

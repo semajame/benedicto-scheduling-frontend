@@ -106,9 +106,6 @@ export class HomeComponent implements AfterViewInit {
         this.schedulerHome.source(this.dataAdapter);
       },
       error: () => {
-        this.alertService.error('Error loading events', {
-          keepAfterRouteChange: true,
-        });
         console.error('Error loading events:');
       },
     });

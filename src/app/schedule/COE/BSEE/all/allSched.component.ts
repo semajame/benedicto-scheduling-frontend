@@ -11,7 +11,7 @@ import { User } from '@app/_models';
 
 import { first, forkJoin } from 'rxjs';
 import { SubjectService } from '@app/_services/subjects.service';
-
+import { AccountService } from '@app/_services';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
 
@@ -25,20 +25,21 @@ export class bseeallSchedComponent implements AfterViewInit {
   rooms: Room[] = [];
   conflicts: any[] = [];
   subjects: Subjects[] = [];
-
+  role: Role = Role.COE; // or dynamically set this
   Role = Role;
   user?: User | null;
 
   constructor(
     private coeService: CoeService,
     private ccsService: CcsService,
-
+    private accountService: AccountService,
     private alertService: AlertService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
   ) {}
 
   ngAfterViewInit(): void {
+    this.role = this.accountService.userValue?.user?.role as Role;
     this.generateAppointments();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
@@ -173,9 +174,6 @@ export class bseeallSchedComponent implements AfterViewInit {
         }
       },
       error: (error) => {
-        this.alertService.error('Error loading schedules', {
-          keepAfterRouteChange: true,
-        });
         console.error('Error loading schedules or minor subjects:', error);
       },
     });

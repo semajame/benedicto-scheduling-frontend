@@ -9,7 +9,7 @@
       >
     </div>
 
-    <div class="mt-5 border rounded bg-light p-3">
+    <div class="mt-5 border rounded bg-light p-3" *ngIf="dailyQuote.length > 0">
       <h4>Quote of the Day</h4>
       <blockquote class="blockquote">
         <p class="mb-2">"{{ dailyQuote }}"</p>
@@ -22,7 +22,7 @@
       *ngIf="appointments.length > 0"
     >
       <div class="m-3">
-        <h3>Scheduled Events 📅📌</h3>
+        <h4>Scheduled Events 📅📌</h4>
 
         <table class="w-100 mt-4">
           <thead>

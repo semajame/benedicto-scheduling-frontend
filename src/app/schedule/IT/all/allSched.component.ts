@@ -26,6 +26,7 @@ export class allSchedComponent implements AfterViewInit {
   rooms: Room[] = [];
   conflicts: any[] = [];
   subjects: Subjects[] = [];
+  role: Role = Role.CCS; // or dynamically set this
   Role = Role;
   user?: User | null;
 
@@ -41,6 +42,7 @@ export class allSchedComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.role = this.accountService.userValue?.user?.role as Role;
     this.generateAppointments();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
@@ -171,9 +173,6 @@ export class allSchedComponent implements AfterViewInit {
         }
       },
       error: (error) => {
-        this.alertService.error('Error loading schedules', {
-          keepAfterRouteChange: true,
-        });
         console.error('Error loading schedules or minor subjects:', error);
       },
     });

@@ -12,7 +12,7 @@ import { Subjects } from '@app/_models/subjects';
 import { Room } from '@app/_models/rooms';
 import { Role } from '@app/_models/role';
 import { User } from '@app/_models';
-
+import { AccountService } from '@app/_services';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
 
@@ -26,17 +26,20 @@ export class bsedSchedComponent implements AfterViewInit {
   rooms: Room[] = [];
   conflicts: any[] = [];
   subjects: Subjects[] = [];
+  role: Role = Role.CEA; // or dynamically set this
   Role = Role;
   user?: User;
 
   constructor(
     private cteService: CteService,
     private alertService: AlertService,
+    private accountService: AccountService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
   ) {}
 
   ngAfterViewInit(): void {
+    this.role = this.accountService.userValue?.user?.role as Role;
     this.generateAppointments();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
@@ -172,9 +175,6 @@ export class bsedSchedComponent implements AfterViewInit {
         }
       },
       error: (error) => {
-        this.alertService.error('Error loading schedules', {
-          keepAfterRouteChange: true,
-        });
         console.error('Error loading schedules:', error);
       },
     });
