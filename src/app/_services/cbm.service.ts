@@ -66,8 +66,10 @@ export class CbmService {
     return this.http.put(`${this.APIBSMM}/${id}`, schedule);
   }
 
+  //^ DELETE
+
   deleteBsaSchedule(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.APIBSMM}/${id}`);
+    return this.http.delete<void>(`${this.APIBSA}/${id}`);
   }
 
   deleteBshmSchedule(id: number): Observable<void> {

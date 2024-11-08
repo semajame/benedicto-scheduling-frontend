@@ -67,7 +67,7 @@ export class CoeService {
   }
 
   deleteBsmeSchedule(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.APIBSEE}/${id}`);
+    return this.http.delete<void>(`${this.APIBSME}/${id}`);
   }
 
   deleteBsieSchedule(id: number): Observable<void> {
