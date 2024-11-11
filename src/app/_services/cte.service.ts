@@ -11,6 +11,7 @@ import { environment } from '@app/environments/environment';
 export class CteService {
   readonly APIUrl = `${environment.apiUrl}/schedule/bachelor-of-secondary-education`;
   readonly APIBEED = `${environment.apiUrl}/schedule/bachelor-of-elementary-education`;
+  readonly APIMINOR = `${environment.apiUrl}/schedule/minor-subjects`;
 
   constructor(private http: HttpClient) {}
 
@@ -24,6 +25,10 @@ export class CteService {
     return this.http.get<any[]>(`${this.APIBEED}`);
   }
 
+  getMinorSubjects(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.APIMINOR}`);
+  }
+
   addAllSchedule(schedule: any): Observable<any> {
     return this.http.post<any>(`${this.APIUrl}`, schedule);
   }
@@ -32,8 +37,16 @@ export class CteService {
     return this.http.post<any>(`${this.APIBEED}`, schedule);
   }
 
+  addAllMinorSchedule(schedule: any): Observable<any> {
+    return this.http.post<any>(`${this.APIMINOR}`, schedule);
+  }
+
   updateAllSchedule(id: number, schedule: any): Observable<any> {
     return this.http.put(`${this.APIUrl}/${id}`, schedule);
+  }
+
+  updateAllMinorSchedule(id: number, schedule: any): Observable<any> {
+    return this.http.put(`${this.APIMINOR}/${id}`, schedule);
   }
 
   updateAllBeedSchedule(id: number, schedule: any): Observable<any> {
@@ -42,6 +55,10 @@ export class CteService {
 
   deleteAllSchedule(id: number): Observable<void> {
     return this.http.delete<void>(`${this.APIUrl}/${id}`);
+  }
+
+  deleteAllMinorSchedule(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.APIMINOR}/${id}`);
   }
 
   deleteAllBeedSchedule(id: number): Observable<void> {

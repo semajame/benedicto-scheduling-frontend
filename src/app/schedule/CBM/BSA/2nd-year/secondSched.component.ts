@@ -61,7 +61,7 @@ export class bsasecondSchedComponent implements AfterViewInit {
           room: event.room,
           start: new Date(event.start),
           end: new Date(event.end),
-          day: event.dayName,
+          day: event.day,
           year: event.year,
           draggable: false,
           resizable: false,

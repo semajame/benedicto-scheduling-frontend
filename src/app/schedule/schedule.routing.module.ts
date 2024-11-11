@@ -44,6 +44,7 @@ import { beedThirdSchedComponent } from './CTE/BEED/3rd-year/thirdSched.componen
 import { beedThirdEnlistmentComponent } from './CTE/BEED/3rd-year/thirdEnlistment.component';
 import { beedFourthSchedComponent } from './CTE/BEED/4th-year/fourthSched.component';
 import { beedFourthEnlistmentComponent } from './CTE/BEED/4th-year/fourthEnlistment.component';
+import { minorSchedComponent } from './CTE/MINOR/all/allSched.component';
 
 //^ COE
 
@@ -187,6 +188,10 @@ const routes: Routes = [
       //^ EDUC
 
       { path: 'college-of-education-and-arts', component: educLayoutComponent },
+      {
+        path: 'college-of-education-and-arts/minor-subjects/schedule',
+        component: minorSchedComponent,
+      },
       {
         path: 'college-of-education-and-arts/secondary-education',
         component: bsedLayout,

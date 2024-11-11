@@ -19,6 +19,7 @@
             <th>Start</th>
             <th>End</th>
             <th>Room</th>
+            <th>Day</th>
 
             <!-- Column for conflict notes -->
           </tr>
@@ -32,6 +33,7 @@
               {{ schedule.end | date : "shortTime" }}
             </td>
             <td>{{ schedule.room }}</td>
+            <td>{{ schedule.day }}</td>
             <!-- <td>{{ schedule.notes }}</td> -->
             <!-- Display conflict notes -->
           </tr>

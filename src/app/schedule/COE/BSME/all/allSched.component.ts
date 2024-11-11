@@ -113,7 +113,7 @@ export class bsmeallSchedComponent implements AfterViewInit {
           room: event.room,
           start: new Date(event.start),
           end: new Date(event.end),
-          day: event.dayName,
+          day: event.day,
           year: event.year,
           draggable: false,
           resizable: false,
@@ -129,8 +129,9 @@ export class bsmeallSchedComponent implements AfterViewInit {
 
             const isConflict =
               appointment1.room === appointment2.room &&
-              appointment1.start < appointment2.end &&
-              appointment1.end > appointment2.start;
+              appointment1.day === appointment2.day && // Ensure days match
+              appointment1.start < appointment2.end && // Check time overlap
+              appointment1.end > appointment2.start; // Check time overlap
 
             if (isConflict) {
               const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
@@ -169,6 +170,7 @@ export class bsmeallSchedComponent implements AfterViewInit {
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.scheduler5.source(this.dataAdapter);
 
+        console.log(this.conflicts);
         // Log conflicts if any
         if (this.conflicts.length > 0) {
           this.alertService.error('Schedule conflicts found', {

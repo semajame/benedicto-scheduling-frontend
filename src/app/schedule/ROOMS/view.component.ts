@@ -157,6 +157,7 @@ export class ViewComponent implements OnInit {
             const appointment2 = appointments[j];
             const isConflict =
               appointment1.room === appointment2.room &&
+              appointment1.day === appointment2.day &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 

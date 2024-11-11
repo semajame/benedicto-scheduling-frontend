@@ -109,7 +109,7 @@ export class allSchedComponent implements AfterViewInit {
           room: event.room,
           start: new Date(event.start),
           end: new Date(event.end),
-          day: event.dayName,
+          day: event.day,
           year: event.year,
           draggable: false,
           resizable: false,
@@ -125,6 +125,7 @@ export class allSchedComponent implements AfterViewInit {
 
             const isConflict =
               appointment1.room === appointment2.room &&
+              appointment1.day === appointment2.day &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 

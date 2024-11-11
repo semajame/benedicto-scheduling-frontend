@@ -78,6 +78,7 @@ export class bsafirstSchedComponent implements AfterViewInit {
 
             const isConflict =
               appointment1.room === appointment2.room &&
+              appointment1.day === appointment2.day &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 

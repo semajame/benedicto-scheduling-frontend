@@ -2,11 +2,11 @@
   <div class="">
     <div class="d-flex justify-content-between align-items-end">
       <div>
-        <h1>Hospitality Management</h1>
+        <h1>Minor Subjects</h1>
         <p>This section can only be accessed by the deans.</p>
       </div>
 
-      <div class="d-flex gap-2 mb-2">
+      <!-- <div class="d-flex gap-2 mb-2">
         <div class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle"
@@ -19,28 +19,28 @@
           <ul class="dropdown-menu">
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/1st-year"
+                href="schedule/college-of-education-and-arts/secondary-education/1st-year"
                 class="dropdown-item"
                 >1st Year</a
               >
             </li>
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/2nd-year"
+                href="schedule/college-of-education-and-arts/secondary-education/2nd-year"
                 class="dropdown-item"
                 >2nd Year</a
               >
             </li>
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/3rd-year"
+                href="schedule/college-of-education-and-arts/secondary-education/3rd-year"
                 class="dropdown-item"
                 >3rd Year</a
               >
             </li>
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/4th-year"
+                href="schedule/college-of-education-and-arts/secondary-education/4th-year"
                 class="dropdown-item"
                 >4th Year</a
               >
@@ -60,41 +60,41 @@
           <ul class="dropdown-menu">
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/1st-year/enlistment"
+                href="schedule/college-of-education-and-arts/secondary-education/1st-year/enlistment"
                 class="dropdown-item"
                 >1st Year</a
               >
             </li>
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/2nd-year/enlistment"
+                href="schedule/college-of-education-and-arts/secondary-education/2nd-year/enlistment"
                 class="dropdown-item"
                 >2nd Year</a
               >
             </li>
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/3rd-year/enlistment"
+                href="schedule/college-of-education-and-arts/secondary-education/3rd-year/enlistment"
                 class="dropdown-item"
                 >3rd Year</a
               >
             </li>
             <li>
               <a
-                href="schedule/college-of-business-management/hospitality-management/4th-year/enlistment"
+                href="schedule/college-of-education-and-arts/secondary-education/4th-year/enlistment"
                 class="dropdown-item"
                 >4th Year</a
               >
             </li>
           </ul>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div>
       <button
         class="btn btn-primary"
-        *ngIf="role === Role.CBM"
+        *ngIf="role === Role.CEA"
         (click)="this.scheduler5.openDialog(0, 0)"
       >
         Create Schedule
@@ -158,7 +158,7 @@
     [editDialogCreate]="editDialogCreate"
     [editDialogOpen]="editDialogOpen"
     style="margin: 0 auto"
-    [ngClass]="{ disabled: role !== Role.CBM }"
+    [ngClass]="{ disabled: role !== Role.CEA }"
   >
   </jqxScheduler>
 </div>

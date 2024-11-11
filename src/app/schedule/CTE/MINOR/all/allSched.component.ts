@@ -1,41 +1,39 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
-import { CoeService } from '@app/_services/coe.service';
-import { CcsService } from '@app/_services/ccs.service';
+import { CteService } from '@app/_services/cte.service';
 
 import { AlertService } from '@app/_services';
 import { Teachers } from '@app/_models/teachers';
-import { Subjects } from '@app/_models/subjects';
-import { Role } from '@app/_models/role';
-import { User } from '@app/_models';
 
 import { first, forkJoin } from 'rxjs';
 import { SubjectService } from '@app/_services/subjects.service';
-import { Room } from '@app/_models/rooms';
-import { AccountService } from '@app/_services';
 
+import { Subjects } from '@app/_models/subjects';
+import { Room } from '@app/_models/rooms';
+import { Role } from '@app/_models/role';
+import { User } from '@app/_models';
+import { AccountService } from '@app/_services';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
 
 @Component({
   templateUrl: 'allSched.component.html',
 })
-export class bsceallSchedComponent implements AfterViewInit {
+export class minorSchedComponent implements AfterViewInit {
   @ViewChild('schedulerReference5')
   scheduler5!: jqxSchedulerComponent;
   teachers: Teachers[] = [];
-  conflicts: any[] = [];
   rooms: Room[] = [];
+  conflicts: any[] = [];
   subjects: Subjects[] = [];
-  role: Role = Role.COE; // or dynamically set this
-  Role = Role; // Expose the Role enum to the template
-  user?: User | null;
+  role: Role = Role.CEA; // or dynamically set this
+  Role = Role;
+  user?: User;
 
   constructor(
-    private coeService: CoeService,
-    private accountService: AccountService,
-    private cssService: CcsService,
+    private cteService: CteService,
     private alertService: AlertService,
+    private accountService: AccountService,
     private teacherService: TeacherService,
     private subjectService: SubjectService
   ) {}
@@ -45,7 +43,7 @@ export class bsceallSchedComponent implements AfterViewInit {
     this.generateAppointments();
     this.scheduler5.ensureAppointmentVisible('1');
     this.teacherService
-      .getInstructors('Mandaue Campus', 'College of Engineering')
+      .getInstructors('Mandaue Campus', 'College of Education and Arts')
       .pipe(first())
       .subscribe((teachers) => (this.teachers = teachers));
 
@@ -84,26 +82,14 @@ export class bsceallSchedComponent implements AfterViewInit {
   }
 
   //^ GET APPOINTMENT
-  generateAppointments(): void {
-    // Use forkJoin to wait for both `getMinorSubjects` and `getAllSchedules` to complete
-    forkJoin({
-      minorSubjects: this.coeService.findMinorSubjectsBsce(),
-      technoSubject: this.cssService.findTechnoForCoe(),
-      allSchedules: this.coeService.getAllBsceSchedule(),
-    }).subscribe({
-      next: ({ allSchedules, minorSubjects, technoSubject }) => {
+  generateAppointments(): any {
+    this.cteService.getMinorSubjects().subscribe({
+      next: (data) => {
         // Clear previous conflicts
         this.conflicts = [];
 
-        // Combine both sets of data into one array (you can change this logic based on your needs)
-        const combinedData = [
-          ...allSchedules,
-          ...minorSubjects,
-          ...technoSubject,
-        ];
-
         // Map data to appointment objects
-        const appointments = combinedData.map((event) => ({
+        const appointments = data.map((event) => ({
           id: event.id.toString(),
           subject_code: event.subject_code,
           subject: event.subject,
@@ -121,14 +107,11 @@ export class bsceallSchedComponent implements AfterViewInit {
         }));
 
         // Detect conflicts and add conflict messages to notes
-        for (let i = 0; i < appointments.length; i++) {
-          for (let j = i + 1; j < appointments.length; j++) {
-            const appointment1 = appointments[i];
-            const appointment2 = appointments[j];
-
+        appointments.forEach((appointment1, index1) => {
+          appointments.slice(index1 + 1).forEach((appointment2) => {
             const isConflict =
               appointment1.room === appointment2.room &&
-              appointment1.day === appointment2.day && // Ensure days match
+              appointment1.day === appointment2.day &&
               appointment1.start < appointment2.end &&
               appointment1.end > appointment2.start;
 
@@ -136,35 +119,51 @@ export class bsceallSchedComponent implements AfterViewInit {
               const conflictMessage1 = `Conflict with appointment ${appointment2.id}`;
               const conflictMessage2 = `Conflict with appointment ${appointment1.id}`;
 
-              // Log conflict messages
-              console.log(conflictMessage1, conflictMessage2);
+              // Append conflict messages to notes
 
-              // Add to conflicts array if not already present
-              [appointment1, appointment2].forEach((appointment) => {
-                if (
-                  !this.conflicts.some(
-                    (conflict) => conflict.id === appointment.id
-                  )
-                ) {
-                  this.conflicts.push({
-                    id: appointment.id,
-                    subject_code: appointment.subject_code,
-                    subject: appointment.subject,
-                    units: appointment.units,
-                    teacher: appointment.teacher,
-                    room: appointment.room,
-                    start: appointment.start,
-                    end: appointment.end,
-                    day: appointment.day,
-                    reccurencePattern: appointment.recurrencePattern,
-                  });
-                }
-              });
+              // Add to conflicts array
+              if (
+                !this.conflicts.some(
+                  (conflict) => conflict.id === appointment1.id
+                )
+              ) {
+                this.conflicts.push({
+                  id: appointment1.id,
+                  subject_code: appointment1.subject_code,
+                  subject: appointment1.subject,
+                  units: appointment1.units,
+                  teacher: appointment1.teacher,
+                  room: appointment1.room,
+                  start: appointment1.start,
+                  end: appointment1.end,
+                  day: appointment1.day,
+                  reccurencePattern: appointment1.recurrencePattern,
+                });
+              }
+
+              if (
+                !this.conflicts.some(
+                  (conflict) => conflict.id === appointment2.id
+                )
+              ) {
+                this.conflicts.push({
+                  id: appointment2.id,
+                  subject_code: appointment2.subject_code,
+                  subject: appointment2.subject,
+                  units: appointment2.units,
+                  teacher: appointment2.teacher,
+                  room: appointment2.room,
+                  start: appointment2.start,
+                  end: appointment2.end,
+                  day: appointment2.day,
+                  reccurencePattern: appointment2.recurrencePattern,
+                });
+              }
             }
-          }
-        }
+          });
+        });
 
-        // Load the appointments into the scheduler
+        // Load the appointments into the scheduler (if needed)
         this.source.localdata = appointments;
         this.dataAdapter = new jqx.dataAdapter(this.source);
         this.scheduler5.source(this.dataAdapter);
@@ -177,7 +176,7 @@ export class bsceallSchedComponent implements AfterViewInit {
         }
       },
       error: (error) => {
-        console.error('Error loading schedules or minor subjects:', error);
+        console.error('Error loading schedules:', error);
       },
     });
   }
@@ -257,24 +256,26 @@ export class bsceallSchedComponent implements AfterViewInit {
 
                   console.log(newAppointment);
 
-                  this.coeService.addBsceSchedule(newAppointment).subscribe({
-                    next: (response) => {
-                      appointment.id = response.id;
-                      this.source.localdata.push(appointment);
-                      this.scheduler5.source(this.dataAdapter);
-                      localStorage.setItem('scheduleAdded', 'true');
-                      window.location.reload();
-                    },
-                    error: (error) => {
-                      this.alertService.error('Error adding schedule', {
-                        keepAfterRouteChange: true,
-                        error,
-                      });
+                  this.cteService
+                    .addAllMinorSchedule(newAppointment)
+                    .subscribe({
+                      next: (response) => {
+                        appointment.id = response.id;
+                        this.source.localdata.push(appointment);
+                        this.scheduler5.source(this.dataAdapter);
+                        localStorage.setItem('scheduleAdded', 'true');
+                        window.location.reload();
+                      },
+                      error: (error) => {
+                        this.alertService.error('Error adding schedule', {
+                          keepAfterRouteChange: true,
+                          error,
+                        });
 
-                      console.error('Error adding schedule:', error.message);
-                      console.error('Error details:', error); // Log full error for troubleshooting
-                    },
-                  });
+                        console.error('Error adding schedule:', error.message);
+                        console.error('Error details:', error); // Log full error for troubleshooting
+                      },
+                    });
                 } else {
                   console.error('Employee ID not found for teacher:', teacher);
                 }
@@ -379,8 +380,8 @@ export class bsceallSchedComponent implements AfterViewInit {
             };
 
             // Update the appointment
-            this.coeService
-              .updateBsceSchedule(appointment.id, updatedAppointment)
+            this.cteService
+              .updateAllMinorSchedule(appointment.id, updatedAppointment)
               .subscribe({
                 next: (response) => {
                   // Handle successful update
@@ -412,7 +413,7 @@ export class bsceallSchedComponent implements AfterViewInit {
     const appointment = event.args.appointment.originalData;
 
     if (confirm('Are you sure you want to delete this appointment?')) {
-      this.coeService.deleteBsceSchedule(appointment.id).subscribe({
+      this.cteService.deleteAllMinorSchedule(appointment.id).subscribe({
         next: () => {
           console.log('Appointment deleted successfully');
           // Remove the appointment from the local data source
@@ -482,7 +483,7 @@ export class bsceallSchedComponent implements AfterViewInit {
       try {
         // Fetch subjects filtered by department code
         this.subjectService
-          .getSubjects('COE') // Ensure this returns Observable<Subjects[]>
+          .getSubjects('CEA') // Ensure this returns Observable<Subjects[]>
           .subscribe({
             next: (data: Subjects[]) => {
               // Use Subjects[] directly
@@ -492,7 +493,7 @@ export class bsceallSchedComponent implements AfterViewInit {
               // Build the subject code container and populate the dropdown after fetching data
               let subjectCodeContainer = `
                 <div>
-                  <div class="jqx-scheduler-edit-dialog-label pr-0" >Subject Code</div>
+                  <div class="jqx-scheduler-edit-dialog-label pr-0" style="">Subject Code</div>
                   <div class="jqx-scheduler-edit-dialog-field">
                     <select id="subjectCode" name="subjectCode"></select>
                   </div>
@@ -593,7 +594,7 @@ export class bsceallSchedComponent implements AfterViewInit {
 
         setTimeout(() => {
           this.teacherService
-            .getInstructors('Mandaue Campus', 'College of Engineering')
+            .getInstructors('Mandaue Campus', 'College of Education and Arts')
             .subscribe((data: Teachers[]) => {
               console.log('Teachers filtered by campus and department:', data);
               this.teachers = data;
@@ -621,7 +622,7 @@ export class bsceallSchedComponent implements AfterViewInit {
                 });
               }
             });
-        }, 800);
+        }, 800); // 1 second delay
       } catch (error) {
         console.error('Error fetching subjects:', error);
       }

@@ -41,6 +41,7 @@ import { beedThirdSchedComponent } from './CTE/BEED/3rd-year/thirdSched.componen
 import { beedThirdEnlistmentComponent } from './CTE/BEED/3rd-year/thirdEnlistment.component';
 import { beedFourthSchedComponent } from './CTE/BEED/4th-year/fourthSched.component';
 import { beedFourthEnlistmentComponent } from './CTE/BEED/4th-year/fourthEnlistment.component';
+import { minorSchedComponent } from './CTE/MINOR/all/allSched.component';
 
 //^ COE
 import { coeLayoutComponent } from './COE/coe.layout.component';
@@ -175,6 +176,7 @@ import { ViewComponent } from './ROOMS/view.component';
     beedThirdEnlistmentComponent,
     beedFourthEnlistmentComponent,
     beedFourthSchedComponent,
+    minorSchedComponent,
 
     //^ COE
     coeLayoutComponent,
