@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, finalize } from 'rxjs/operators';
+import { map, finalize, tap } from 'rxjs/operators';
 
 import { environment } from '@app/environments/environment';
 import { Subjects } from '@app/_models/subjects';
@@ -22,6 +22,7 @@ export class SubjectService {
   // private apiUrl = 'https://benedicto-scheduling-backend.onrender.com'; // Change to your backend URL
   private apiUrl = `${environment.apiUrl}/external`; // Change to your backend URL
   private apiRooms = `${environment.apiUrl}/external/datas/rooms`;
+  private apiSemester = `${environment.apiUrl}/external/datas/all-semester`;
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +30,14 @@ export class SubjectService {
     return this.http.get<Subjects[]>(
       `${this.apiUrl}/datas/subjects/${departmentCodeForClass}`
     );
+  }
+
+  getActiveSemester(): Observable<any> {
+    return this.http
+      .get<any>(`${this.apiSemester}`)
+      .pipe(
+        tap((response) => console.log('Active semester response:', response))
+      );
   }
 
   searchSubjectsBySubjectCode(

@@ -196,10 +196,9 @@ export class bsedSchedComponent implements AfterViewInit {
 
     if (typeof subject_code !== 'string') {
       console.error('Invalid subject code:', subject_code);
-      return; // Exit early if subject_code is not a string
+      return;
     }
 
-    // Days of the week mapping
     const daysOfWeek: { [key: string]: string } = {
       SU: 'Sunday',
       MO: 'M',
@@ -226,71 +225,118 @@ export class bsedSchedComponent implements AfterViewInit {
 
     const dayName = dayNames.join('');
 
-    // Fetch `subject_id` based on subject_code
-    this.subjectService.searchSubjectsBySubjectCode(subject_code).subscribe({
-      next: (subjectData) => {
-        if (subjectData && subjectData.course_id) {
-          const course_id = subjectData.course_id;
+    this.subjectService.getActiveSemester().subscribe({
+      next: (activeSemesters) => {
+        console.log('Active Semester Response:', activeSemesters); // Check full structure
 
-          // Type guard to ensure teacher is a string
-          if (typeof teacher === 'string') {
-            // Fetch `teacher_id` based on teacher name
-            this.teacherService.getTeacherByName(teacher).subscribe({
-              next: (teacherData) => {
-                if (teacherData && teacherData.employee_id) {
-                  const newAppointment = {
-                    subject_id: course_id, // Populate subject_id with retrieved subject_id
-                    subject_code: subject_code,
-                    subject: subject,
-                    teacher: teacher,
-                    units: units,
-                    room: room,
-                    teacher_id: teacherData.employee_id, // Populate teacher_id with employee_id
-                    year: year,
-                    start: new Date(startDate),
-                    end: new Date(appointment.end),
-                    recurrencePattern: recurrencePattern || null,
-                    day: dayName,
-                    background: appointment.background,
-                  };
+        // Find the semester with campusName "Mandaue Campus"
+        const activeSemester = activeSemesters.find(
+          (semester: any) => semester.campusName === 'Mandaue Campus'
+        );
 
-                  console.log(newAppointment);
+        if (activeSemester) {
+          console.log('Active Semester Data:', activeSemester);
 
-                  this.cteService.addAllSchedule(newAppointment).subscribe({
-                    next: (response) => {
-                      appointment.id = response.id;
-                      this.source.localdata.push(appointment);
-                      this.scheduler5.source(this.dataAdapter);
-                      localStorage.setItem('scheduleAdded', 'true');
-                      window.location.reload();
-                    },
-                    error: (error) => {
-                      this.alertService.error('Error adding schedule', {
-                        keepAfterRouteChange: true,
-                        error,
+          if (activeSemester.semester_id) {
+            console.log('Active Semester ID:', activeSemester.semester_id);
+
+            // Fetch `subject_id` based on subject_code
+            this.subjectService
+              .searchSubjectsBySubjectCode(subject_code)
+              .subscribe({
+                next: (subjectData) => {
+                  if (subjectData && subjectData.course_id) {
+                    const course_id = subjectData.course_id;
+
+                    if (typeof teacher === 'string') {
+                      this.teacherService.getTeacherByName(teacher).subscribe({
+                        next: (teacherData) => {
+                          if (teacherData && teacherData.employee_id) {
+                            const newAppointment = {
+                              subject_id: course_id,
+                              subject_code: subject_code,
+                              subject,
+                              teacher,
+                              units,
+                              room,
+                              teacher_id: teacherData.employee_id,
+                              year,
+                              semester_id: activeSemester.semester_id,
+                              semester: activeSemester.semesterName, // Set the active semester name
+                              school_year: activeSemester.schoolYear,
+                              start: new Date(startDate),
+                              end: new Date(appointment.end),
+                              recurrencePattern: recurrencePattern || null,
+                              day: dayName,
+                              background: appointment.background,
+                            };
+
+                            console.log('New Appointment:', newAppointment);
+
+                            this.cteService
+                              .addAllSchedule(newAppointment)
+                              .subscribe({
+                                next: (response) => {
+                                  appointment.id = response.id;
+                                  this.source.localdata.push(appointment);
+                                  this.scheduler5.source(this.dataAdapter);
+                                  localStorage.setItem('scheduleAdded', 'true');
+                                  window.location.reload();
+                                },
+                                error: (error) => {
+                                  this.alertService.error(
+                                    'Error adding schedule',
+                                    { keepAfterRouteChange: true, error }
+                                  );
+                                  console.error(
+                                    'Error adding schedule:',
+                                    error.message
+                                  );
+                                  console.error('Error details:', error);
+                                },
+                              });
+                          } else {
+                            console.error(
+                              'Employee ID not found for teacher:',
+                              teacher
+                            );
+                          }
+                        },
+                        error: (error) => {
+                          console.error(
+                            'Error fetching teacher by name:',
+                            error
+                          );
+                        },
                       });
-
-                      console.error('Error adding schedule:', error.message);
-                      console.error('Error details:', error); // Log full error for troubleshooting
-                    },
-                  });
-                } else {
-                  console.error('Employee ID not found for teacher:', teacher);
-                }
-              },
-              error: (error) => {
-                console.error('Error fetching teacher by name:', error);
-              },
-            });
+                    } else {
+                      console.error('Invalid teacher name:', teacher);
+                    }
+                  } else {
+                    console.error(
+                      'Subject ID not found for subject code:',
+                      subject_code
+                    );
+                  }
+                },
+                error: (error) => {
+                  console.error('Error fetching subject by code:', error);
+                },
+              });
           } else {
-            console.error('Invalid teacher name:', teacher);
+            console.error(
+              'Active semester_id not found in response:',
+              activeSemester
+            );
           }
         } else {
-          console.error('Subject ID not found for subject code:', subject_code);
+          console.error(
+            'Semester with campusName "Mandaue Campus" not found in response.'
+          );
         }
       },
       error: (error) => {
-        console.error('Error fetching subject by code:', error);
+        console.error('Error fetching active semester:', error);
       },
     });
   }
