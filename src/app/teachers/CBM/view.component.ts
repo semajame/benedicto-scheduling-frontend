@@ -3,6 +3,8 @@ import { TeacherService } from '../../_services/teacher.service';
 import { Teachers } from '../../_models/teachers';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   templateUrl: './view.component.html',
@@ -75,5 +77,38 @@ export class CBMviewComponent implements OnInit {
   calculateTotalHours(startDate: Date, endDate: Date): number {
     const differenceInMs = endDate.getTime() - startDate.getTime();
     return differenceInMs / (1000 * 60 * 60); //
+  }
+
+  generatePDF() {
+    const doc = new jsPDF();
+
+    // Title
+    doc.text(this.teacher?.name || 'Teacher', 10, 10);
+
+    // Table Content
+    autoTable(doc, {
+      startY: 20,
+      head: [
+        ['Subject Code', 'Subject', 'Units', 'Room', 'Start', 'End', 'Day'],
+      ],
+      body: this.schedules.map((schedule) => [
+        schedule.subject_code,
+        schedule.subject,
+        schedule.units,
+        schedule.room,
+        schedule.start,
+        schedule.end,
+        schedule.day,
+      ]),
+    });
+
+    // doc.text(
+    //   `Total Hours: ${this.totalCumulativeHours.toFixed(2)} hours`,
+    //   10,
+    //   doc.lastAutoTable.finalY + 10
+    // );
+
+    // Open the PDF in a new tab
+    doc.save('Teacher_Schedule.pdf'); // to download the PDF
   }
 }
