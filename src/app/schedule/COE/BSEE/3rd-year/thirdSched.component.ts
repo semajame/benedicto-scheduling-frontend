@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 import { CoeService } from '@app/_services/coe.service';
 import { CcsService } from '@app/_services/ccs.service';
@@ -13,12 +13,18 @@ import { first, forkJoin } from 'rxjs';
 import * as $ from 'jquery';
 import { TeacherService } from '@app/_services/teacher.service';
 
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+
 @Component({
   templateUrl: 'thirdSched.component.html',
 })
 export class bseethirdSchedComponent implements AfterViewInit {
   @ViewChild('schedulerReference3')
   scheduler3!: jqxSchedulerComponent;
+
+  @ViewChild('pdfContent')
+  pdfContent!: ElementRef;
   teachers: Teachers[] = [];
   conflicts: any[] = [];
   subjects: Subjects[] = [];
@@ -31,6 +37,35 @@ export class bseethirdSchedComponent implements AfterViewInit {
     private teacherService: TeacherService,
     private subjectService: SubjectService
   ) {}
+
+  generatePDF() {
+    html2canvas(this.pdfContent.nativeElement, { scale: 2 }).then((canvas) => {
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pageHeight = 297; // A4 height in mm
+
+      // Calculate the number of pages needed
+      let position = 0;
+      let heightLeft = imgHeight;
+
+      // Add the first image
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Add extra pages if necessary
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('3rd-year-bsee-schedule.pdf');
+    });
+  }
 
   ngAfterViewInit(): void {
     this.scheduler3.ensureAppointmentVisible('1');

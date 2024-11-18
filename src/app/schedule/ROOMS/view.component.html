@@ -3,6 +3,12 @@
   <h1 *ngIf="!room && !loading">Room not found</h1>
   <h1 *ngIf="loading">Loading...</h1>
 
+  <div class="mt-3">
+    <button (click)="generatePDF()" class="btn btn-primary" *ngIf="room">
+      Download Schedule
+    </button>
+  </div>
+
   <div
     class="mt-5 border rounded note bg-warning-subtle"
     *ngIf="conflicts.length > 0"
@@ -42,7 +48,7 @@
     </div>
   </div>
 </div>
-<div class="mt-5">
+<div class="mt-5" #pdfContent>
   <jqxScheduler
     #schedulerReference5
     [date]="date"

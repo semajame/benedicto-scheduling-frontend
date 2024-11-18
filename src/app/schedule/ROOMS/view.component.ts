@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SubjectService } from '@app/_services/subjects.service';
 import { TeacherService } from '@app/_services/teacher.service';
 import { Teachers } from '../../_models/teachers';
@@ -9,6 +9,9 @@ import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 import { Subjects } from '@app/_models/subjects';
 import { AlertService } from '@app/_services/alert.service'; // Assuming AlertService is available
 
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+
 @Component({
   templateUrl: 'view.component.html',
   providers: [DatePipe],
@@ -16,6 +19,9 @@ import { AlertService } from '@app/_services/alert.service'; // Assuming AlertSe
 export class ViewComponent implements OnInit {
   @ViewChild('schedulerReference5', { static: false })
   scheduler5!: jqxSchedulerComponent;
+
+  @ViewChild('pdfContent')
+  pdfContent!: ElementRef;
 
   room?: Room;
   loading = true;
@@ -91,6 +97,35 @@ export class ViewComponent implements OnInit {
     private datePipe: DatePipe,
     private alertService: AlertService // Added the AlertService to constructor
   ) {}
+
+  generatePDF() {
+    html2canvas(this.pdfContent.nativeElement, { scale: 2 }).then((canvas) => {
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pageHeight = 297; // A4 height in mm
+
+      // Calculate the number of pages needed
+      let position = 0;
+      let heightLeft = imgHeight;
+
+      // Add the first image
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Add extra pages if necessary
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`${this.selectedRoomName}.pdf`);
+    });
+  }
 
   ngOnInit() {
     const roomId: string = this.route.snapshot.params['roomName'];

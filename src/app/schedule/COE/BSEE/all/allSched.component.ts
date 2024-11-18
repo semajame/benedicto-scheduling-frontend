@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { jqxSchedulerComponent } from 'jqwidgets-ng/jqxscheduler';
 import { CoeService } from '@app/_services/coe.service';
 import { CcsService } from '@app/_services/ccs.service';
@@ -594,10 +594,12 @@ export class bseeallSchedComponent implements AfterViewInit {
           <div class="jqx-scheduler-edit-dialog-label">Year</div>
           <div class="jqx-scheduler-edit-dialog-field">
             <select id="year" name="year" >
-              <option value="1">1</option>
+                 <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
+               <option value="4">5</option>
+                <option value="4">6</option>
             </select>
           </div>
         </div>`;

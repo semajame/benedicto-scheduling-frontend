@@ -1,5 +1,12 @@
 <div class="container">
   <h1 *ngIf="teacher">{{ teacher.name }}</h1>
+  <button
+    (click)="generatePDF()"
+    *ngIf="schedules.length > 0 && !loading"
+    class="btn-primary btn mt-2"
+  >
+    Download Enlistment
+  </button>
   <h1 *ngIf="!teacher && !loading">Teacher not found</h1>
   <h1 *ngIf="loading">Loading...</h1>
 

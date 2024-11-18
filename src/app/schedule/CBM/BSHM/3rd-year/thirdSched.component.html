@@ -1,8 +1,101 @@
 <div class="pt-4 px-4 container">
-  <div class="">
-    <h1>3rd Year Schedule</h1>
-    <p>This section can only be accessed by the deans.</p>
+  <div class="d-flex justify-content-between align-items-end">
+    <div>
+      <h1>3rd Year Schedule</h1>
+      <p>This section can only be accessed by the deans.</p>
+    </div>
+
+    <div class="d-flex gap-2 mb-2">
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          View Schedule
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/1st-year"
+              class="dropdown-item"
+              >1st Year</a
+            >
+          </li>
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/2nd-year"
+              class="dropdown-item"
+              >2nd Year</a
+            >
+          </li>
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/3rd-year"
+              class="dropdown-item"
+              >3rd Year</a
+            >
+          </li>
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/4th-year"
+              class="dropdown-item"
+              >4th Year</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          View Enlistment
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/1st-year/enlistment"
+              class="dropdown-item"
+              >1st Year</a
+            >
+          </li>
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/2nd-year/enlistment"
+              class="dropdown-item"
+              >2nd Year</a
+            >
+          </li>
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/3rd-year/enlistment"
+              class="dropdown-item"
+              >3rd Year</a
+            >
+          </li>
+          <li>
+            <a
+              href="schedule/college-of-business-management/hospitality-management/4th-year/enlistment"
+              class="dropdown-item"
+              >4th Year</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
+
+  <div>
+    <button (click)="generatePDF()" class="btn btn-primary">
+      Download Schedule
+    </button>
+  </div>
+
   <div
     class="mt-5 border rounded note bg-warning-subtle"
     *ngIf="conflicts.length > 0"
@@ -42,7 +135,7 @@
     </div>
   </div>
 </div>
-<div #pdfContent class="mt-5">
+<div class="mt-5" #pdfContent>
   <jqxScheduler
     #schedulerReference3
     [date]="date"
