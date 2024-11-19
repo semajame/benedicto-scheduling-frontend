@@ -102,13 +102,13 @@ export class CBMviewComponent implements OnInit {
       ]),
     });
 
-    // doc.text(
-    //   `Total Hours: ${this.totalCumulativeHours.toFixed(2)} hours`,
-    //   10,
-    //   doc.lastAutoTable.finalY + 10
-    // );
+    doc.text(
+      `Total Hours: ${this.totalCumulativeHours.toFixed(2)} hours`,
+      10,
+      +260
+    );
 
     // Open the PDF in a new tab
-    doc.save('Teacher_Schedule.pdf'); // to download the PDF
+    doc.save(`${this.teacher?.name}.pdf`); // to download the PDF
   }
 }
