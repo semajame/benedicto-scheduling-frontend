@@ -1,30 +1,35 @@
 <div class="container">
-  <div *ngIf="teacher">
+  <!-- Show loading spinner while loading -->
+  <div *ngIf="loading" class="mt-5 container">
+    <p class="placeholder-glow">
+      <span class="placeholder col-12 bg-secondary placeholder-lg"></span>
+      <span class="placeholder col-10 my-2 bg-secondary placeholder-lg"></span>
+      <span class="placeholder col-8 bg-secondary placeholder-lg"></span>
+      <span class="placeholder col-6 my-2 bg-secondary placeholder-lg"></span>
+      <span class="placeholder col-4 bg-secondary placeholder-lg"></span>
+    </p>
+  </div>
+
+  <!-- Show teacher details if loaded -->
+  <div *ngIf="!loading && teacher">
     <h1>{{ teacher.name }}</h1>
     <p>Faculty of College of Computer Studies</p>
   </div>
+
+  <!-- Show button to download enlistment if schedules exist -->
   <button
     (click)="generatePDF()"
     *ngIf="schedules.length > 0 && !loading"
-    class="btn-primary btn mt-2"
+    class="btn btn-primary mt-2"
   >
     Download Enlistment
   </button>
-  <h1 *ngIf="!teacher && !loading">Teacher not found</h1>
-  <div
-    *ngIf="loading"
-    class="d-flex justify-content-center align-items-center mt-3"
-  >
-    <div class="loader"></div>
-  </div>
 
-  <!-- Message when no schedules are available -->
-  <div *ngIf="schedules.length === 0 && !loading">
-    <p>No schedules found for the teacher.</p>
-  </div>
+  <!-- Message for teacher not found -->
+  <h1 *ngIf="!loading && !teacher">Teacher not found</h1>
 
-  <div class="main-body p-0" *ngIf="schedules.length > 0">
-    <!-- Only show table if schedules exist -->
+  <!-- Show schedules if available -->
+  <div class="main-body p-0" *ngIf="!loading && schedules.length > 0">
     <table class="table mt-5 table-bordered">
       <thead>
         <tr>
@@ -50,6 +55,7 @@
       </tbody>
     </table>
 
+    <!-- Total Hours Section -->
     <div class="mt-5">
       <h3 class="font-bold">Total Hours:</h3>
       <p class="fs-4">{{ totalCumulativeHours | number : "1.2-2" }} hours</p>

@@ -1,9 +1,21 @@
 <div class="container">
   <h1>College of Education and Arts</h1>
   <p>This section can only be accessed by the deans.</p>
+
+  <!-- <a routerLink="add" class="btn btn-success">Add Teacher</a> -->
 </div>
 
-<div class="container mt-5 p-0">
+<div *ngIf="loading" class="mt-5 container">
+  <p class="placeholder-glow">
+    <span class="placeholder col-12 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-10 my-2 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-8 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-6 my-2 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-4 bg-secondary placeholder-lg"></span>
+  </p>
+</div>
+
+<div *ngIf="!loading" class="container mt-5 p-0">
   <div class="main-body p-0">
     <table class="table">
       <thead>
@@ -15,16 +27,8 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <div
-        *ngIf="loading"
-        class="d-flex justify-content-center align-items-center mt-3"
-      >
-        <div class="loader"></div>
-      </div>
-
-      <tbody *ngIf="!loading">
+      <tbody>
         <tr *ngFor="let teacher of teachers">
-          <!-- <th scope="row">{{ teacher.id }}</th> -->
           <td>{{ teacher.name }}</td>
           <td>{{ teacher.gender }}</td>
           <td>{{ teacher.address }}</td>
