@@ -40,9 +40,7 @@ export class AccountService {
 
   logout() {
     // remove user from local storage and set current user to null
-    localStorage.removeItem('jwt'); // Optional: Clear additional tokens if needed
     localStorage.removeItem('user');
-    sessionStorage.clear(); // Clear session data if using sessionStorage
     this.userSubject.next(null);
     this.router.navigate(['/account/login']);
   }
