@@ -15,7 +15,7 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild('schedulerReference')
   schedulerHome!: jqxSchedulerComponent;
   user?: User | null;
-
+  // loading = true;
   appointments: any[] = [];
   dailyQuote: string = ''; // Holds the daily quote
   dailyAuthor: string = ''; // Holds the author
