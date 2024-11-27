@@ -1,7 +1,20 @@
 ﻿<h1>Accounts</h1>
-<p>All accounts from secure (admin only) api end point:</p>
+<p>All accounts from secure (admin only) API endpoint:</p>
 <a routerLink="add" class="btn btn-sm btn-success mb-2">Create Account</a>
-<table class="table table-striped mt-4">
+
+<!-- Show placeholder if accounts is empty -->
+<div *ngIf="loading" class="mt-5 container">
+  <p class="placeholder-glow">
+    <span class="placeholder col-12 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-10 my-2 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-8 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-6 my-2 bg-secondary placeholder-lg"></span>
+    <span class="placeholder col-4 bg-secondary placeholder-lg"></span>
+  </p>
+</div>
+
+<!-- Show table if accounts exist -->
+<table class="table table-striped mt-4" *ngIf="!loading">
   <thead>
     <tr>
       <th style="width: 25%">Name</th>
@@ -23,15 +36,11 @@
           class="btn btn-sm btn-primary mr-1"
           >Edit</a
         >
+        <!-- Uncomment the button below to enable account deletion -->
         <!-- <button (click)="deleteAccount(account.id)" class="btn btn-sm btn-danger btn-delete-account" [disabled]="account.isDeleting">
-                    <span *ngIf="account.isDeleting" class="spinner-border spinner-border-sm"></span>
-                    <span *ngIf="!account.isDeleting">Delete</span>
-                </button> -->
-      </td>
-    </tr>
-    <tr *ngIf="!accounts">
-      <td colspan="4" class="text-center">
-        <span class="spinner-border spinner-border-lg align-center"></span>
+          <span *ngIf="account.isDeleting" class="spinner-border spinner-border-sm"></span>
+          <span *ngIf="!account.isDeleting">Delete</span>
+        </button> -->
       </td>
     </tr>
   </tbody>
