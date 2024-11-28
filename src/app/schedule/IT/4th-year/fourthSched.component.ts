@@ -75,15 +75,14 @@ export class fourthSchedComponent implements AfterViewInit {
   generateAppointments(): void {
     // Use forkJoin to wait for both `getMinorSubjects` and `getAllSchedules` to complete
     forkJoin({
-      minorSubjects: this.ccsService.findMinorSubjectsIT(),
       getFourthSchedules: this.ccsService.getFourthSchedules(),
     }).subscribe({
-      next: ({ minorSubjects, getFourthSchedules }) => {
+      next: ({ getFourthSchedules }) => {
         // Clear previous conflicts
         this.conflicts = [];
 
         // Combine both sets of data into one array (you can change this logic based on your needs)
-        const combinedData = [...minorSubjects, ...getFourthSchedules];
+        const combinedData = [...getFourthSchedules];
 
         // Map data to appointment objects
         const appointments = combinedData.map((event) => ({
